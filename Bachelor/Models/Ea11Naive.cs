@@ -7,12 +7,12 @@ public class Ea11Naive
 {
     public List<int> Run (string bitString)
     {
-        string stringtest = "00000";
+        string stringtest = "0000000000000000000000000000000000000000";
         List<int> iterations = new List<int>();
         char[] c = stringtest.ToCharArray();
         char[] c2 = stringtest.ToCharArray();
         var random = new Random();
-        while (Val(c2) != 5)
+        while (Val(c2) != stringtest.Length)
         {
             
             for (var i = 0; i < c.Length; i++)
