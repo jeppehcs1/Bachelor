@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace test.Models;
+namespace Bachelor.Models;
 
-public class Ee11naive
+public class Ea11Naive
 {
     public int Run (string bitString)
     {
