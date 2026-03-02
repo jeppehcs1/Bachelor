@@ -5,7 +5,7 @@ namespace Bachelor.Models;
 
 public class Ea11Naive
 {
-    public int Run (string bitString)
+    public List<int> Run (string bitString)
     {
         string stringtest = "00000";
         List<int> iterations = new List<int>();
@@ -33,7 +33,8 @@ public class Ea11Naive
             Console.WriteLine(c2);
         }
         Console.WriteLine(iterations.Count);
-        return 0;
+        Console.WriteLine(string.Join(", ", iterations));
+        return iterations;
     }
 
     public int Val (char[] c)
