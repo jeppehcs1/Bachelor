@@ -1,14 +1,15 @@
+
 using System.Collections;
+using Bachelor.Models.Problems;
+namespace Bachelor.Models.Algorithms;
 
-namespace Bachelor.Models;
-
-public abstract class Algorithm
+public abstract class Algorithm<T>
 {
-    private int funcEvals { get; set; }
-    private double runtime { get; set; }
+    private int FuncEvals { get; set; }
+    private double Runtime { get; set; }
     private int BSFF { get; set; }
 
-    public ProblemType<BitArray> problem  { get; set; }
+    public ProblemType<T> problem  { get; set; }
     public BitArray inputString  { get; set; }
     private string inputGraph = "";
 

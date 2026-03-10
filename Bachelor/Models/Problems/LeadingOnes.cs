@@ -1,4 +1,4 @@
-namespace Bachelor.Models;
+namespace Bachelor.Models.Problems;
 using System.Collections;
 
 public class LeadingOnes : BitStringProblem

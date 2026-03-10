@@ -1,4 +1,4 @@
-namespace Bachelor.Models;
+namespace Bachelor.Models.Problems;
 
 
 public abstract class ProblemType<T>

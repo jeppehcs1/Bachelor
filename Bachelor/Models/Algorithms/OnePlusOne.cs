@@ -1,8 +1,8 @@
 using System.Collections;
 
-namespace Bachelor.Models;
+namespace Bachelor.Models.Algorithms;
 
-public class OnePlusOne : Algorithm
+public class OnePlusOne : Algorithm<BitArray>
 {
     public override void Run()
     {
