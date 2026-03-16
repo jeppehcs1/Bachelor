@@ -8,7 +8,7 @@ using System.Collections;
 
 public class OnePlusOneBitString(ProblemType<BitArray> problem) : OnePlusOne<BitArray>(problem)
 {
-    public override void Run()
+    public override void Iterate()
     {                                                                  
         var dim = problem.dimension;
         var random = new Random();

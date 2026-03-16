@@ -3,29 +3,29 @@
         xmlns:vm="using:Bachelor.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:avaPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Bachelor.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
         Title="Bachelor">
 
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
+    
 
     <!-- <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/> -->
 
     <DockPanel>
         <!-- Plot takes up most of the space -->
-        <avaPlot:AvaPlot Name="PlotControl" DockPanel.Dock="Top" Height="400"/>
-        
-        <!-- Button at the bottom -->
-        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-            <Button Content="Run Again" Command="{Binding RunCommand}" Width="100"/>
-        </StackPanel>
+        <Menu DockPanel.Dock="Top">
+                    <MenuItem Header="Views" Background="DarkGray">
+                        <MenuItem Header="Home" Command="{Binding ShowHomeCommand}"/>
+                        <MenuItem Header="Plot" Command="{Binding ShowPlotCommand}"/>
+                        <MenuItem Header="Cube" Command="{Binding ShowCubeCommand}"/>
+                        
+                        
+                    </MenuItem>
+                </Menu>
+        <!-- Content Area -->
+        <ContentControl Content="{Binding CurrentView}" Margin="10"/>
     </DockPanel>
 
 </Window>

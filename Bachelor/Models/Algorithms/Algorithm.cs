@@ -15,7 +15,7 @@ public abstract class Algorithm<T>
     public BitArray searchPointString  { get; set; }
     private string searchPointGraph = "";
     public abstract int GetFitness();
-    public abstract void Run();
+    public abstract void Iterate();
     
     public abstract void Initialize();
     protected  Algorithm(ProblemType<T> problem)
