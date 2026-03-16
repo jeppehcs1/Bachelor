@@ -18,6 +18,14 @@
 
     <!-- <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/> -->
 
-    <avaPlot:AvaPlot Name="PlotControl"/>
+    <DockPanel>
+        <!-- Plot takes up most of the space -->
+        <avaPlot:AvaPlot Name="PlotControl" DockPanel.Dock="Top" Height="400"/>
+        
+        <!-- Button at the bottom -->
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+            <Button Content="Run Again" Command="{Binding RunCommand}" Width="100"/>
+        </StackPanel>
+    </DockPanel>
 
 </Window>

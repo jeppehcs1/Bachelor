@@ -17,15 +17,15 @@ public partial class MainWindow : Window
         
         if (DataContext is MainWindowViewModel _vm)
         {
-            int[] xs = new int[_vm.Iters.Count];
-            for (int i = 0; i < _vm.Iters.Count; i++)
+            int[] xs = new int[_vm.Points.Count];
+            for (int i = 0; i < _vm.Points.Count; i++)
             {
                 xs[i] = i;
             }
-            int[] ys = new int[_vm.Iters.Count];
-            for (int i = 0; i < _vm.Iters.Count; i++)
+            int[] ys = new int[_vm.Points.Count];
+            for (int i = 0; i < _vm.Points.Count; i++)
             {
-                ys[i] = _vm.Iters[i];
+                ys[i] = (int)_vm.Points[i].y;
             }
             
             PlotControl.Plot.Clear();

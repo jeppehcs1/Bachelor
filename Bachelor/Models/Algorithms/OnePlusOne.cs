@@ -1,15 +1,12 @@
 using System.Collections;
+using Bachelor.Models.Problems;
 
 namespace Bachelor.Models.Algorithms;
 
-public class OnePlusOne : Algorithm<BitArray>
+public abstract class OnePlusOne<T> : Algorithm<T>
 {
-    public override void Run()
+    protected OnePlusOne(ProblemType<T> problem) : base(problem)
     {
-        searchPointString = inputString;
-        while (problem.Fitness(searchPointString) <= problem.dimension)
-        {
-            
-        }
+        
     }
-}
+} 

@@ -1,7 +1,7 @@
 namespace Bachelor.Models.Problems;
 using System.Collections;
 
-public class OneMax : BitStringProblem
+public class OneMax(int dimension) : BitStringProblem(dimension)
 {
     public override int Fitness(BitArray c)
     {

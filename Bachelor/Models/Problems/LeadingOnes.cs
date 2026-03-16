@@ -1,7 +1,7 @@
 namespace Bachelor.Models.Problems;
 using System.Collections;
 
-public class LeadingOnes : BitStringProblem
+public class LeadingOnes(int dimension) : BitStringProblem(dimension)
 {
     public override int Fitness(BitArray c)
     {

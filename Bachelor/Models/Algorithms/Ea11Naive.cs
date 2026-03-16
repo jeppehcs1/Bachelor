@@ -7,7 +7,7 @@ public class Ea11Naive
 {
     public List<int> Run (string bitString)
     {
-        string stringtest = "0000000000000000000000000000000000000000";
+        string stringtest = "00000";
         List<int> iterations = new List<int>();
         char[] c = stringtest.ToCharArray();
         char[] c2 = stringtest.ToCharArray();
