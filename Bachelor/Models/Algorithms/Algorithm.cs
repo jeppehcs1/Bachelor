@@ -1,6 +1,7 @@
 
 using System.Collections;
 using Bachelor.Models.Problems;
+using System.Collections.Generic;
 using System.Text;
 namespace Bachelor.Models.Algorithms;
 
@@ -8,19 +9,19 @@ public abstract class Algorithm<T>
 {
     private int FuncEvals { get; set; }
     private double Runtime { get; set; }
-    private int BSFF { get; set; }
+    private int BSFF { get; set; } // Best So Far Fitness
 
-    public ProblemType<T> problem  { get; set; }
+    public ProblemType<T> Problem  { get; set; }
+
+    public T SearchPoint;
     
-    public BitArray searchPointString  { get; set; }
-    private string searchPointGraph = "";
     public abstract int GetFitness();
     public abstract void Iterate();
     
     public abstract void Initialize();
     protected  Algorithm(ProblemType<T> problem)
     {
-        this.problem = problem;
+        this.Problem = problem;
     }
     
     public static string BitArrayToString(BitArray bitArray)

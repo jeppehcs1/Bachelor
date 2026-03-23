@@ -40,12 +40,12 @@ public class HypercubeViewModel
         Algorithm.Initialize();                                            
                                                                        
         Points = new ObservableCollection<DataPoint>();                    
-        Points.Add(new DataPoint{ x = XCoordinate(Algorithm.searchPointString), y = (double)Algorithm.GetFitness()/(double)Algorithm.problem.dimension });    
+        Points.Add(new DataPoint{ x = XCoordinate(Algorithm.SearchPoint), y = (double)Algorithm.GetFitness()/(double)Algorithm.Problem.dimension });    
         for (int i = 1; i < 50; i++)                                       
         {                                                                  
             Algorithm.Iterate();
-            Console.WriteLine(XCoordinate(Algorithm.searchPointString));   
-            Points.Add(new DataPoint{ x = XCoordinate(Algorithm.searchPointString), y = (double)Algorithm.GetFitness()/(double)Algorithm.problem.dimension });
+            Console.WriteLine(XCoordinate(Algorithm.SearchPoint));   
+            Points.Add(new DataPoint{ x = XCoordinate(Algorithm.SearchPoint), y = (double)Algorithm.GetFitness()/(double)Algorithm.Problem.dimension });
         }                                                                  
                                         
     }      

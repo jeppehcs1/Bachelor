@@ -8,33 +8,38 @@ using System.Collections;
 
 public class OnePlusOneBitString(ProblemType<BitArray> problem) : OnePlusOne<BitArray>(problem)
 {
-    public override void Iterate()
-    {                                                                  
-        var dim = problem.dimension;
-        var random = new Random();
-        var old = searchPointString.Clone() as BitArray;
-        
+
+    public override BitArray CloneSearchPoint()
+    {
+        return SearchPoint.Clone() as BitArray;
+    }
+    public override void UpdateSearchPoint(BitArray old)
+    {
+        if (Problem.Fitness(SearchPoint) < Problem.Fitness(old))
+        {
+            SearchPoint = old;
+        }
+    }
+
+    public override void MutateSearchPoint(Random random)
+    {
+        var dim = Problem.dimension;
         for (var i = 0; i < dim; i++)
         {
             if (random.Next(dim) == 0) // 1/dim chance of being 0, i.e. flipping a bit
             {
-                searchPointString[i] = !searchPointString[i];
+                SearchPoint[i] = !SearchPoint[i];
             }
         }
-        if (problem.Fitness(searchPointString) < problem.Fitness(old))
-        {
-            searchPointString = old;
-        }
-        Console.WriteLine(BitArrayToString(searchPointString));
     }
 
     public override int GetFitness()
     {
-        return problem.Fitness(searchPointString);
+        return Problem.Fitness(SearchPoint);
     }
     public override void Initialize() 
     {
-        var dim = problem.dimension;
+        var dim = Problem.dimension;
         var bits = new bool[dim];
         var random = new Random();
         
@@ -42,7 +47,7 @@ public class OnePlusOneBitString(ProblemType<BitArray> problem) : OnePlusOne<Bit
         {
             bits[i] = random.Next(2) == 1;  // Random true or false
         }
-        searchPointString = new BitArray(bits);
+        SearchPoint = new BitArray(bits);
     }
-
+    
 }

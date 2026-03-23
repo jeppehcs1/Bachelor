@@ -12,6 +12,9 @@ public partial class HypercubeView : UserControl
 {
     private double[] xs = Array.Empty<double>();
     private double[] ys = Array.Empty<double>();
+    
+    
+    
     public HypercubeView()
     {
         InitializeComponent();
