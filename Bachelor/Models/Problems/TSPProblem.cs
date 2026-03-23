@@ -29,7 +29,7 @@ public class TSPProblem(int dimension) : PermutationProblem(dimension)
 
             fitness = fitness + EudclidianDistance(p1, p2);
         }
-        
+        fitness += EudclidianDistance(c.Graph[c.Permutation[dimension - 1]], c.Graph[c.Permutation[0]]);
         return fitness;
     }
 

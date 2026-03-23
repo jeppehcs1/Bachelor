@@ -6,7 +6,7 @@ using System.Collections;
 using System;
 
 
-public class OnePlusOnePermutation(ProblemType<TSPInstance> problem) : OnePlusOne<TSPInstance>(problem)
+public class OnePlusOnePermutation(PermutationProblem problem) : OnePlusOne<TSPInstance>(problem)
 {
     public override int GetFitness()
     {
@@ -16,7 +16,7 @@ public class OnePlusOnePermutation(ProblemType<TSPInstance> problem) : OnePlusOn
 
     public override void Initialize()
     {
-        throw new NotImplementedException();
+        SearchPoint.Shuffle();
     }
 
     public override TSPInstance CloneSearchPoint()
@@ -24,13 +24,16 @@ public class OnePlusOnePermutation(ProblemType<TSPInstance> problem) : OnePlusOn
         return SearchPoint.DeepCopy();
     }
 
-    public override void UpdateSearchPoint(TSPInstance problemtype)
+    public override void UpdateSearchPoint(TSPInstance old)
     {
-        throw new NotImplementedException();
+        if (Problem.Fitness(SearchPoint) < Problem.Fitness(old))
+        {
+            SearchPoint = old;
+        }
     }
 
     public override void MutateSearchPoint(Random random)
     {
-        throw new NotImplementedException();
+        SearchPoint = problem.MutateTSP(SearchPoint);
     }
 }
