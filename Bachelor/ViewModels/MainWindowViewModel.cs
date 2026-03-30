@@ -6,8 +6,8 @@ using Bachelor.Models;
 using Bachelor.Models.Algorithms;
 using Bachelor.Models.Problems;
 using Bachelor.Views;
-using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 namespace Bachelor.ViewModels;
 
 using ScottPlot;
@@ -31,6 +31,8 @@ public partial class MainWindowViewModel : ViewModelBase
     private void ShowHome() => CurrentView = new HomeView();
     [RelayCommand]
     private void ShowCube() => CurrentView = new HypercubeView();
+    [RelayCommand]
+    private void ShowTSP() => CurrentView = new TSPView();
     
     //public ObservableCollection<DataPoint> Points { get; }
     

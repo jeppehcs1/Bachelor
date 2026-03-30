@@ -1,8 +1,8 @@
 
 using System.Collections;
-using Bachelor.Models.Problems;
 using System.Collections.Generic;
 using System.Text;
+using Bachelor.Models.Problems;
 namespace Bachelor.Models.Algorithms;
 
 public abstract class Algorithm<T>

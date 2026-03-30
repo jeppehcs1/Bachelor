@@ -1,6 +1,6 @@
+using System;
 using System.Collections;
 using Bachelor.Models.Problems;
-using System;
 namespace Bachelor.Models.Algorithms;
 
 public abstract class OnePlusOne<T> : Algorithm<T>
@@ -9,6 +9,8 @@ public abstract class OnePlusOne<T> : Algorithm<T>
     {
         
     }
+
+    
 
     public override void Iterate()
     {

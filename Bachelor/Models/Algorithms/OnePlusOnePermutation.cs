@@ -1,13 +1,19 @@
 namespace Bachelor.Models.Algorithms;
 
-using Bachelor.Models.Problems;
-using System.Collections.Generic;
-using System.Collections;  
 using System;
+using System.Collections;
+using System.Collections.Generic;  
+using Bachelor.Models.Problems;
 
 
-public class OnePlusOnePermutation(PermutationProblem problem) : OnePlusOne<TSPInstance>(problem)
+public class OnePlusOnePermutation : OnePlusOne<TSPInstance>
 {
+    public OnePlusOnePermutation(PermutationProblem problem, TSPInstance instance) : base(problem)
+    {
+        Problem = problem;
+        SearchPoint = instance;
+    }
+    
     public override int GetFitness()
     {
         return Problem.Fitness(SearchPoint);
@@ -26,14 +32,15 @@ public class OnePlusOnePermutation(PermutationProblem problem) : OnePlusOne<TSPI
 
     public override void UpdateSearchPoint(TSPInstance old)
     {
-        if (Problem.Fitness(SearchPoint) < Problem.Fitness(old))
+        if (Problem.Fitness(SearchPoint) > Problem.Fitness(old))
         {
+            Console.WriteLine(Problem.Fitness(SearchPoint) + " :wen old: " + Problem.Fitness(old));
             SearchPoint = old;
         }
     }
 
     public override void MutateSearchPoint(Random random)
     {
-        SearchPoint = problem.MutateTSP(SearchPoint);
+        SearchPoint = ((PermutationProblem)Problem).MutateTSP(SearchPoint);
     }
 }

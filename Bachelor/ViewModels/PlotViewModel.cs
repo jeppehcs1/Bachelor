@@ -7,11 +7,15 @@ using Bachelor.Models;
 using Bachelor.Models.Algorithms;
 using Bachelor.Models.Problems;
 
-public class DataPoint
-    {
+public class DataPoint : IEnumerable
+{
         public double x { get; set; }
         public double y  { get; set; }
-    }
+        public IEnumerator GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+}
 public class PlotViewModel : ViewModelBase
 {
     public Algorithm<BitArray> Algorithm = null;
@@ -29,6 +33,5 @@ public class PlotViewModel : ViewModelBase
             Algorithm.Iterate();
             Points.Add(new DataPoint{ x = i, y = Algorithm.GetFitness() });
         }
-        Console.WriteLine(Points.Count);
     }
 }

@@ -1,9 +1,9 @@
 using Bachelor.Models.Problems;
 
 namespace Bachelor.Models.Algorithms;
-using System.Collections.Generic;
 using System;
-using System.Collections;  
+using System.Collections;
+using System.Collections.Generic;  
 
 
 public class OnePlusOneBitString(ProblemType<BitArray> problem) : OnePlusOne<BitArray>(problem)
