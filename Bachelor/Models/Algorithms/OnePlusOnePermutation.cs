@@ -44,6 +44,6 @@ public class OnePlusOnePermutation : OnePlusOne<TSPInstance>
 
     public override void MutateSearchPoint(Random random)
     {
-        SearchPoint = ((PermutationProblem)Problem).MutateTSP(SearchPoint);
+        SearchPoint = ((PermutationProblem)Problem).MutateTSP(SearchPoint, random);
     }
 }

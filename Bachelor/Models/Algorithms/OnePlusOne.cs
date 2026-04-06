@@ -14,7 +14,7 @@ public abstract class OnePlusOne<T> : Algorithm<T>
 
     public override int Iterate()
     {
-        var dim = Problem.dimension;
+        var dim = Problem.Dimension;
         var random = new Random();
         var old = CloneSearchPoint();
         MutateSearchPoint(random);

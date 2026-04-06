@@ -14,4 +14,5 @@ public class LeadingOnes(int dimension) : BitStringProblem(dimension)
         }
         return count;
     }
+    
 }

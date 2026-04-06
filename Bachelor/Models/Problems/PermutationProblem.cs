@@ -7,9 +7,9 @@ using System.Collections.Generic;
 public abstract class PermutationProblem(int dimension) : ProblemType<TSPInstance>(dimension)
 {
 
-    public TSPInstance MutateTSP(TSPInstance instance)
+    public TSPInstance MutateTSP(TSPInstance instance,Random random)
     {
-        var random = new Random();
+        
         int rand1 = random.Next(dimension);
         int rand2 = random.Next(dimension);
         while (rand1 == rand2)

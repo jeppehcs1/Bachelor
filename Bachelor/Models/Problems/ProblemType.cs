@@ -5,9 +5,9 @@ public abstract class ProblemType<T>
 {
     protected ProblemType(int dimension)
     {
-        this.dimension = dimension;
+        this.Dimension = dimension;
     }
-    internal int dimension { get; set; }
+    internal int Dimension { get; set; }
 
 
     public abstract int Fitness(T c);

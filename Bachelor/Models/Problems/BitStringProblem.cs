@@ -1,6 +1,22 @@
+using System;
 using System.Collections;
 using System.Transactions;
 
 namespace Bachelor.Models.Problems;
 
-public abstract class BitStringProblem(int dimension) : ProblemType<BitArray>(dimension);
+public abstract class BitStringProblem(int dimension) : ProblemType<BitArray>(dimension)
+
+{
+    public BitArray MutateBitArray(BitArray SearchPoint, Random random)
+    {
+
+        for (var i = 0; i < Dimension; i++)
+        {
+            if (random.Next(Dimension) == 0) // 1/dim chance of being 0, i.e. flipping a bit
+            {
+                SearchPoint[i] = !SearchPoint[i];
+            }
+        }
+        return SearchPoint;
+    }
+}
