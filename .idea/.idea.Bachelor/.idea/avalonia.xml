@@ -3,6 +3,7 @@
   <component name="AvaloniaProject">
     <option name="projectPerEditor">
       <map>
+        <entry key="Bachelor/App.axaml" value="Bachelor/Bachelor.csproj" />
         <entry key="Bachelor/Stackpanel.axaml" value="Bachelor/Bachelor.csproj" />
         <entry key="Bachelor/Views/HomeView.axaml" value="Bachelor/Bachelor.csproj" />
         <entry key="Bachelor/Views/HypercubeView.axaml" value="Bachelor/Bachelor.csproj" />

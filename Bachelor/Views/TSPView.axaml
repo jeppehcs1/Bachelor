@@ -5,8 +5,9 @@
              xmlns:vm="using:Bachelor.ViewModels"
              xmlns:avaPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:DataType="vm:TSPViewModel"
-             x:Class="Bachelor.Views.TSPView">
+             x:Class="Bachelor.Views.TSPView"
+             x:DataType="vm:TSPViewModel">
+             
     
     
     
