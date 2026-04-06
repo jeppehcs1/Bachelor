@@ -16,7 +16,7 @@ public abstract class Algorithm<T>
     public T SearchPoint;
     
     public abstract int GetFitness();
-    public abstract void Iterate();
+    public abstract int Iterate(); // return 1 if the mutation is better than before
     
     public abstract void Initialize();
     protected  Algorithm(ProblemType<T> problem)

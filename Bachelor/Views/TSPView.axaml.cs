@@ -29,24 +29,25 @@ public partial class TSPView : UserControl
         base.OnDataContextChanged(e);
         if (_currentVm != null)
         {
-            _currentVm.Points.CollectionChanged -= OnPointsCollectionChanged;
+            _currentVm.PropertyChanged -= OnViewModelPropertyChanged;
         }
 
         if (DataContext is TSPViewModel vm)
         {
             _currentVm = vm;
-            _currentVm.Points.CollectionChanged += OnPointsCollectionChanged;
+            _currentVm.PropertyChanged += OnViewModelPropertyChanged;
             UpdatePlot(vm);
         }
         
     }
     
-    private void OnPointsCollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    private void OnViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
-        if (_currentVm != null)
+        if (e.PropertyName == nameof(TSPViewModel.Points) && _currentVm != null)
         {
             UpdatePlot(_currentVm);
         }
+        
     }
     private void UpdatePlot(TSPViewModel vm)
     {

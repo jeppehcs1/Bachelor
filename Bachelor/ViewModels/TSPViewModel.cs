@@ -30,18 +30,19 @@ public partial class TSPViewModel : ViewModelBase
         Algorithm.Initialize();
         GenerateTSPPoints();
     }
-    [RelayCommand] private void IterateTSPOnClick() { Algorithm.Iterate(); GenerateTSPPoints(); }
+    [RelayCommand] private void IterateTSPOnClick() { if( Algorithm.Iterate() == 1){ GenerateTSPPoints();} }
     public void GenerateTSPPoints()
     {
-        Points.Clear();
+        var newPoints = new ObservableCollection<DataPoint>();
         for (int i = 0; i < Algorithm.SearchPoint.Permutation.Count; i++)                                                               
         {                                                                                         
             int j = Algorithm.SearchPoint.Permutation[i];                                         
             var (x, y) = Algorithm.SearchPoint.Graph[j];                                        
-            Points.Add(new DataPoint{  x = x, y = y });                                           
+            newPoints.Add(new DataPoint{  x = x, y = y });                                           
         }                                                                                  
         var (xl, yl) = Algorithm.SearchPoint.Graph[Algorithm.SearchPoint.Permutation[0]];       
-        Points.Add(new DataPoint { x = xl, y = yl });                                             
+        newPoints.Add(new DataPoint { x = xl, y = yl });
+        Points = new ObservableCollection<DataPoint>(newPoints);
     }
     
     
