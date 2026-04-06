@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="Bachelor/Stackpanel.axaml" value="Bachelor/Bachelor.csproj" />
+        <entry key="Bachelor/Views/HomeView.axaml" value="Bachelor/Bachelor.csproj" />
+        <entry key="Bachelor/Views/HypercubeView.axaml" value="Bachelor/Bachelor.csproj" />
+        <entry key="Bachelor/Views/HypercubeVisual.axaml" value="Bachelor/Bachelor.csproj" />
+        <entry key="Bachelor/Views/MainWindow.axaml" value="Bachelor/Bachelor.csproj" />
+        <entry key="Bachelor/Views/PlotView.axaml" value="Bachelor/Bachelor.csproj" />
+        <entry key="Bachelor/Views/PlotWindow.axaml" value="Bachelor/Bachelor.csproj" />
+        <entry key="Bachelor/Views/TSPView.axaml" value="Bachelor/Bachelor.csproj" />
+        <entry key="Bachelor/Views/UserControl1.axaml" value="Bachelor/Bachelor.csproj" />
+      </map>
+    </option>
+  </component>
+</project>
