@@ -13,12 +13,14 @@ public class OnePlusOneBitString(ProblemType<BitArray> problem) : OnePlusOne<Bit
     {
         return SearchPoint.Clone() as BitArray;
     }
-    public override void UpdateSearchPoint(BitArray old)
+    public override int UpdateSearchPoint(BitArray old)
     {
         if (Problem.Fitness(SearchPoint) < Problem.Fitness(old))
         {
             SearchPoint = old;
+            return 1;
         }
+        return 0;
     }
 
     public override void MutateSearchPoint(Random random)

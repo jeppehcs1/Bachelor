@@ -12,18 +12,17 @@ public abstract class OnePlusOne<T> : Algorithm<T>
 
     
 
-    public override void Iterate()
+    public override int Iterate()
     {
         var dim = Problem.dimension;
         var random = new Random();
-        var old = CloneSearchPoint();//searchPointString.Clone() as BitArray;
+        var old = CloneSearchPoint();
         MutateSearchPoint(random);
-        UpdateSearchPoint(old);
-        //Console.WriteLine(BitArrayToString(searchPointString));
+        return UpdateSearchPoint(old);
     }
 
     public abstract T CloneSearchPoint();
-    public abstract void UpdateSearchPoint(T old);
+    public abstract int UpdateSearchPoint(T old);
     public abstract void MutateSearchPoint(Random random);
 
 
