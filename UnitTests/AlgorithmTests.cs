@@ -36,18 +36,17 @@ public class AlgorithmTests
         // Arrange
         var problem = new TSPProblem(6);
         
-        var oldInstance = new TSPInstance([0, 1, 2, 3, 4, 5], [(2, 4), (1, 4), (4, 2), (3, 1), (7, 7), (8, 2)]);
-        var worseInstance = new TSPInstance([5, 0, 1, 2, 3, 4], [(2, 4), (1, 4), (4, 2), (3, 1), (7, 7), (8, 2)]);  // Assume worse fitness
+        var oldInstance = new TSPInstance([0, 1, 3, 2, 5, 4], [(2, 4), (1, 4), (4, 2), (3, 1), (7, 7), (8, 2)]);
+        var worseInstance = new TSPInstance([3, 4, 2, 1, 5, 0], [(2, 4), (1, 4), (4, 2), (3, 1), (7, 7), (8, 2)]);  // Assume worse fitness
 
-        var algorithm = new OnePlusOnePermutation(problem, worseInstance);
-    
+        var algorithm = new OnePlusOnePermutation(problem, oldInstance);
         
         algorithm.SearchPoint = worseInstance;
-    
+        
         // Act
         algorithm.UpdateSearchPoint(oldInstance);
     
         // Assert: Should revert to oldInstance
-        Assert.That(oldInstance.Permutation, Is.Not.EqualTo(algorithm.SearchPoint.Permutation)); //, "Should revert to old SearchPoint if new fitness is worse."
+        Assert.That(oldInstance.Permutation, Is.EqualTo(algorithm.SearchPoint.Permutation)); //, "Should revert to old SearchPoint if new fitness is worse."
     }
 }
