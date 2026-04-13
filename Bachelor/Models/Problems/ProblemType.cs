@@ -1,13 +1,9 @@
 namespace Bachelor.Models.Problems;
 
 
-public abstract class ProblemType<T>
+public abstract class ProblemType<T>(int dimension)
 {
-    protected ProblemType(int dimension)
-    {
-        this.Dimension = dimension;
-    }
-    internal int Dimension { get; set; }
+    internal int Dimension { get; set; } = dimension;
 
 
     public abstract int Fitness(T c);

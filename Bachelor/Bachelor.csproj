@@ -29,5 +29,8 @@
       <Compile Update="Views\TSPView.axaml.cs">
         <DependentUpon>TSPView.axaml</DependentUpon>
       </Compile>
+      <Compile Update="Views\ScheduleView.axaml.cs">
+        <DependentUpon>ScheduleView.axaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 </Project>

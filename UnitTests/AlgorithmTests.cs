@@ -21,7 +21,7 @@ public class AlgorithmTests
           // Assume this has better fitness
     
         algorithm.SearchPoint = newInstance;  // Simulate mutated point
-    
+        Assert.That(algorithm.GetFitness(), Is.EqualTo(21));
         // Act
         algorithm.UpdateSearchPoint(oldInstance);
     
@@ -40,7 +40,7 @@ public class AlgorithmTests
         var worseInstance = new TSPInstance([3, 4, 2, 1, 5, 0], [(2, 4), (1, 4), (4, 2), (3, 1), (7, 7), (8, 2)]);  // Assume worse fitness
 
         var algorithm = new OnePlusOnePermutation(problem, oldInstance);
-        
+        Assert.That(algorithm.GetFitness(), Is.EqualTo(21));
         algorithm.SearchPoint = worseInstance;
         
         // Act

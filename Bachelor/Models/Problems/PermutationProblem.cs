@@ -10,11 +10,11 @@ public abstract class PermutationProblem(int dimension) : ProblemType<TSPInstanc
     public TSPInstance MutateTSP(TSPInstance instance,Random random)
     {
         
-        int rand1 = random.Next(dimension);
-        int rand2 = random.Next(dimension);
+        int rand1 = random.Next(Dimension);
+        int rand2 = random.Next(Dimension);
         while (rand1 == rand2)
         {
-            rand2 = random.Next(dimension);
+            rand2 = random.Next(Dimension);
         }
 
         var c = instance.Permutation;
@@ -22,4 +22,5 @@ public abstract class PermutationProblem(int dimension) : ProblemType<TSPInstanc
 
         return instance;
     }
+    
 }

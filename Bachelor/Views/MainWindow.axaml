@@ -21,6 +21,7 @@
                         <MenuItem Header="Plot" Command="{Binding ShowPlotCommand}"/>
                         <MenuItem Header="Cube" Command="{Binding ShowCubeCommand}"/>
                         <MenuItem Header="TSP" Command="{Binding ShowTSPCommand}"/>
+                        <MenuItem Header="Schedule" Command="{Binding ShowScheduleCommand}" />
                         
                     </MenuItem>
                 </Menu>

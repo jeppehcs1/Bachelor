@@ -22,6 +22,7 @@ public partial class TSPView : UserControl
         DataContext = new TSPViewModel(new OnePlusOnePermutation(
             new TSPProblem(6),
             new TSPInstance([0, 5, 3, 4, 2, 1], [(2, 4), (1, 4), (4, 2), (3, 1), (7, 7), (8, 2)])));
+        
     }
     
     protected override void OnDataContextChanged(EventArgs e)

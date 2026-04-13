@@ -33,6 +33,8 @@ public partial class MainWindowViewModel : ViewModelBase
     private void ShowCube() => CurrentView = new HypercubeView();
     [RelayCommand]
     private void ShowTSP() => CurrentView = new TSPView();
+    [RelayCommand]
+    private void ShowSchedule() => CurrentView = new ScheduleViewModel();
     
     //public ObservableCollection<DataPoint> Points { get; }
     

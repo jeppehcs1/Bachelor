@@ -1,0 +1,42 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:Bachelor.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Bachelor.Views.ScheduleView"
+             x:DataType="vm:ScheduleViewModel">
+    <StackPanel>
+        <StackPanel>
+            <TextBlock Margin="24"
+                       HorizontalAlignment="Center"
+                       Text="Schedule sovs">
+            </TextBlock>
+        
+            <Grid ColumnDefinitions="Auto,*,Auto,*,Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto" 
+                  Margin="24" ColumnSpacing="20" RowSpacing="8">
+                <TextBlock Grid.Column="0" Grid.Row="0" Text="Search space" FontWeight="Bold" />
+                <ComboBox Grid.Column="0" Grid.Row="1"
+                          ItemsSource="{Binding SearchSpaces}"
+                          SelectedItem="{Binding SelectedSearchSpace}"
+                          MaxDropDownHeight="100" Width="150" />
+                <TextBlock Grid.Column="2" Grid.Row="0" Text="Algorithm" FontWeight="Bold" />
+                <ComboBox Grid.Column="2" Grid.Row="1" 
+                          ItemsSource="{Binding Algorithms}"
+                          SelectedItem="{Binding SelectedAlgorithm}"
+                          MaxDropDownHeight="100" Width="150" />
+                <TextBlock Grid.Column="4" Grid.Row="0" Text="Problem" FontWeight="Bold" />
+                <ComboBox Grid.Column="4" Grid.Row="1" 
+                          ItemsSource="{Binding Problems}"
+                          SelectedItem="{Binding SelectedProblem}"
+                          MaxDropDownHeight="100" Width="150" />
+                <TextBlock Grid.Column="0" Grid.Row="3" Text="Finish Condition" FontWeight="Bold"/>
+                <ComboBox Grid.Column="0" Grid.Row="4"
+                          />
+                <TextBlock Grid.Column="2" Grid.Row="3" Text="Visualization" FontWeight="Bold"/>
+                
+            </Grid>
+        </StackPanel>
+        
+    </StackPanel>
+</UserControl>

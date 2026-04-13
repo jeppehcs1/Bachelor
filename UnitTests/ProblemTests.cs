@@ -34,4 +34,13 @@ public class ProblemTests
         TSPInstance instance = new TSPInstance([0,1,2,3,4,5],
             [(0,0),(0,3),(0,6),(3,6),(3,3),(3,0)]);
     }
+
+    [Test]
+    public void ThreeOptTest()
+    {
+        PermutationProblem problem = new TSPProblem(6);
+        TSPInstance instance = new TSPInstance([0,1,2,3,4,5],
+            [(0,0),(0,3),(0,6),(3,6),(3,3),(3,0)]);
+        
+    }
 }
