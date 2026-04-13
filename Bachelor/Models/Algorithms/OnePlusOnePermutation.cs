@@ -44,6 +44,13 @@ public class OnePlusOnePermutation : OnePlusOne<TSPInstance>
 
     public override void MutateSearchPoint(Random random)
     {
-        SearchPoint = ((PermutationProblem)Problem).MutateTSP_2opt(SearchPoint, random);
+        if(random.Next(2) == 0) // 50/50 chance of 3 opt or 2 opt
+        {
+            SearchPoint = ((TSPProblem)Problem).MutateTSP_2opt(SearchPoint, random);
+        }
+        else
+        {
+            SearchPoint = ((TSPProblem)Problem).MutateTSP_3opt(SearchPoint, random);
+        }
     }
 }
