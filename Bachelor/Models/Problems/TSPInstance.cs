@@ -16,6 +16,17 @@ public struct TSPInstance
         Graph = new List<(int x, int y)>(graph);
     }
 
+    public override string ToString()
+    {
+        int[] a = new int[Permutation.Count];
+        for (int i = 0; i < Permutation.Count; i++)
+        {
+            a[i] = Permutation[i];
+        }
+        return "[" + string.Join(", ", a) + "]";
+    }
+        
+
     // Deep copy method
     public TSPInstance DeepCopy()
     {
