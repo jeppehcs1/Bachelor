@@ -69,57 +69,45 @@ public class TSPProblem(int dimension) : PermutationProblem(dimension)
         
         var chunks = SplitAtIndices(instance.Permutation, indices);
 
-        var oneRevA = chunks[0]
-            .AsEnumerable().Reverse()
+        var oneRevA = chunks[0].AsEnumerable().Reverse()
             .Concat(chunks[1])
             .Concat(chunks[2])
             .ToList();
         TSPInstance permA = new TSPInstance(oneRevA, instance.Graph);
         
         var oneRevB = chunks[0]
-            .Concat(chunks[1])
-            .AsEnumerable().Reverse()
+            .Concat(chunks[1].AsEnumerable().Reverse())
             .Concat(chunks[2])
             .ToList();
         TSPInstance permB = new TSPInstance(oneRevB, instance.Graph);
         
         var oneRevC = chunks[0]
             .Concat(chunks[1])
-            .Concat(chunks[2])
-            .AsEnumerable().Reverse()
+            .Concat(chunks[2].AsEnumerable().Reverse())
             .ToList();
         TSPInstance permC = new TSPInstance(oneRevC, instance.Graph);
         
-        var twoRevA = chunks[0]
-            .AsEnumerable().Reverse()
-            .Concat(chunks[1])
-            .AsEnumerable().Reverse()
+        var twoRevA = chunks[0].AsEnumerable().Reverse()
+            .Concat(chunks[1].AsEnumerable().Reverse())
             .Concat(chunks[2])
             .ToList();
         TSPInstance permD = new TSPInstance(twoRevA, instance.Graph);
         
-        var twoRevB = chunks[0]
-            .AsEnumerable().Reverse()
+        var twoRevB = chunks[0].AsEnumerable().Reverse()
             .Concat(chunks[1])
-            .Concat(chunks[2])
-            .AsEnumerable().Reverse()
+            .Concat(chunks[2].AsEnumerable().Reverse())
             .ToList();
         TSPInstance permE = new TSPInstance(twoRevB, instance.Graph);
         
         var twoRevC = chunks[0]
-            .Concat(chunks[1])
-            .AsEnumerable().Reverse()
-            .Concat(chunks[2])
-            .AsEnumerable().Reverse()
+            .Concat(chunks[1].AsEnumerable().Reverse())
+            .Concat(chunks[2].AsEnumerable().Reverse())
             .ToList();
         TSPInstance permF = new TSPInstance(twoRevC, instance.Graph);
         
-        var threeRev = chunks[0]
-            .AsEnumerable().Reverse()
-            .Concat(chunks[1])
-            .AsEnumerable().Reverse()
-            .Concat(chunks[2])
-            .AsEnumerable().Reverse()
+        var threeRev = chunks[0].AsEnumerable().Reverse()
+            .Concat(chunks[1].AsEnumerable().Reverse())
+            .Concat(chunks[2].AsEnumerable().Reverse())
             .ToList();
         TSPInstance permG = new TSPInstance(threeRev, instance.Graph);
         
