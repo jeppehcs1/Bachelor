@@ -1,4 +1,5 @@
-﻿using Bachelor.Models.Algorithms;
+﻿using System.Collections;
+using Bachelor.Models.Algorithms;
 using Bachelor.Models.Problems;
 
 namespace UnitTests;
@@ -9,11 +10,33 @@ public class ProblemTests
     public void Setup()
     {
     }
+    
+    
+    [Test]
+    public void LeadingOnesFitnessTest_AllLeading()
+    {
+        LeadingOnes problem = new LeadingOnes(5);
+        BitArray bits = new BitArray(new bool[] { true, true, true, true, true });
+    
+        Assert.That(problem.Fitness(bits), Is.EqualTo(5));
+    }
 
     [Test]
-    public void Test1()
+    public void LeadingOnesFitnessTest_NoneLeading()
     {
-        Assert.Pass();
+        LeadingOnes problem = new LeadingOnes(5);
+        BitArray bits = new BitArray(new bool[] { false, true, true, true, true });
+    
+        Assert.That(problem.Fitness(bits), Is.EqualTo(0));
+    }
+
+    [Test]
+    public void LeadingOnesFitnessTest_SomeLeading()
+    {
+        LeadingOnes problem = new LeadingOnes(5);
+        BitArray bits = new BitArray(new bool[] { true, true, false, true, true });
+    
+        Assert.That(problem.Fitness(bits), Is.EqualTo(2));
     }
 
     [Test]

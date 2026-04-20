@@ -7,16 +7,16 @@ namespace Bachelor.Models.Problems;
 public abstract class BitStringProblem(int dimension) : ProblemType<BitArray>(dimension)
 
 {
-    public BitArray MutateBitArray(BitArray SearchPoint, Random random)
+    public BitArray MutateBitArray(BitArray searchPoint, Random random)
     {
 
         for (var i = 0; i < Dimension; i++)
         {
             if (random.Next(Dimension) == 0) // 1/dim chance of being 0, i.e. flipping a bit
             {
-                SearchPoint[i] = !SearchPoint[i];
+                searchPoint[i] = !searchPoint[i];
             }
         }
-        return SearchPoint;
+        return searchPoint;
     }
 }
