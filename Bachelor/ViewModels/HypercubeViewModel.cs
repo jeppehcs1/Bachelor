@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.ObjectModel;
 using Bachelor.Models.Algorithms;
+using SkiaSharp;
 
 namespace Bachelor.ViewModels;
 
@@ -31,27 +32,37 @@ public class HypercubeViewModel
     {
         var (left, right) = BitDistribution(bits);
         
-        return (right - left) / (double)(right + left);
-    }
+        var xNonAdjusted = (right - left) / (double)(right + left);
 
-    public HypercubeViewModel()
-    {
-        Points = new ObservableCollection<DataPoint>();
+        var difference = Math.Abs(left - right) * 2;
+        var adjustment = difference / (double)bits.Length;
+        
+        return xNonAdjusted * adjustment;
     }
-    public HypercubeViewModel(Algorithm<BitArray> algorithm)                    
+    
+    public double YCoordinate(BitArray bits)
+    {
+        var (left, right) = BitDistribution(bits);
+        var mid = bits.Length % 2 == 0 ? 0 : (bits[bits.Length / 2] ? 1 : 0);
+        
+        return (left + mid + right) / (double)(bits.Length);
+    }
+    
+    public HypercubeViewModel(Algorithm<BitArray> algorithm)
     {                                                                      
         Algorithm = algorithm;                                             
-        Algorithm.Initialize();                                            
+        Algorithm.Initialize();
                                                                        
         Points = new ObservableCollection<DataPoint>();                    
-        Points.Add(new DataPoint{ x = XCoordinate(Algorithm.SearchPoint), y = (double)Algorithm.GetFitness()/(double)Algorithm.Problem.Dimension });    
-        for (int i = 1; i < 50; i++)                                       
-        {                                                                  
+        
+        for (int i = 1; i < 100000; i++)                                       
+        {    
             Algorithm.Iterate();
-            Console.WriteLine(XCoordinate(Algorithm.SearchPoint));   
-            Points.Add(new DataPoint{ x = XCoordinate(Algorithm.SearchPoint), y = (double)Algorithm.GetFitness()/(double)Algorithm.Problem.Dimension });
-        }                                                                  
-                                        
+            //Console.WriteLine("x: " + XCoordinate(Algorithm.SearchPoint) + "  and y: " + YCoordinate(Algorithm.SearchPoint));
+            
+            Points.Add(new DataPoint{ x = XCoordinate(Algorithm.SearchPoint), y = YCoordinate(Algorithm.SearchPoint) });
+        }
+                                  
     }      
     
     
