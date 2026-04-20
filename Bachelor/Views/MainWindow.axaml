@@ -16,13 +16,12 @@
     <DockPanel>
         <!-- Plot takes up most of the space -->
         <Menu DockPanel.Dock="Top">
-                    <MenuItem Header="Views" Background="DarkGray">
+                    <MenuItem Header="Menu" Background="DarkGray">
                         <MenuItem Header="Home" Command="{Binding ShowHomeCommand}"/>
                         <MenuItem Header="Plot" Command="{Binding ShowPlotCommand}"/>
                         <MenuItem Header="Cube" Command="{Binding ShowCubeCommand}"/>
                         <MenuItem Header="TSP" Command="{Binding ShowTSPCommand}"/>
-                        <MenuItem Header="Schedule" Command="{Binding ShowScheduleCommand}" />
-                        
+                        <MenuItem Header="Create Schedule" Command="{Binding ShowCreateScheduleCommand}" />
                     </MenuItem>
                 </Menu>
         <!-- Content Area -->

@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace Bachelor.Views;
 
-public partial class ScheduleView : UserControl
+public partial class CreateScheduleView : UserControl
 {
-    public ScheduleView()
+    public CreateScheduleView()
     {
         InitializeComponent();
     }

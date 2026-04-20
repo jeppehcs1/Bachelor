@@ -21,7 +21,11 @@ public partial class TSPViewModel : ViewModelBase
         get => _points; 
         set => SetProperty(ref _points, value);
     }
-    
+
+    public TSPViewModel()
+    {
+        
+    }
     public TSPViewModel(Algorithm<TSPInstance> algorithm)
     {
         Algorithm = algorithm;

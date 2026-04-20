@@ -20,21 +20,33 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     private object currentView;
 
+    private readonly PlotViewModel _plotViewModel;
+    private readonly HypercubeViewModel _hypercubeViewModel;
+    private readonly TSPViewModel _tspViewModel;
+    private readonly CreateScheduleViewModel _createScheduleViewModel;
+
     public MainWindowViewModel()
     {
+        // Create ViewModels once
+        _plotViewModel = new PlotViewModel();
+        _hypercubeViewModel = new HypercubeViewModel();
+        _tspViewModel = new TSPViewModel();
+        _createScheduleViewModel = new CreateScheduleViewModel(this);
+        
         // Default view
         CurrentView = new HomeView();
     }
     [RelayCommand]
-    private void ShowPlot() => CurrentView = new PlotView();
+    private void ShowPlot() => CurrentView = _plotViewModel;
     [RelayCommand]
-    private void ShowHome() => CurrentView = new HomeView();
+    private void ShowHome() => CurrentView = new HomeView(); // or create HomeViewModel
     [RelayCommand]
-    private void ShowCube() => CurrentView = new HypercubeView();
+    private void ShowCube() => CurrentView = _hypercubeViewModel;
     [RelayCommand]
-    private void ShowTSP() => CurrentView = new TSPView();
+    private void ShowTSP() => CurrentView = _tspViewModel;
     [RelayCommand]
-    private void ShowSchedule() => CurrentView = new ScheduleViewModel();
+    private void ShowCreateSchedule() => CurrentView = _createScheduleViewModel;
+    
     
     //public ObservableCollection<DataPoint> Points { get; }
     
