@@ -1,0 +1,65 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:Bachelor.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Bachelor.Views.AddBatchesView"
+             x:DataType="vm:AddBatchesViewModel">
+    <Grid ColumnDefinitions="*,*" RowDefinitions="*"
+          HorizontalAlignment="Stretch" 
+          VerticalAlignment="Center">
+        <!-- Left Panel-->
+        <Border Grid.Column="0" Padding="20">
+            <StackPanel Spacing="20">
+                <TextBlock Text="Create Batch" FontWeight="Black"/>
+                <TextBox Watermark="Enter batch name" Text="{Binding NewBatchName}"/>
+                <TextBox Watermark="Enter number of runs" Text="{Binding NewBatchRuns}"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Right Panel -->
+        <StackPanel Grid.Column="1">
+            <Border Padding="10" Background="DarkGray" Height="40" Width="400">
+                <Grid ColumnDefinitions="1*, 1*, 1*">
+                    <TextBlock Text="Name" FontWeight="Bold" Foreground="White" />
+                    <TextBlock Text="No. Runs" FontWeight="Bold" Foreground="White" Grid.Column="1" />
+                    <TextBlock Text="Status" FontWeight="Bold" Foreground="White" Grid.Column="2" />
+                </Grid>
+            </Border>
+            <ListBox ItemsSource="{Binding Items}" 
+                     SelectedItem="{Binding SelectedItem}"
+                     Width="400"
+                     Height="300">
+                <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="vm:BatchItem">
+                        <Border Padding="10" 
+                                CornerRadius="4"
+                                Background="LightGray">
+                            <Grid ColumnDefinitions="1*, 1*, 1*">
+                                <TextBlock Text="{Binding Name}" FontWeight="Bold" />
+                                <TextBlock Text="{Binding Runs}" FontSize="12" Grid.Column="1"/>
+                                <TextBlock Text="Status" FontSize="12" Grid.Column="2"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBox.Styles>
+                    <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+                        <Setter Property="Background" Value="CornflowerBlue" />
+                    </Style>
+                </ListBox.Styles>
+            </ListBox>
+            <StackPanel Orientation="Horizontal" Spacing="10" Width="400">
+                <Button Width="120"  Content="Add Batch" Command="{Binding AddBatchOnClickCommand}"/>
+                <Button Width="120"  Content="Delete Batch" Command="{Binding DeleteBatchOnClickCommand}"/>
+                <Button Width="120"  Content="Copy Batch" Command="{Binding CopyBatchOnClickCommand}"/>
+                
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Spacing="10" Width="400">
+                <Button Content="Move Up" Command="{Binding MoveUpOnClickCommand}" />
+                <Button Content="Move Down" Command="{Binding MoveDownOnClickCommand}" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

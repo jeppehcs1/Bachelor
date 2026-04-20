@@ -1,25 +1,31 @@
 ﻿using System.Collections.ObjectModel;
-
-
+using Bachelor.Models.Algorithms;
+using Bachelor.Views;
 using CommunityToolkit.Mvvm;
+using CommunityToolkit.Mvvm.Input;
+
+
 namespace Bachelor.ViewModels;
 
-public class ScheduleViewModel : ViewModelBase
+public partial class CreateScheduleViewModel : ViewModelBase
 {
-    private string _selectedSearchSpace;
-    private string _selectedAlgorithm;
-    private string _selectedProblem;
+    private readonly MainWindowViewModel _mainViewModel;
+    private string _selectedSearchSpace = "";
+    private string _selectedAlgorithm = "";
+    private string _selectedProblem = "";
     private ObservableCollection<string> _algorithms;
     private ObservableCollection<string> _problems;
+    public ObservableCollection<string> SearchSpaces { get; }
     
-    
-    public ScheduleViewModel()
+    public CreateScheduleViewModel(MainWindowViewModel mainViewModel)
     {
+        _mainViewModel = mainViewModel;
         _algorithms = new ObservableCollection<string>();
         SearchSpaces = new ObservableCollection<string> { "Bit Strings", "Permutations" };
     }
     
-    public ObservableCollection<string> SearchSpaces { get; }
+    [RelayCommand]
+    private void NextOnClick() => _mainViewModel.CurrentView = new AddBatchesViewModel();
     
     public string SelectedSearchSpace
     {

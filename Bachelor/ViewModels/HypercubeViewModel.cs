@@ -33,7 +33,11 @@ public class HypercubeViewModel
         
         return (right - left) / (double)(right + left);
     }
-    
+
+    public HypercubeViewModel()
+    {
+        Points = new ObservableCollection<DataPoint>();
+    }
     public HypercubeViewModel(Algorithm<BitArray> algorithm)                    
     {                                                                      
         Algorithm = algorithm;                                             

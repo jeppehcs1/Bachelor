@@ -21,6 +21,10 @@ public class PlotViewModel : ViewModelBase
     public Algorithm<BitArray> Algorithm = null;
     public ObservableCollection<DataPoint> Points { get; }
 
+    public PlotViewModel()
+    {
+        Points = new ObservableCollection<DataPoint>();
+    }
     public PlotViewModel(Algorithm<BitArray> algorithm)
     {
         Algorithm = algorithm;

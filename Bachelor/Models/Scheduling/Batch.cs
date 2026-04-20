@@ -6,5 +6,5 @@ public class Batch<T>
 {
     int NumberRuns { get; set; }
     Algorithm<T> Algorithm { get; set; }
-    
+    public string Name { get; set; }
 }
