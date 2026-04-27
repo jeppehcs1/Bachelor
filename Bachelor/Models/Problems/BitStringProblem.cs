@@ -4,8 +4,7 @@ using System.Transactions;
 
 namespace Bachelor.Models.Problems;
 
-public abstract class BitStringProblem(int dimension) : ProblemType<BitArray>(dimension)
-
+public abstract class BitStringProblem(int Dimension) : IProblemType<BitArray>
 {
     public BitArray MutateBitArray(BitArray searchPoint, Random random)
     {
@@ -19,4 +18,6 @@ public abstract class BitStringProblem(int dimension) : ProblemType<BitArray>(di
         }
         return searchPoint;
     }
+    public int Dimension { get; set; }
+    public abstract int Fitness(BitArray c);
 }

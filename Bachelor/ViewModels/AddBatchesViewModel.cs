@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Reflection.Metadata.Ecma335;
+using Bachelor.Models.Problems;
 using Bachelor.Models.Scheduling;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -8,6 +9,7 @@ namespace Bachelor.ViewModels;
 
 public partial class AddBatchesViewModel : ViewModelBase
 {
+    private object _problemType;
     private ObservableCollection<BatchItem> _items;
     private BatchItem? _selectedItem;
     private string _newBatchName;
@@ -36,7 +38,7 @@ public partial class AddBatchesViewModel : ViewModelBase
     }
 
     public int GetNewBatchRunsAsInt() => int.TryParse(_newBatchRuns, out var result) ? result : 0;
-    public AddBatchesViewModel()
+    public AddBatchesViewModel(object problemType)
     {
         _items = new ObservableCollection<BatchItem>();
     }
@@ -94,5 +96,7 @@ public class BatchItem(string name, int runs)
 {
     public string Name { get; set; } = name;
     public int Runs { get; set; } = runs;
+    public Batch<PermutationProblem> Batch = null;
+
 }
 

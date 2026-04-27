@@ -5,6 +5,6 @@ namespace Bachelor.Models.Scheduling;
 
 public class Schedule<T>
 {
-    List<Batch<T>> Batches { get; set; }
     
+    List<Batch<T>> Batches { get; set; }
 }

@@ -11,7 +11,7 @@ public abstract class Algorithm<T>
     private double Runtime { get; set; }
     private int BSFF { get; set; } // Best So Far Fitness
 
-    public ProblemType<T> Problem  { get; set; }
+    public IProblemType<T> Problem  { get; set; }
 
     public T SearchPoint;
     
@@ -19,7 +19,7 @@ public abstract class Algorithm<T>
     public abstract int Iterate(); // return 1 if the mutation is better than before
     
     public abstract void Initialize();
-    protected  Algorithm(ProblemType<T> problem)
+    protected  Algorithm(IProblemType<T> problem)
     {
         this.Problem = problem;
     }

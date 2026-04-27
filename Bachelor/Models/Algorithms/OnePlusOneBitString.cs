@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;  
 
 
-public class OnePlusOneBitString(ProblemType<BitArray> problem) : OnePlusOne<BitArray>(problem)
+public class OnePlusOneBitString(IProblemType<BitArray> problem) : OnePlusOne<BitArray>(problem)
 {
 
     public override BitArray CloneSearchPoint()

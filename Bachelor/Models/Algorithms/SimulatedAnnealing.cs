@@ -5,7 +5,7 @@ namespace Bachelor.Models.Algorithms;
 
 public abstract class SimulatedAnnealing<T> : Algorithm<T>
 {
-    protected SimulatedAnnealing(ProblemType<T> problem) : base(problem)
+    protected SimulatedAnnealing(IProblemType<T> problem) : base(problem)
     {
         
     }
