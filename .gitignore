@@ -3,3 +3,10 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+
+.DS_Store
+.idea/.idea.Bachelor/.idea/.gitignore
+.idea/.idea.Bachelor/.idea/indexLayout.xml
+.idea/.idea.Bachelor/.idea/vcs.xml
+Bachelor.sln.DotSettings.user
+TestProject1/
