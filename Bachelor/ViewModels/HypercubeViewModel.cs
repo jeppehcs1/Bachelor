@@ -32,8 +32,14 @@ public class HypercubeViewModel : ViewModelBase
     {
         var (left, right) = BitDistribution(bits);
         
-        var xNonAdjusted = (right - left) / (double)(right + left);
-
+        double xNonAdjusted = 0;
+        for (int i = 0; i < bits.Length; i++)
+        {
+            if (bits[i]) xNonAdjusted += i - bits.Length/(double)2;
+        }
+        double max = ((bits.Length /(double) 2) * (bits.Length /(double) 2) + (bits.Length /(double) 2)) / 2;
+        xNonAdjusted /= max;
+        
         var difference = Math.Abs(left - right) * 2;
         var adjustment = difference / (double)bits.Length;
         

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 public class SimulatedAnnealingBitString(ProblemType<BitArray> problem) : SimulatedAnnealing<BitArray>(problem)
 {
-    private double alpha = 1 - 1/(double) (problem.Dimension);
+    private double alpha = 1 - 1/((double) (problem.Dimension) * 10);
     private double temperature = 0.8;
     private Random random = new Random();
     
@@ -19,6 +19,7 @@ public class SimulatedAnnealingBitString(ProblemType<BitArray> problem) : Simula
     
     public override int UpdateSearchPoint(BitArray old)
     {
+        temperature = temperature * alpha;
         
         if (Problem.Fitness(SearchPoint) > Problem.Fitness(old))
         {
@@ -27,7 +28,6 @@ public class SimulatedAnnealingBitString(ProblemType<BitArray> problem) : Simula
         
         var delta = Problem.Fitness(SearchPoint) - Problem.Fitness(old);
         var prob = Math.Exp(delta/temperature);
-        temperature = temperature * alpha;
         
         if (random.NextDouble() < prob)
         {
