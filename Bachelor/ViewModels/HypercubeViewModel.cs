@@ -6,9 +6,9 @@ using SkiaSharp;
 
 namespace Bachelor.ViewModels;
 
-public class HypercubeViewModel
+public class HypercubeViewModel : ViewModelBase
 {
-    public Algorithm<BitArray> Algorithm = null;          
+    public Algorithm<BitArray> Algorithm = null;
     public ObservableCollection<DataPoint> Points { get; }
     
     public (int, int) BitDistribution(BitArray bits) // Returns number of 1-bit left and right of center, respectively
