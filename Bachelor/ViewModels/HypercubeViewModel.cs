@@ -55,7 +55,7 @@ public class HypercubeViewModel : ViewModelBase
                                                                        
         Points = new ObservableCollection<DataPoint>();                    
         
-        for (int i = 1; i < 100000; i++)                                       
+        for (int i = 1; i < 10000; i++)                                       
         {    
             Algorithm.Iterate();
             //Console.WriteLine("x: " + XCoordinate(Algorithm.SearchPoint) + "  and y: " + YCoordinate(Algorithm.SearchPoint));

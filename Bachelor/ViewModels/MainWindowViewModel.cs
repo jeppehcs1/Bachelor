@@ -29,7 +29,7 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         // Create ViewModels once
         _plotViewModel = new PlotViewModel();
-        _hypercubeViewModel = new HypercubeViewModel(new OnePlusOneBitString(new LeadingOnes(200)));
+        _hypercubeViewModel = new HypercubeViewModel(new SimulatedAnnealingBitString(new LeadingOnes(200)));
         _tspViewModel = new TSPViewModel();
         _createScheduleViewModel = new CreateScheduleViewModel(this);
         
