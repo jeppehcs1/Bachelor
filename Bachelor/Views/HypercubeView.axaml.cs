@@ -27,7 +27,7 @@ public partial class HypercubeView : UserControl
         PlotControl.Plot.Axes.Bottom.IsVisible = false;
         PlotControl.Plot.Grid.IsVisible = false;
         */
-        DataContext = new HypercubeViewModel(new SimulatedAnnealingBitString(new LeadingOnes(80)));
+        DataContext = new HypercubeViewModel(new OnePlusOneBitString(new OneMax(100)));
         PlotControl.Refresh();
     }
     protected override void OnDataContextChanged(EventArgs e)
