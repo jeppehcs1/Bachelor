@@ -23,9 +23,19 @@ public class OnePlusOneBitString(IProblemType<BitArray> problem) : OnePlusOne<Bi
         return 0;
     }
 
+    
     public override void MutateSearchPoint(Random random)
     {
-        SearchPoint = ((BitStringProblem)Problem).MutateBitArray(SearchPoint, random);
+        //SearchPoint = ((BitStringProblem)Problem).MutateBitArray(SearchPoint, random);
+        
+        for (var i = 0; i < problem.Dimension; i++)
+        {
+            if (random.Next(problem.Dimension) == 0) // 1/dim chance of being 0, i.e. flipping a bit
+            {
+                SearchPoint[i] = !SearchPoint[i];
+            }
+        }
+        //return SearchPoint;
     }
 
     public override int GetFitness()
@@ -40,7 +50,8 @@ public class OnePlusOneBitString(IProblemType<BitArray> problem) : OnePlusOne<Bi
         
         for (int i = 0; i < dim; i++)
         {
-            bits[i] = random.Next(2) == 1;  // Random true or false
+            //bits[i] = random.Next(2) == 1;  // Random true or false
+            bits[i] = false;
         }
         SearchPoint = new BitArray(bits);
     }

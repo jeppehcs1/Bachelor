@@ -6,6 +6,8 @@ namespace Bachelor.Models.Algorithms;
 public abstract class OnePlusOne<T> : Algorithm<T>
 {
     protected OnePlusOne(IProblemType<T> problem) : base(problem)
+    private readonly Random _random = new Random();
+    protected OnePlusOne(IProblemType<T> problem) : base(problem)
     {
         
     }
@@ -15,9 +17,8 @@ public abstract class OnePlusOne<T> : Algorithm<T>
     public override int Iterate()
     {
         var dim = Problem.Dimension;
-        var random = new Random();
         var old = CloneSearchPoint();
-        MutateSearchPoint(random);
+        MutateSearchPoint(_random);
         return UpdateSearchPoint(old);
     }
 

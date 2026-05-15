@@ -6,8 +6,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;  
 
-public class SimulatedAnnealingBitString(IProblemType<BitArray> problem) : OnePlusOne<BitArray>(problem)
+public class SimulatedAnnealingBitString(IProblemType<BitArray> problem) : SimulatedAnnealing<BitArray>(problem)
 {
+    private double alpha = 1 - 1/((double) (problem.Dimension) * 10);
+    private double temperature = 0.8;
+    private Random random = new Random();
     
     public override BitArray CloneSearchPoint()
     {
@@ -16,18 +19,17 @@ public class SimulatedAnnealingBitString(IProblemType<BitArray> problem) : OnePl
     
     public override int UpdateSearchPoint(BitArray old)
     {
-        double temperature = 5; // Temperatur skal udregnes ud fra tid og cooling function
+        temperature = temperature * alpha;
         
         if (Problem.Fitness(SearchPoint) > Problem.Fitness(old))
         {
             return 0;
         }
         
-        var difference = Problem.Fitness(old) - Problem.Fitness(SearchPoint);
-        var prob = Math.Exp(difference/temperature);
+        var delta = Problem.Fitness(SearchPoint) - Problem.Fitness(old);
+        var prob = Math.Exp(delta/temperature);
         
-        var random = new Random();
-        if (!(random.Next(101) > (int)(Math.Min(1, prob)*100)))
+        if (random.NextDouble() < prob)
         {
             return 0;
         }
@@ -36,10 +38,10 @@ public class SimulatedAnnealingBitString(IProblemType<BitArray> problem) : OnePl
         return 1;
     }
 
-    public override void MutateSearchPoint(Random random)
+    public override void MutateSearchPoint()
     {
-        // UUHhhh skal laves megeet om her
-        SearchPoint = ((BitStringProblem)Problem).MutateBitArray(SearchPoint, random);
+        var index = random.Next(0, SearchPoint.Length);
+        SearchPoint[index] = !SearchPoint[index];
     }
 
     public override int GetFitness()
@@ -50,11 +52,11 @@ public class SimulatedAnnealingBitString(IProblemType<BitArray> problem) : OnePl
     {
         var dim = Problem.Dimension;
         var bits = new bool[dim];
-        var random = new Random();
         
         for (int i = 0; i < dim; i++)
         {
-            bits[i] = random.Next(2) == 1;  // Random true or false
+            //bits[i] = random.Next(2) == 1;  // Random true or false
+            bits[i] = false;
         }
         SearchPoint = new BitArray(bits);
     }

@@ -28,24 +28,47 @@ public class HypercubeViewModel : ViewModelBase
         return (leftCount, rightCount);
     }
 
-    public double XCoordinate(BitArray bits)
+    /*public double XCoordinate(BitArray bits)
     {
         var (left, right) = BitDistribution(bits);
         
-        var xNonAdjusted = (right - left) / (double)(right + left);
-
+        double xNonAdjusted = 0;
+        for (int i = 0; i < bits.Length; i++)
+        {
+            if (bits[i]) xNonAdjusted += i - bits.Length/(double)2;
+        }
+        double max = ((bits.Length /(double) 2) * (bits.Length /(double) 2) + (bits.Length /(double) 2)) / 2;
+        xNonAdjusted /= max;
+        
         var difference = Math.Abs(left - right) * 2;
         var adjustment = difference / (double)bits.Length;
         
         return xNonAdjusted * adjustment;
+    }*/
+    
+    public double XCoordinate(BitArray bits)
+    {
+        int onemax = 0, sumOfIndices = 0;
+        for (int i = 0; i < bits.Length; i++)
+            if (bits[i]) { onemax++; sumOfIndices += i; }
+
+        int minSum = (onemax * (onemax - 1)) / 2;
+        int maxSum = (bits.Length * (bits.Length - 1)) / 2
+                     - ((bits.Length - 1 - onemax) * (bits.Length - onemax)) / 2;
+        int range = maxSum - minSum;
+
+        double xNormalized = (range == 0) ? 0 : (double)(2 * sumOfIndices - 2 * minSum - range) / range;
+        double y = onemax / (double)bits.Length;
+
+        return xNormalized * Math.Sin(Math.PI * y);
     }
     
     public double YCoordinate(BitArray bits)
     {
-        var (left, right) = BitDistribution(bits);
-        var mid = bits.Length % 2 == 0 ? 0 : (bits[bits.Length / 2] ? 1 : 0);
-        
-        return (left + mid + right) / (double)(bits.Length);
+        int onemax = 0;
+        for (int i = 0; i < bits.Length; i++)
+            if (bits[i]) onemax++;
+        return onemax / (double)bits.Length;
     }
     
     public HypercubeViewModel(Algorithm<BitArray> algorithm)
@@ -55,7 +78,7 @@ public class HypercubeViewModel : ViewModelBase
                                                                        
         Points = new ObservableCollection<DataPoint>();                    
         
-        for (int i = 1; i < 100000; i++)                                       
+        for (int i = 1; i < 10000; i++)                                       
         {    
             Algorithm.Iterate();
             //Console.WriteLine("x: " + XCoordinate(Algorithm.SearchPoint) + "  and y: " + YCoordinate(Algorithm.SearchPoint));

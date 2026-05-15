@@ -15,12 +15,12 @@ public abstract class SimulatedAnnealing<T> : Algorithm<T>
         var dim = Problem.Dimension;
         var random = new Random();
         var old = CloneSearchPoint();
-        MutateSearchPoint(random);
+        MutateSearchPoint();
         return UpdateSearchPoint(old);
     }
 
     public abstract T CloneSearchPoint();
     public abstract int UpdateSearchPoint(T old);
-    public abstract void MutateSearchPoint(Random random);
+    public abstract void MutateSearchPoint();
     
 }
