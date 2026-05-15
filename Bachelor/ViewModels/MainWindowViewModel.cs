@@ -24,6 +24,7 @@ public partial class MainWindowViewModel : ViewModelBase
     private readonly HypercubeViewModel _hypercubeViewModel;
     private readonly TSPViewModel _tspViewModel;
     private readonly CreateScheduleViewModel _createScheduleViewModel;
+    private readonly AddBatchesViewModel _addBatchesViewModel;
 
     public MainWindowViewModel()
     {
@@ -31,8 +32,8 @@ public partial class MainWindowViewModel : ViewModelBase
         _plotViewModel = new PlotViewModel();
         _hypercubeViewModel = new HypercubeViewModel(new OnePlusOneBitString(new LeadingOnes(200)));
         _tspViewModel = new TSPViewModel();
-        _createScheduleViewModel = new CreateScheduleViewModel(this);
-        
+        _addBatchesViewModel = new AddBatchesViewModel();
+        _createScheduleViewModel = new CreateScheduleViewModel(this, _addBatchesViewModel);
         // Default view
         CurrentView = new HomeView();
     }

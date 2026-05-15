@@ -15,6 +15,7 @@
                 <TextBlock Text="Create Batch" FontWeight="Black"/>
                 <TextBox Watermark="Enter batch name" Text="{Binding NewBatchName}"/>
                 <TextBox Watermark="Enter number of runs" Text="{Binding NewBatchRuns}"/>
+                <Button Width="120"  Content="Finsh setup" Command="{Binding FinishSetupOnClickCommand}"/>
             </StackPanel>
         </Border>
 
@@ -56,7 +57,7 @@
                 <Button Width="120"  Content="Copy Batch" Command="{Binding CopyBatchOnClickCommand}"/>
                 
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Spacing="10" Width="400">
+            <StackPanel Orientation="Horizontal" Spacing="50" Width="400">
                 <Button Content="Move Up" Command="{Binding MoveUpOnClickCommand}" />
                 <Button Content="Move Down" Command="{Binding MoveDownOnClickCommand}" />
             </StackPanel>

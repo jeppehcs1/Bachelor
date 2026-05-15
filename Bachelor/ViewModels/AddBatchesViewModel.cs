@@ -1,5 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Reflection.Metadata.Ecma335;
+using Bachelor.Models.Algorithms;
 using Bachelor.Models.Problems;
 using Bachelor.Models.Scheduling;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -9,18 +11,20 @@ namespace Bachelor.ViewModels;
 
 public partial class AddBatchesViewModel : ViewModelBase
 {
-    private object _problemType;
-    private ObservableCollection<BatchItem> _items;
+    public Schedule? Schedule { get; set; }
+    private int Dimension;
+    private ObservableCollection<BatchItem> _items = [];
     private BatchItem? _selectedItem;
-    private string _newBatchName;
-    private string _newBatchRuns;
-    
+    private string _newBatchName = "";
+    private string _newBatchRuns = "";
+
     public ObservableCollection<BatchItem> Items
     {
         get => _items;
         set => SetProperty(ref _items, value);
     }
 
+    
     public BatchItem? SelectedItem
     {
         get => _selectedItem;
@@ -37,15 +41,13 @@ public partial class AddBatchesViewModel : ViewModelBase
         set => this.SetProperty(ref _newBatchRuns, value);
     }
 
-    public int GetNewBatchRunsAsInt() => int.TryParse(_newBatchRuns, out var result) ? result : 0;
-    public AddBatchesViewModel(object problemType)
-    {
-        _items = new ObservableCollection<BatchItem>();
-    }
+    private int GetNewBatchRunsAsInt() => int.TryParse(_newBatchRuns, out var result) ? result : 0;
 
-    public void AddItem(string name,  int runs)
+
+    private void AddItem(string name,  int runs, int dimension)
     {
-        Items.Add(new BatchItem(name, runs));
+        Batch batch = new Batch(AlgorithmFactory.Create(Schedule), runs, name);
+        Items.Add(new BatchItem(name, runs, dimension, batch));
     }
 
     public void RemoveItem(BatchItem item)
@@ -53,9 +55,9 @@ public partial class AddBatchesViewModel : ViewModelBase
         Items.Remove(item);
     }
     [RelayCommand]
-    private void AddBatchOnClick() => AddItem(_newBatchName, GetNewBatchRunsAsInt());
+    private void AddBatchOnClick() => AddItem(_newBatchName, GetNewBatchRunsAsInt(), Dimension);
     [RelayCommand]
-    private void CopyBatchOnClick() => AddItem(_selectedItem.Name, _selectedItem.Runs);
+    private void CopyBatchOnClick() => AddItem(_selectedItem.Name, _selectedItem.Runs, _selectedItem.Dimension);
 
     [RelayCommand]
     private void DeleteBatchOnClick()
@@ -89,14 +91,26 @@ public partial class AddBatchesViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
+    private void FinishSetupOnClick()
+    {
+        foreach (var batchItem in _items)
+        {
+            batchItem.Batch.Run();
+        }
+        
+    }
+
     
 }
 
-public class BatchItem(string name, int runs)
+public class BatchItem(string name, int runs, int dimension, Batch batch)
 {
     public string Name { get; set; } = name;
     public int Runs { get; set; } = runs;
-    public Batch<PermutationProblem> Batch = null;
+    public int Dimension { get; set; } = dimension;
+    public Status Status { get; set; }
+    public Batch Batch = batch;
 
 }
 

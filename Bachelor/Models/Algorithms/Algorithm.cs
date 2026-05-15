@@ -1,11 +1,18 @@
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Bachelor.Models.Problems;
 namespace Bachelor.Models.Algorithms;
-
-public abstract class Algorithm<T>
+public interface IAlgorithm
+{
+    int GetFitness();
+    int Iterate();
+    void Initialize();
+    void Run();
+}
+public abstract class Algorithm<T> : IAlgorithm
 {
     private int FuncEvals { get; set; }
     private double Runtime { get; set; }
@@ -23,7 +30,15 @@ public abstract class Algorithm<T>
     {
         this.Problem = problem;
     }
-    
+
+    public void Run()
+    {
+        Console.WriteLine(BSFF);
+        while (BSFF < Problem.Dimension)
+        {
+            Iterate();
+        }
+    }
     public static string BitArrayToString(BitArray bitArray)
     {
         StringBuilder sb = new StringBuilder();

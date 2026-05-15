@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Bachelor.Models.Algorithms;
@@ -17,27 +18,45 @@ namespace Bachelor.ViewModels;
 public partial class CreateScheduleViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainViewModel;
+    private readonly AddBatchesViewModel _addBatchesViewModel;
     private string _selectedSearchSpace = "";
     private string _selectedAlgorithm = "";
     private string _selectedProblem = "";
     private string _selectedFinishCondition = "";
     private string _selectedVisualization = "";
+    private string _dimension = "";
     private ObservableCollection<string> _algorithms;
     private ObservableCollection<string> _problems;
     private ObservableCollection<string> _finishConditions;
     private ObservableCollection<string> _visualizations;
     public ObservableCollection<string> SearchSpaces { get; }
     
-    public CreateScheduleViewModel(MainWindowViewModel mainViewModel)
+    public CreateScheduleViewModel(MainWindowViewModel mainViewModel, AddBatchesViewModel addBatchesViewModel)
     {
         _mainViewModel = mainViewModel;
+        _addBatchesViewModel = addBatchesViewModel;
         _algorithms = new ObservableCollection<string>();
-        SearchSpaces = new ObservableCollection<string> { "Bit Strings", "Permutations" };
+        SearchSpaces = ["Bit Strings", "Permutations"];
+        UpdateAlgorithms();
+        UpdateProblems();
+        UpdateFinishConditions();
+        UpdateVisualizations();
+    }
+
+    [RelayCommand]
+    private void NextOnClick()
+    {
+        Schedule schedule = new Schedule(_selectedSearchSpace, _selectedAlgorithm, _selectedProblem, _selectedFinishCondition, _selectedVisualization, GetDimensionAsInt());
+        _addBatchesViewModel.Schedule = schedule;
+        _mainViewModel.CurrentView = _addBatchesViewModel;  
+    } 
+    public string Dimension
+    {
+        get => _dimension;
+        set => this.SetProperty(ref _dimension, value);
     }
     
-    [RelayCommand]
-    private void NextOnClick() => _mainViewModel.CurrentView = new AddBatchesViewModel(new Schedule<BitArray>());
-    
+    public int GetDimensionAsInt() => int.TryParse(_dimension, out var result) ? result : 0;
     public string SelectedSearchSpace
     {
         get => _selectedSearchSpace;
