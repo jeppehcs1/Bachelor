@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reflection.Metadata.Ecma335;
+using System.Threading.Tasks;
 using Bachelor.Models.Algorithms;
 using Bachelor.Models.Problems;
 using Bachelor.Models.Scheduling;
@@ -52,6 +54,7 @@ public partial class AddBatchesViewModel : ViewModelBase
 
     public void RemoveItem(BatchItem item)
     {
+        Console.WriteLine(Environment.ProcessorCount);
         Items.Remove(item);
     }
     [RelayCommand]
@@ -91,26 +94,39 @@ public partial class AddBatchesViewModel : ViewModelBase
         }
     }
 
+    [ObservableProperty] private bool _isRunning;
     [RelayCommand]
-    private void FinishSetupOnClick()
+    private async Task FinishSetupOnClick()
     {
-        foreach (var batchItem in _items)
+        var options = new ParallelOptions 
+        { 
+            MaxDegreeOfParallelism = Environment.ProcessorCount 
+        };
+        IsRunning = true;
+        await Task.Run(() =>
         {
-            batchItem.Batch.Run();
-        }
-        
+            Parallel.ForEach(_items, options, batchItem =>
+            {
+                Avalonia.Threading.Dispatcher.UIThread.Post(() => batchItem.Status = Status.Running);
+                batchItem.Batch.Run();
+                Avalonia.Threading.Dispatcher.UIThread.Post(() => batchItem.Status = Status.Completed);
+            });
+        });
+        IsRunning =  false;
     }
 
     
 }
 
-public class BatchItem(string name, int runs, int dimension, Batch batch)
+public partial class BatchItem(string name, int runs, int dimension, Batch batch) : ObservableObject
 {
     public string Name { get; set; } = name;
     public int Runs { get; set; } = runs;
     public int Dimension { get; set; } = dimension;
-    public Status Status { get; set; }
+    
+    [ObservableProperty]
+    private Status _status;
+    
     public Batch Batch = batch;
-
 }
 

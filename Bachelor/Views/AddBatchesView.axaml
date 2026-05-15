@@ -40,7 +40,7 @@
                             <Grid ColumnDefinitions="1*, 1*, 1*">
                                 <TextBlock Text="{Binding Name}" FontWeight="Bold" />
                                 <TextBlock Text="{Binding Runs}" FontSize="12" Grid.Column="1"/>
-                                <TextBlock Text="Status" FontSize="12" Grid.Column="2"/>
+                                <TextBlock Text="{Binding Status}" FontSize="12" Grid.Column="2"/>
                             </Grid>
                         </Border>
                     </DataTemplate>
@@ -53,7 +53,7 @@
             </ListBox>
             <StackPanel Orientation="Horizontal" Spacing="10" Width="400">
                 <Button Width="120"  Content="Add Batch" Command="{Binding AddBatchOnClickCommand}"/>
-                <Button Width="120"  Content="Delete Batch" Command="{Binding DeleteBatchOnClickCommand}"/>
+                <Button Width="120"  Content="Delete Batch" Command="{Binding DeleteBatchOnClickCommand}" IsEnabled="{Binding !IsRunning}"/>
                 <Button Width="120"  Content="Copy Batch" Command="{Binding CopyBatchOnClickCommand}"/>
                 
             </StackPanel>
