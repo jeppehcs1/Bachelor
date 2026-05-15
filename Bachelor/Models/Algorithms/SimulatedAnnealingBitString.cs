@@ -55,7 +55,8 @@ public class SimulatedAnnealingBitString(ProblemType<BitArray> problem) : Simula
         
         for (int i = 0; i < dim; i++)
         {
-            bits[i] = random.Next(2) == 1;  // Random true or false
+            //bits[i] = random.Next(2) == 1;  // Random true or false
+            bits[i] = false;
         }
         SearchPoint = new BitArray(bits);
     }
