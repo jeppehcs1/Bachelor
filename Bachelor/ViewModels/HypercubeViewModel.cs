@@ -59,7 +59,7 @@ public class HypercubeViewModel : ViewModelBase
 
         double xNormalized = (range == 0) ? 0 : (double)(2 * sumOfIndices - 2 * minSum - range) / range;
         double y = onemax / (double)bits.Length;
-
+        
         return xNormalized * Math.Sin(Math.PI * y);
     }
     
@@ -72,17 +72,15 @@ public class HypercubeViewModel : ViewModelBase
     }
     
     public HypercubeViewModel(Algorithm<BitArray> algorithm)
-    {                                                                      
+    {             
+        
         Algorithm = algorithm;                                             
         Algorithm.Initialize();
-                                                                       
         Points = new ObservableCollection<DataPoint>();                    
         
-        for (int i = 1; i < 10000; i++)                                       
+        for (int i = 1; i < 100; i++)                                       
         {    
             Algorithm.Iterate();
-            //Console.WriteLine("x: " + XCoordinate(Algorithm.SearchPoint) + "  and y: " + YCoordinate(Algorithm.SearchPoint));
-            
             Points.Add(new DataPoint{ x = XCoordinate(Algorithm.SearchPoint), y = YCoordinate(Algorithm.SearchPoint) });
         }
                                   

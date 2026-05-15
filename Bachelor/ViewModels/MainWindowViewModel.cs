@@ -30,7 +30,7 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         // Create ViewModels once
         _plotViewModel = new PlotViewModel();
-        _hypercubeViewModel = new HypercubeViewModel(new OnePlusOneBitString(new OneMax(200)));
+        _hypercubeViewModel = new HypercubeViewModel(new OnePlusOneBitString(new OneMax(20)));
         _tspViewModel = new TSPViewModel();
         _addBatchesViewModel = new AddBatchesViewModel();
         _createScheduleViewModel = new CreateScheduleViewModel(this, _addBatchesViewModel);
