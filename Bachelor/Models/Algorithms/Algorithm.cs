@@ -36,10 +36,14 @@ public abstract class Algorithm<T> : IAlgorithm
 
     public void Run()
     {
-        Console.WriteLine(BSFF);
+        BSFF = GetFitness();
         while (BSFF < Problem.Dimension)
         {
             Iterate();
+            int newFitness = GetFitness();
+            if (BSFF < newFitness)
+                BSFF = newFitness;
+                
         }
     }
     public static string BitArrayToString(BitArray bitArray)
