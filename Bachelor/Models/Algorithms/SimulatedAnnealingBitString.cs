@@ -44,10 +44,7 @@ public class SimulatedAnnealingBitString(IProblemType<BitArray> problem) : Simul
         SearchPoint[index] = !SearchPoint[index];
     }
 
-    public override int GetFitness()
-    {
-        return Problem.Fitness(SearchPoint);
-    }
+    
     public override void Initialize() 
     {
         var dim = Problem.Dimension;

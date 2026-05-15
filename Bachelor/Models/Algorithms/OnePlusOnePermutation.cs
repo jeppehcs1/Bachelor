@@ -14,10 +14,7 @@ public class OnePlusOnePermutation : OnePlusOne<TSPInstance>
         SearchPoint = instance;
     }
     
-    public override int GetFitness()
-    {
-        return Problem.Fitness(SearchPoint);
-    }
+    
     
 
     public override void Initialize()

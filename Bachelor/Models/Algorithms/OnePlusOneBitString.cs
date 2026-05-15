@@ -38,10 +38,7 @@ public class OnePlusOneBitString(IProblemType<BitArray> problem) : OnePlusOne<Bi
         //return SearchPoint;
     }
 
-    public override int GetFitness()
-    {
-        return Problem.Fitness(SearchPoint);
-    }
+    
     public override void Initialize() 
     {
         var dim = Problem.Dimension;

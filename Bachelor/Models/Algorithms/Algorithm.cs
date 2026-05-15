@@ -21,8 +21,11 @@ public abstract class Algorithm<T> : IAlgorithm
     public IProblemType<T> Problem  { get; set; }
 
     public T SearchPoint;
-    
-    public abstract int GetFitness();
+
+    public int GetFitness()
+    {
+        return Problem.Fitness(SearchPoint);
+    }
     public abstract int Iterate(); // return 1 if the mutation is better than before
     
     public abstract void Initialize();
