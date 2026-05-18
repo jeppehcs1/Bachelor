@@ -24,13 +24,13 @@ public class OnePlusOneBitString(ProblemType<BitArray> problem) : OnePlusOne<Bit
     }
 
     
-    public override void MutateSearchPoint(Random random)
+    public override void MutateSearchPoint()
     {
         //SearchPoint = ((BitStringProblem)Problem).MutateBitArray(SearchPoint, random);
         
         for (var i = 0; i < problem.Dimension; i++)
         {
-            if (random.Next(problem.Dimension) == 0) // 1/dim chance of being 0, i.e. flipping a bit
+            if (_random.Next(problem.Dimension) == 0) // 1/dim chance of being 0, i.e. flipping a bit
             {
                 SearchPoint[i] = !SearchPoint[i];
             }
