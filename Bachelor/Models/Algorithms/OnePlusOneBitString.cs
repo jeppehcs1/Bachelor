@@ -13,14 +13,14 @@ public class OnePlusOneBitString(IProblemType<BitArray> problem) : OnePlusOne<Bi
     {
         return SearchPoint.Clone() as BitArray;
     }
-    public override int UpdateSearchPoint(BitArray old)
+    public override bool UpdateSearchPoint(BitArray old)
     {
         if (Problem.Fitness(SearchPoint) < Problem.Fitness(old))
         {
             SearchPoint = old;
-            return 1;
+            return true;
         }
-        return 0;
+        return false;
     }
 
     

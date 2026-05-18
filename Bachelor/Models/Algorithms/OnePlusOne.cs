@@ -14,7 +14,7 @@ public abstract class OnePlusOne<T> : Algorithm<T>
 
     
 
-    public override int Iterate()
+    public override bool Iterate()
     {
         var dim = Problem.Dimension;
         var old = CloneSearchPoint();
@@ -23,7 +23,7 @@ public abstract class OnePlusOne<T> : Algorithm<T>
     }
 
     public abstract T CloneSearchPoint();
-    public abstract int UpdateSearchPoint(T old);
+    public abstract bool UpdateSearchPoint(T old);
     public abstract void MutateSearchPoint(Random random);
 
 

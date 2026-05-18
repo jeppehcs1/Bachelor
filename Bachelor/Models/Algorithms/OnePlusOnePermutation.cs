@@ -27,16 +27,16 @@ public class OnePlusOnePermutation : OnePlusOne<TSPInstance>
         return SearchPoint.DeepCopy();
     }
 
-    public override int UpdateSearchPoint(TSPInstance old)
+    public override bool UpdateSearchPoint(TSPInstance old)
     {
         if (Problem.Fitness(SearchPoint) >= Problem.Fitness(old))
         {
             Console.WriteLine(Problem.Fitness(SearchPoint) + " :wen old: " + Problem.Fitness(old));
             SearchPoint = old;
-            return 0;
+            return false;
         }
         Console.WriteLine(Problem.Fitness(SearchPoint) + " :wen BETTER old: " + Problem.Fitness(old));
-        return 1;
+        return true;
     }
 
     public override void MutateSearchPoint(Random random)

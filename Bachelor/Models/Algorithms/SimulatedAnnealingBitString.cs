@@ -17,13 +17,13 @@ public class SimulatedAnnealingBitString(IProblemType<BitArray> problem) : Simul
         return SearchPoint.Clone() as BitArray;
     }
     
-    public override int UpdateSearchPoint(BitArray old)
+    public override bool UpdateSearchPoint(BitArray old)
     {
         temperature = temperature * alpha;
         
         if (Problem.Fitness(SearchPoint) > Problem.Fitness(old))
         {
-            return 0;
+            return false;
         }
         
         var delta = Problem.Fitness(SearchPoint) - Problem.Fitness(old);
@@ -31,11 +31,11 @@ public class SimulatedAnnealingBitString(IProblemType<BitArray> problem) : Simul
         
         if (random.NextDouble() < prob)
         {
-            return 0;
+            return false;
         }
         
         SearchPoint = old;
-        return 1;
+        return true;
     }
 
     public override void MutateSearchPoint()

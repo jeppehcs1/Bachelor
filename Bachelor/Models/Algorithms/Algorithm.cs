@@ -8,7 +8,7 @@ namespace Bachelor.Models.Algorithms;
 public interface IAlgorithm
 {
     int GetFitness();
-    int Iterate();
+    bool Iterate();
     void Initialize();
     void Run();
 }
@@ -24,9 +24,10 @@ public abstract class Algorithm<T> : IAlgorithm
 
     public int GetFitness()
     {
+        FuncEvals++;
         return Problem.Fitness(SearchPoint);
     }
-    public abstract int Iterate(); // return 1 if the mutation is better than before
+    public abstract bool Iterate(); // return 1 if the mutation is better than before
     
     public abstract void Initialize();
     protected  Algorithm(IProblemType<T> problem)
@@ -39,9 +40,9 @@ public abstract class Algorithm<T> : IAlgorithm
         BSFF = GetFitness();
         while (BSFF < Problem.Dimension)
         {
-            Iterate();
+            
             int newFitness = GetFitness();
-            if (BSFF < newFitness)
+            if (Iterate())
                 BSFF = newFitness;
                 
         }
