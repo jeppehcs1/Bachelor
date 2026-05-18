@@ -6,7 +6,7 @@ namespace Bachelor.Models.Algorithms;
 public class SimulatedAnnealingPermutation : SimulatedAnnealing<TSPInstance>
 {
     
-    public SimulatedAnnealingPermutation(GraphProblem problem, TSPInstance instance) : base(problem)
+    public SimulatedAnnealingPermutation(PermutationProblem problem, TSPInstance instance) : base(problem)
     {
         Problem = problem;
         SearchPoint = instance;

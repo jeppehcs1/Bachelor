@@ -12,10 +12,11 @@ public static class AlgorithmFactory
         var algorithmName = schedule.AlgorithmName;
         var searchSpace = schedule.SearchSpace;
         var dimension = schedule.Dimension;
+        var instance = schedule.TSPInstance;
         IAlgorithm algorithm = (algorithmName, searchSpace) switch
         {
             ("OnePlusOne", "Bit Strings") => new OnePlusOneBitString(new OneMax(dimension)),
-            ("OnePlusOne", "Permutations") => new OnePlusOnePermutation(new TSPProblem(dimension), new TSPInstance()),
+            ("OnePlusOne", "Permutations") => new OnePlusOnePermutation(new TSPProblem(dimension), instance),
             ("SimulatedAnnealing", "Bit Strings") => new SimulatedAnnealingBitString(new OneMax(dimension)),
             _ => throw new ArgumentException($"Unknown: {algorithmName}, {searchSpace}")
         };

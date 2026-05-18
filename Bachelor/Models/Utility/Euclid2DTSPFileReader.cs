@@ -40,7 +40,7 @@ public class Euclid2DTSPFileReader : ITSPFileReader
             var parts = line.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length >= 3)
             {
-                perm.Add(int.Parse(parts[0]));
+                perm.Add(int.Parse(parts[0])-1);
                 coords.Add(((int)double.Parse(parts[1], CultureInfo.InvariantCulture), (int)double.Parse(parts[2], CultureInfo.InvariantCulture)));
             }
             

@@ -8,7 +8,7 @@ using Bachelor.Models.Problems;
 
 public class OnePlusOnePermutation : OnePlusOne<TSPInstance>
 {
-    public OnePlusOnePermutation(GraphProblem problem, TSPInstance instance) : base(problem)
+    public OnePlusOnePermutation(PermutationProblem problem, TSPInstance instance) : base(problem)
     {
         Problem = problem;
         SearchPoint = instance;
@@ -32,11 +32,11 @@ public class OnePlusOnePermutation : OnePlusOne<TSPInstance>
     {
         if (Problem.Fitness(SearchPoint) >= Problem.Fitness(old))
         {
-            Console.WriteLine(Problem.Fitness(SearchPoint) + " :wen old: " + Problem.Fitness(old));
+            //Console.WriteLine(Problem.Fitness(SearchPoint) + " :wen old: " + Problem.Fitness(old));
             SearchPoint = old;
             return false;
         }
-        Console.WriteLine(Problem.Fitness(SearchPoint) + " :wen BETTER old: " + Problem.Fitness(old));
+        //Console.WriteLine(Problem.Fitness(SearchPoint) + " :wen BETTER old: " + Problem.Fitness(old));
         return true;
     }
 

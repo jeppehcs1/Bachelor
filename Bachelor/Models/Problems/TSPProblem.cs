@@ -5,7 +5,7 @@ namespace Bachelor.Models.Problems;
 
 using System.Collections.Generic;
 
-public class TSPProblem(int dimension) : GraphProblem(dimension)
+public class TSPProblem(int dimension) : PermutationProblem(dimension)
 {
 
     internal int EuclidianDistance((int, int) p1, (int, int) p2)
@@ -37,11 +37,11 @@ public class TSPProblem(int dimension) : GraphProblem(dimension)
     public TSPInstance MutateTSP_2opt(TSPInstance instance,Random random)
     {
         
-        int rand1 = random.Next(dimension);
-        int rand2 = random.Next(dimension);
+        int rand1 = random.Next(Dimension);
+        int rand2 = random.Next(Dimension);
         while (rand1 == rand2)
         {
-            rand2 = random.Next(dimension);
+            rand2 = random.Next(Dimension);
         }
         if(rand1>rand2) (rand1, rand2) = (rand2, rand1);
         

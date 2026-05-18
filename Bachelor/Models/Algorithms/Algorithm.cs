@@ -48,7 +48,7 @@ public abstract class Algorithm<T> : IAlgorithm
         
         BSFF = GetFitness();
         long startTime = Stopwatch.GetTimestamp();
-        while (BSFF < Problem.Dimension)
+        while (BSFF != 7542 && FuncEvals < 10000000)
         {
             int newFitness = GetFitness();
             if (Iterate())

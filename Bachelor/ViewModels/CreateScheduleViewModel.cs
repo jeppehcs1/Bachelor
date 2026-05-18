@@ -6,10 +6,15 @@ using Bachelor.Models.Algorithms;
 using Bachelor.Views;
 using CommunityToolkit.Mvvm;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using Avalonia.Controls;
+using Avalonia.Platform.Storage;
 using Bachelor.Models.Problems;
 using Bachelor.Models.Scheduling;
+using Bachelor.Models.Utility;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 
@@ -37,7 +42,7 @@ public partial class CreateScheduleViewModel : ViewModelBase
         _addBatchesViewModel = addBatchesViewModel;
         _algorithms = new ObservableCollection<string>();
         SearchSpaces = ["Bit Strings", "Permutations"];
-        UpdateAlgorithms();
+        
         UpdateProblems();
         UpdateFinishConditions();
         UpdateVisualizations();
@@ -46,10 +51,22 @@ public partial class CreateScheduleViewModel : ViewModelBase
     [RelayCommand]
     private void NextOnClick()
     {
-        Schedule schedule = new Schedule(_selectedSearchSpace, _selectedAlgorithm, _selectedProblem, _selectedFinishCondition, _selectedVisualization, GetDimensionAsInt());
+        Schedule schedule;
+        if (IsPermutations)
+        {
+            ITSPFileReader reader = new Euclid2DTSPFileReader();
+            TSPInstance instance = reader.Read(FilePath);
+            schedule = new Schedule(SelectedSearchSpace,  SelectedAlgorithm, SelectedProblem, SelectedFinishCondition, SelectedVisualization, instance);
+        }
+        else
+        {
+            schedule = new Schedule(SelectedSearchSpace, SelectedAlgorithm, SelectedProblem, SelectedFinishCondition, SelectedVisualization, GetDimensionAsInt());
+        }
         _addBatchesViewModel.Schedule = schedule;
         _mainViewModel.CurrentView = _addBatchesViewModel;  
     } 
+    [ObservableProperty]
+    private string _filePath = "";
     public string Dimension
     {
         get => _dimension;
@@ -57,12 +74,15 @@ public partial class CreateScheduleViewModel : ViewModelBase
     }
     
     public int GetDimensionAsInt() => int.TryParse(_dimension, out var result) ? result : 0;
+    [ObservableProperty]
+    private bool _isPermutations;
     public string SelectedSearchSpace
     {
         get => _selectedSearchSpace;
         set
         {
             SetProperty(ref _selectedSearchSpace, value);
+            IsPermutations = value == "Permutations";
             UpdateAlgorithms();
         }
     }
@@ -117,8 +137,10 @@ public partial class CreateScheduleViewModel : ViewModelBase
         get => _visualizations;
         set => SetProperty(ref _visualizations, value);
     }
+    
     private void UpdateAlgorithms()
     {
+        
         var assembly = Assembly.GetExecutingAssembly();
         var suffix = SelectedSearchSpace switch
         {
@@ -149,7 +171,7 @@ public partial class CreateScheduleViewModel : ViewModelBase
                 .ToList(),
             "Permutations" => assembly.GetTypes()
                 .Where(t => t.Namespace == "Bachelor.Models.Problems"
-                            && typeof(GraphProblem).IsAssignableFrom(t)
+                            && typeof(PermutationProblem).IsAssignableFrom(t)
                             && !t.IsAbstract)
                 .Select(t => t.Name)
                 .ToList(),
@@ -175,5 +197,7 @@ public partial class CreateScheduleViewModel : ViewModelBase
         };
         Visualizations = visualizationList;
     }
+
+    
     
 }
