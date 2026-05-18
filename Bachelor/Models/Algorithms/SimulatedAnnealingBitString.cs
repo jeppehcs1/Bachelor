@@ -8,10 +8,6 @@ using System.Collections.Generic;
 
 public class SimulatedAnnealingBitString(IProblemType<BitArray> problem) : SimulatedAnnealing<BitArray>(problem)
 {
-    private double alpha = 1 - 1/((double) (problem.Dimension) * 10);
-    private double temperature = 0.8;
-    private Random random = new Random();
-    
     public override BitArray CloneSearchPoint()
     {
         return SearchPoint.Clone() as BitArray;
@@ -19,7 +15,7 @@ public class SimulatedAnnealingBitString(IProblemType<BitArray> problem) : Simul
     
     public override bool UpdateSearchPoint(BitArray old)
     {
-        temperature = temperature * alpha;
+        _temperature = _temperature * _alpha;
         
         if (Problem.Fitness(SearchPoint) > Problem.Fitness(old))
         {
@@ -27,9 +23,9 @@ public class SimulatedAnnealingBitString(IProblemType<BitArray> problem) : Simul
         }
         
         var delta = Problem.Fitness(SearchPoint) - Problem.Fitness(old);
-        var prob = Math.Exp(delta/temperature);
+        var prob = Math.Exp(delta/_temperature);
         
-        if (random.NextDouble() < prob)
+        if (_random.NextDouble() < prob)
         {
             return false;
         }
@@ -40,7 +36,7 @@ public class SimulatedAnnealingBitString(IProblemType<BitArray> problem) : Simul
 
     public override void MutateSearchPoint()
     {
-        var index = random.Next(0, SearchPoint.Length);
+        var index = _random.Next(0, SearchPoint.Length);
         SearchPoint[index] = !SearchPoint[index];
     }
 
