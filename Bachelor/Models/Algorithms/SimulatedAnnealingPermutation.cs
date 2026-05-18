@@ -6,16 +6,12 @@ namespace Bachelor.Models.Algorithms;
 public class SimulatedAnnealingPermutation : SimulatedAnnealing<TSPInstance>
 {
     
-    public SimulatedAnnealingPermutation(PermutationProblem problem, TSPInstance instance) : base(problem)
+    public SimulatedAnnealingPermutation(GraphProblem problem, TSPInstance instance) : base(problem)
     {
         Problem = problem;
         SearchPoint = instance;
     }
     
-    public override int GetFitness()
-    {
-        return Problem.Fitness(SearchPoint);
-    }
     
     public override void Initialize()
     {
@@ -27,7 +23,7 @@ public class SimulatedAnnealingPermutation : SimulatedAnnealing<TSPInstance>
         return SearchPoint.DeepCopy();
     }
 
-    public override int UpdateSearchPoint(TSPInstance old)
+    public override bool UpdateSearchPoint(TSPInstance old)
     {
         _temperature *= _alpha;
         
@@ -35,7 +31,7 @@ public class SimulatedAnnealingPermutation : SimulatedAnnealing<TSPInstance>
         "\ntemperature: " + _temperature);
         if (Problem.Fitness(SearchPoint) <= Problem.Fitness(old))
         {
-            return 1;
+            return true;
         }
         
         var delta = Problem.Fitness(old) - Problem.Fitness(SearchPoint);
@@ -45,11 +41,11 @@ public class SimulatedAnnealingPermutation : SimulatedAnnealing<TSPInstance>
         if (_random.NextDouble() < prob)
         {
             Console.WriteLine("Random: " + _random.NextDouble() + "  prob:   " + prob);
-            return 1;
+            return true;
         }
         
         SearchPoint = old;
-        return 0;
+        return false;
         
     }
 

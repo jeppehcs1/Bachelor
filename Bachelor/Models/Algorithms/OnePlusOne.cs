@@ -23,7 +23,7 @@ public abstract class OnePlusOne<T> : Algorithm<T>
 
     public abstract T CloneSearchPoint();
     public abstract bool UpdateSearchPoint(T old);
-    public abstract void MutateSearchPoint(Random random);
+    public abstract void MutateSearchPoint();
 
 
 
