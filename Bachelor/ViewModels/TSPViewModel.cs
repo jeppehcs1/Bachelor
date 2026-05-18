@@ -34,7 +34,7 @@ public partial class TSPViewModel : ViewModelBase
         Algorithm.Initialize();
         GenerateTSPPoints();
     }
-    [RelayCommand] private void IterateTSPOnClick() { if( Algorithm.Iterate() == 1){ GenerateTSPPoints();} }
+    [RelayCommand] private void IterateTSPOnClick() { if( Algorithm.Iterate()){ GenerateTSPPoints();} }
     public void GenerateTSPPoints()
     {
         var newPoints = new ObservableCollection<DataPoint>();

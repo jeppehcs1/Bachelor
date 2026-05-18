@@ -6,21 +6,21 @@ using System.Collections;
 using System.Collections.Generic;  
 
 
-public class OnePlusOneBitString(ProblemType<BitArray> problem) : OnePlusOne<BitArray>(problem)
+public class OnePlusOneBitString(IProblemType<BitArray> problem) : OnePlusOne<BitArray>(problem)
 {
 
     public override BitArray CloneSearchPoint()
     {
         return SearchPoint.Clone() as BitArray;
     }
-    public override int UpdateSearchPoint(BitArray old)
+    public override bool UpdateSearchPoint(BitArray old)
     {
         if (Problem.Fitness(SearchPoint) < Problem.Fitness(old))
         {
             SearchPoint = old;
-            return 1;
+            return true;
         }
-        return 0;
+        return false;
     }
 
     
@@ -38,10 +38,7 @@ public class OnePlusOneBitString(ProblemType<BitArray> problem) : OnePlusOne<Bit
         //return SearchPoint;
     }
 
-    public override int GetFitness()
-    {
-        return Problem.Fitness(SearchPoint);
-    }
+    
     public override void Initialize() 
     {
         var dim = Problem.Dimension;

@@ -6,20 +6,20 @@ using System;
 using System.Collections;
 using System.Collections.Generic;  
 
-public class SimulatedAnnealingBitString(ProblemType<BitArray> problem) : SimulatedAnnealing<BitArray>(problem)
+public class SimulatedAnnealingBitString(IProblemType<BitArray> problem) : SimulatedAnnealing<BitArray>(problem)
 {
     public override BitArray CloneSearchPoint()
     {
         return SearchPoint.Clone() as BitArray;
     }
     
-    public override int UpdateSearchPoint(BitArray old)
+    public override bool UpdateSearchPoint(BitArray old)
     {
         _temperature = _temperature * _alpha;
         
         if (Problem.Fitness(SearchPoint) > Problem.Fitness(old))
         {
-            return 0;
+            return false;
         }
         
         var delta = Problem.Fitness(SearchPoint) - Problem.Fitness(old);
@@ -27,11 +27,11 @@ public class SimulatedAnnealingBitString(ProblemType<BitArray> problem) : Simula
         
         if (_random.NextDouble() < prob)
         {
-            return 0;
+            return false;
         }
         
         SearchPoint = old;
-        return 1;
+        return true;
     }
 
     public override void MutateSearchPoint()
@@ -40,10 +40,7 @@ public class SimulatedAnnealingBitString(ProblemType<BitArray> problem) : Simula
         SearchPoint[index] = !SearchPoint[index];
     }
 
-    public override int GetFitness()
-    {
-        return Problem.Fitness(SearchPoint);
-    }
+    
     public override void Initialize() 
     {
         var dim = Problem.Dimension;

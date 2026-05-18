@@ -1,29 +1,52 @@
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Bachelor.Models.Problems;
 namespace Bachelor.Models.Algorithms;
-
-public abstract class Algorithm<T>
+public interface IAlgorithm
+{
+    int GetFitness();
+    bool Iterate();
+    void Initialize();
+    void Run();
+}
+public abstract class Algorithm<T> : IAlgorithm
 {
     private int FuncEvals { get; set; }
     private double Runtime { get; set; }
     private int BSFF { get; set; } // Best So Far Fitness
 
-    public ProblemType<T> Problem  { get; set; }
+    public IProblemType<T> Problem  { get; set; }
 
     public T SearchPoint;
-    
-    public abstract int GetFitness();
-    public abstract int Iterate(); // return 1 if the mutation is better than before
+
+    public int GetFitness()
+    {
+        FuncEvals++;
+        return Problem.Fitness(SearchPoint);
+    }
+    public abstract bool Iterate(); // return 1 if the mutation is better than before
     
     public abstract void Initialize();
-    protected  Algorithm(ProblemType<T> problem)
+    protected  Algorithm(IProblemType<T> problem)
     {
         this.Problem = problem;
     }
-    
+
+    public void Run()
+    {
+        BSFF = GetFitness();
+        while (BSFF < Problem.Dimension)
+        {
+            
+            int newFitness = GetFitness();
+            if (Iterate())
+                BSFF = newFitness;
+                
+        }
+    }
     public static string BitArrayToString(BitArray bitArray)
     {
         StringBuilder sb = new StringBuilder();

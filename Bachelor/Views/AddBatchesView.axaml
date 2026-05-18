@@ -15,6 +15,7 @@
                 <TextBlock Text="Create Batch" FontWeight="Black"/>
                 <TextBox Watermark="Enter batch name" Text="{Binding NewBatchName}"/>
                 <TextBox Watermark="Enter number of runs" Text="{Binding NewBatchRuns}"/>
+                <Button Width="120"  Content="Finsh setup" Command="{Binding FinishSetupOnClickCommand}"/>
             </StackPanel>
         </Border>
 
@@ -39,7 +40,7 @@
                             <Grid ColumnDefinitions="1*, 1*, 1*">
                                 <TextBlock Text="{Binding Name}" FontWeight="Bold" />
                                 <TextBlock Text="{Binding Runs}" FontSize="12" Grid.Column="1"/>
-                                <TextBlock Text="Status" FontSize="12" Grid.Column="2"/>
+                                <TextBlock Text="{Binding Status}" FontSize="12" Grid.Column="2"/>
                             </Grid>
                         </Border>
                     </DataTemplate>
@@ -52,11 +53,11 @@
             </ListBox>
             <StackPanel Orientation="Horizontal" Spacing="10" Width="400">
                 <Button Width="120"  Content="Add Batch" Command="{Binding AddBatchOnClickCommand}"/>
-                <Button Width="120"  Content="Delete Batch" Command="{Binding DeleteBatchOnClickCommand}"/>
+                <Button Width="120"  Content="Delete Batch" Command="{Binding DeleteBatchOnClickCommand}" IsEnabled="{Binding !IsRunning}"/>
                 <Button Width="120"  Content="Copy Batch" Command="{Binding CopyBatchOnClickCommand}"/>
                 
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Spacing="10" Width="400">
+            <StackPanel Orientation="Horizontal" Spacing="50" Width="400">
                 <Button Content="Move Up" Command="{Binding MoveUpOnClickCommand}" />
                 <Button Content="Move Down" Command="{Binding MoveDownOnClickCommand}" />
             </StackPanel>

@@ -4,8 +4,9 @@ using System.Transactions;
 
 namespace Bachelor.Models.Problems;
 
-public abstract class BitStringProblem(int dimension) : ProblemType<BitArray>(dimension)
-
+public abstract class BitStringProblem(int dimension) : IProblemType<BitArray>
 {
-    
+    public int Dimension { get; set; } = dimension;
+    public abstract int Fitness(BitArray c);
+
 }
