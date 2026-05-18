@@ -47,6 +47,7 @@ public class SimulatedAnnealingBitString(IProblemType<BitArray> problem) : Simul
     
     public override void Initialize() 
     {
+        base.Initialize();
         var dim = Problem.Dimension;
         var bits = new bool[dim];
         

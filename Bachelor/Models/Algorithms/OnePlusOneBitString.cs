@@ -41,6 +41,7 @@ public class OnePlusOneBitString(IProblemType<BitArray> problem) : OnePlusOne<Bi
     
     public override void Initialize() 
     {
+        base.Initialize();
         var dim = Problem.Dimension;
         var bits = new bool[dim];
         var random = new Random();

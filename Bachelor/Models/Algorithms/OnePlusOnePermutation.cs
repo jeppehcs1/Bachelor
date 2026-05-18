@@ -8,7 +8,7 @@ using Bachelor.Models.Problems;
 
 public class OnePlusOnePermutation : OnePlusOne<TSPInstance>
 {
-    public OnePlusOnePermutation(PermutationProblem problem, TSPInstance instance) : base(problem)
+    public OnePlusOnePermutation(GraphProblem problem, TSPInstance instance) : base(problem)
     {
         Problem = problem;
         SearchPoint = instance;
@@ -19,6 +19,7 @@ public class OnePlusOnePermutation : OnePlusOne<TSPInstance>
 
     public override void Initialize()
     {
+        base.Initialize();
         SearchPoint.Shuffle();
     }
 

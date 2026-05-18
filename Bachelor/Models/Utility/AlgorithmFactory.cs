@@ -3,7 +3,7 @@ using Bachelor.Models.Algorithms;
 using Bachelor.Models.Problems;
 using Bachelor.Models.Scheduling;
 
-namespace Bachelor.ViewModels;
+namespace Bachelor.Models.Utility;
 
 public static class AlgorithmFactory
 {

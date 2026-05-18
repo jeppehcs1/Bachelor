@@ -42,7 +42,7 @@ public class ProblemTests
     [Test]
     public void TSPFitnessTest()
     {
-        PermutationProblem problem = new TSPProblem(6);
+        GraphProblem problem = new TSPProblem(6);
         TSPInstance instance = new TSPInstance([0,1,2,3,4,5],
             [(0,0),(0,3),(0,6),(3,6),(3,3),(3,0)]);
         int result = problem.Fitness(instance);
@@ -82,7 +82,7 @@ public class ProblemTests
     [Test]
     public void ThreeOptTest()
     {
-        PermutationProblem problem = new TSPProblem(6);
+        GraphProblem problem = new TSPProblem(6);
         TSPInstance instance = new TSPInstance([0,1,2,3,4,5],
             [(0,0),(0,3),(0,6),(3,6),(3,3),(3,0)]);
         

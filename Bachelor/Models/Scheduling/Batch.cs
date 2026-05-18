@@ -20,12 +20,15 @@ public class Batch
     public void Run()
     {
         Status = Status.Running;
+        double totalTime = 0;
         for (int i = 0; i < NumberRuns; i++)
         {
             Algorithm.Initialize();
             Algorithm.Run();
-            Console.WriteLine("Run " + (i+1) + " fitness: "  + Algorithm.GetFitness());
+            totalTime += Algorithm.Runtime;
+            Console.WriteLine("Run " + (i+1) + " fitness: "  + Algorithm.BSFF + " time: " + Algorithm.Runtime + " FuncEvals: " + Algorithm.FuncEvals);
         }
+        Console.WriteLine("Total time: " + totalTime);
         Status = Status.Completed;
     }
 }

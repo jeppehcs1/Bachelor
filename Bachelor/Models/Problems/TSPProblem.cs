@@ -5,7 +5,7 @@ namespace Bachelor.Models.Problems;
 
 using System.Collections.Generic;
 
-public class TSPProblem(int dimension) : PermutationProblem(dimension)
+public class TSPProblem(int dimension) : GraphProblem(dimension)
 {
 
     internal int EuclidianDistance((int, int) p1, (int, int) p2)

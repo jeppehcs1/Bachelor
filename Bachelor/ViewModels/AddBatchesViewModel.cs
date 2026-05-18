@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Bachelor.Models.Algorithms;
 using Bachelor.Models.Problems;
 using Bachelor.Models.Scheduling;
+using Bachelor.Models.Utility;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -54,7 +55,6 @@ public partial class AddBatchesViewModel : ViewModelBase
 
     public void RemoveItem(BatchItem item)
     {
-        Console.WriteLine(Environment.ProcessorCount);
         Items.Remove(item);
     }
     [RelayCommand]
@@ -98,12 +98,19 @@ public partial class AddBatchesViewModel : ViewModelBase
     [RelayCommand]
     private async Task FinishSetupOnClick()
     {
+        IsRunning = true;
+        await RunBatches();
+        IsRunning =  false;
+    }
+
+    private Task RunBatches()
+    {
         var options = new ParallelOptions 
         { 
             MaxDegreeOfParallelism = Environment.ProcessorCount 
         };
-        IsRunning = true;
-        await Task.Run(() =>
+    
+        return Task.Run(() =>
         {
             Parallel.ForEach(_items, options, batchItem =>
             {
@@ -112,10 +119,7 @@ public partial class AddBatchesViewModel : ViewModelBase
                 Avalonia.Threading.Dispatcher.UIThread.Post(() => batchItem.Status = Status.Completed);
             });
         });
-        IsRunning =  false;
     }
-
-    
 }
 
 public partial class BatchItem(string name, int runs, int dimension, Batch batch) : ObservableObject

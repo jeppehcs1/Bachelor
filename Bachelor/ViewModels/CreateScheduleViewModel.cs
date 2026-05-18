@@ -149,7 +149,7 @@ public partial class CreateScheduleViewModel : ViewModelBase
                 .ToList(),
             "Permutations" => assembly.GetTypes()
                 .Where(t => t.Namespace == "Bachelor.Models.Problems"
-                            && typeof(PermutationProblem).IsAssignableFrom(t)
+                            && typeof(GraphProblem).IsAssignableFrom(t)
                             && !t.IsAbstract)
                 .Select(t => t.Name)
                 .ToList(),

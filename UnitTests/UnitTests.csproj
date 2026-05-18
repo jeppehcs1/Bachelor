@@ -19,7 +19,11 @@
     <ItemGroup>
         <Using Include="NUnit.Framework"/>
     </ItemGroup>
-
+    <ItemGroup>
+        <Content Include="..\Bachelor\Assets\berlin52.tsp">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Bachelor\Bachelor.csproj" />
     </ItemGroup>
