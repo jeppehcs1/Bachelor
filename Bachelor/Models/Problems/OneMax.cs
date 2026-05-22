@@ -3,7 +3,7 @@ using System.Collections;
 
 public class OneMax(int dimension) : BitStringProblem(dimension)
 {
-    public override int Fitness(BitArray c)
+    protected override int FitnessCore(BitArray c)
     {
         int count = 0;
 

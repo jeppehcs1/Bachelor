@@ -20,7 +20,7 @@ public class TSPProblem(int dimension) : PermutationProblem(dimension)
         return (int) Math.Round(Math.Sqrt(xDist * xDist + yDist * yDist));
     }
     
-    public override int Fitness(TSPInstance c)
+    protected override int FitnessCore(TSPInstance c)
     {
         int fitness = 0;
         for (int i = 1; i < Dimension; i++)
