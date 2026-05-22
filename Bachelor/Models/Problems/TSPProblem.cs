@@ -67,63 +67,115 @@ public class TSPProblem(int dimension) : PermutationProblem(dimension)
         rand2 = indices[1];  // middle
         rand3 = indices[2];  // largest
         
+        
+        
         var chunks = SplitAtIndices(instance.Permutation, indices);
-
+        // chunk[0] first element Perm[indices[2]] last element Perm[indices[0]-1] (wraps around)
+        // chunk[1] first element Perm[indices[0]] last element Perm[indices[1]-1]
+        // chunk[1] first element Perm[indices[1]] last element Perm[indices[2]-1]
+        var permOriginalIntermediateFitness = IntermediateFitness((chunks[0][^1],chunks[1][0]),
+                                                                        (chunks[1][^1],chunks[2][0]),
+                                                                        (chunks[2][^1],chunks[0][0]), instance);
         var oneRevA = chunks[0].AsEnumerable().Reverse()
             .Concat(chunks[1])
             .Concat(chunks[2])
             .ToList();
         TSPInstance permA = new TSPInstance(oneRevA, instance.Graph);
-        
+        // calculate fitness of new edges
+        var permAIntermediateFitness = IntermediateFitness((chunks[0][0],chunks[1][0]),
+                                                                (chunks[1][^1],chunks[2][0]),
+                                                                (chunks[2][^1],chunks[0][^1]), instance);
         var oneRevB = chunks[0]
             .Concat(chunks[1].AsEnumerable().Reverse())
             .Concat(chunks[2])
             .ToList();
         TSPInstance permB = new TSPInstance(oneRevB, instance.Graph);
-        
+        var permBIntermediateFitness = IntermediateFitness((chunks[0][^1],chunks[1][^1]),
+                                                                (chunks[1][0],chunks[2][0]),
+                                                                (chunks[2][^1],chunks[0][0]), instance);
         var oneRevC = chunks[0]
             .Concat(chunks[1])
             .Concat(chunks[2].AsEnumerable().Reverse())
             .ToList();
         TSPInstance permC = new TSPInstance(oneRevC, instance.Graph);
-        
+        var permCIntermediateFitness = IntermediateFitness((chunks[0][^1],chunks[1][0]),
+                                                                (chunks[1][^1],chunks[2][^1]),
+                                                                (chunks[2][0],chunks[0][0]), instance);
         var twoRevA = chunks[0].AsEnumerable().Reverse()
             .Concat(chunks[1].AsEnumerable().Reverse())
             .Concat(chunks[2])
             .ToList();
         TSPInstance permD = new TSPInstance(twoRevA, instance.Graph);
-        
+        var permDIntermediateFitness = IntermediateFitness((chunks[0][0],chunks[1][^1]),
+                                                                (chunks[1][0],chunks[2][0]),
+                                                                (chunks[2][^1],chunks[0][^1]), instance);
         var twoRevB = chunks[0].AsEnumerable().Reverse()
             .Concat(chunks[1])
             .Concat(chunks[2].AsEnumerable().Reverse())
             .ToList();
         TSPInstance permE = new TSPInstance(twoRevB, instance.Graph);
-        
+        var permEIntermediateFitness = IntermediateFitness((chunks[0][0],chunks[1][0]),
+                                                                (chunks[1][0],chunks[2][^1]),
+                                                                (chunks[2][0],chunks[0][^1]), instance);
         var twoRevC = chunks[0]
             .Concat(chunks[1].AsEnumerable().Reverse())
             .Concat(chunks[2].AsEnumerable().Reverse())
             .ToList();
         TSPInstance permF = new TSPInstance(twoRevC, instance.Graph);
-        
+        var permFIntermediateFitness = IntermediateFitness((chunks[0][^1],chunks[1][^1]),
+                                                                (chunks[1][0],chunks[2][^1]),
+                                                                (chunks[2][0],chunks[0][0]), instance);
         var threeRev = chunks[0].AsEnumerable().Reverse()
             .Concat(chunks[1].AsEnumerable().Reverse())
             .Concat(chunks[2].AsEnumerable().Reverse())
             .ToList();
         TSPInstance permG = new TSPInstance(threeRev, instance.Graph);
-        
+        var permGIntermediateFitness = IntermediateFitness((chunks[0][0],chunks[1][^1]),
+                                                                (chunks[1][0],chunks[2][^1]),
+                                                                (chunks[2][0],chunks[0][^1]), instance);
 
-        var perms = new[] { instance, permA, permB, permC, permD, permE, permF, permG };
+        var perms = new[] { (instance, permOriginalIntermediateFitness), 
+                            (permA, permAIntermediateFitness), 
+                            (permB, permBIntermediateFitness),
+                            (permC, permCIntermediateFitness),
+                            (permD, permDIntermediateFitness),
+                            (permE, permEIntermediateFitness),
+                            (permF, permFIntermediateFitness),
+                            (permG, permGIntermediateFitness) };
         var best = perms
-            .Select(p => new { Perm = p, Fitness = Fitness(p) })
-            .MinBy(x => x.Fitness);
+            .MinBy(p => p.Item2);
         
-        if (best == null)
-            throw new Exception("No elements");
-        var result = best.Perm;
+        
+        var result = best.Item1;
 
         return result;
     }
-    
+    // puha grim
+    public int IntermediateFitness((int, int) indexPair1, (int, int) indexPair2, (int, int) indexPair3, TSPInstance instance)
+    {
+        var total = 0;
+        var graphIndex = CheckBoundary(indexPair1.Item1);
+        var graphIndex2 = CheckBoundary(indexPair1.Item2);
+        total += EuclidianDistance(instance.Graph[graphIndex], 
+            instance.Graph[graphIndex2]);    
+        graphIndex = CheckBoundary(indexPair2.Item1);
+        graphIndex2 = CheckBoundary(indexPair2.Item2);
+        total += EuclidianDistance(instance.Graph[graphIndex],
+            instance.Graph[graphIndex2]);
+        graphIndex = CheckBoundary(indexPair3.Item1);
+        graphIndex2 = CheckBoundary(indexPair3.Item2);
+        total += EuclidianDistance(instance.Graph[graphIndex],
+            instance.Graph[graphIndex2]);
+        return total;
+    }
+
+    public int CheckBoundary(int index)
+    {
+        if (index < 0) 
+        { return Dimension - 1;
+        }
+        return index == Dimension ? 0 : index;
+    }
     public List<List<int>> SplitAtIndices(List<int> list, int[] indices)
     {
         var chunks = new List<List<int>>();

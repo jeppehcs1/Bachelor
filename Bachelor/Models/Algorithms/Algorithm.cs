@@ -10,7 +10,7 @@ public interface IAlgorithm
 {
     int BSFF { get; set; }
     double Runtime { get; set; }
-    int FuncEvals { get; set; }
+    int FuncEvals { get; }
     int GetFitness();
     bool Iterate();
     void Initialize();
@@ -19,26 +19,32 @@ public interface IAlgorithm
 }
 public abstract class Algorithm<T> : IAlgorithm
 {
-    public int FuncEvals { get; set; }
+    public int FuncEvals
+    {
+        get
+        {
+            return Problem.FuncEvals;
+        }
+    }
+
     public double Runtime { get; set; }
     public int BSFF { get; set; } // Best So Far Fitness
 
-    protected IProblemType<T> Problem  { get; set; }
+    protected ProblemType<T> Problem  { get; set; }
 
     public T SearchPoint;
 
     public int GetFitness()
     {
-        FuncEvals++;
         return Problem.Fitness(SearchPoint);
     }
     public abstract bool Iterate(); // return true if the mutation is better than before
 
     public virtual void Initialize()
     {
-        FuncEvals = 0;
+        Problem.FuncEvals = 0;
     }
-    protected  Algorithm(IProblemType<T> problem)
+    protected  Algorithm(ProblemType<T> problem)
     {
         this.Problem = problem;
     }
@@ -54,7 +60,7 @@ public abstract class Algorithm<T> : IAlgorithm
             if (Iterate())
                 BSFF = newFitness;
         }
-        Runtime = Stopwatch.GetElapsedTime(startTime).TotalMilliseconds;
+        Runtime = Stopwatch.GetElapsedTime(startTime).TotalSeconds;
     }
     public static string BitArrayToString(BitArray bitArray)
     {

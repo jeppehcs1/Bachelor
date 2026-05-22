@@ -8,7 +8,7 @@ public abstract class SimulatedAnnealing<T> : Algorithm<T>
     protected Random _random = new Random();
     protected double _temperature;
     protected double _alpha;
-    protected SimulatedAnnealing(IProblemType<T> problem) : base(problem)
+    protected SimulatedAnnealing(ProblemType<T> problem) : base(problem)
     {
         _alpha = 1 - 1/((double) (problem.Dimension) * 10);
         _temperature = problem.Dimension * problem.Dimension * problem.Dimension;

@@ -6,7 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;  
 
-public class SimulatedAnnealingBitString(IProblemType<BitArray> problem) : SimulatedAnnealing<BitArray>(problem)
+public class SimulatedAnnealingBitString(ProblemType<BitArray> problem) : SimulatedAnnealing<BitArray>(problem)
 {
     public override BitArray CloneSearchPoint()
     {
