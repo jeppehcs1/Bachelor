@@ -77,6 +77,7 @@ public class ProblemTests
         TSPInstance newTSP = problem.MutateTSP_3opt(instance, random);
         
         Assert.That(newTSP.Permutation, Is.EqualTo([4,3,2,1,0,5]));
+        Assert.That(problem.FuncEvals, Is.EqualTo(0));
     }
 
     [Test]
