@@ -5,11 +5,26 @@ namespace Bachelor.Models.Problems;
 
 using System.Collections.Generic;
 
-public class TSPProblem(int dimension) : PermutationProblem(dimension)
+public class TSPProblem : PermutationProblem
 {
-
+    public TSPProblem(int dimension) : base(dimension)
+    {
+        DistanceMatrix = new int[dimension,dimension];
+    }
+    public int[,] DistanceMatrix;
+    public int GetDistance(int i, int j, TSPInstance instance)
+    {
+        int row = Math.Min(i, j);
+        int col = Math.Max(i, j);
+    
+        if (DistanceMatrix[row, col] == 0)
+            DistanceMatrix[row, col] = EuclidianDistance(instance.Graph[row], instance.Graph[col]);
+    
+        return DistanceMatrix[row, col];
+    }
     internal int EuclidianDistance((int, int) p1, (int, int) p2)
     {
+        
         var (x1, y1) = p1;
         var (x2, y2) = p2;
 
@@ -24,13 +39,9 @@ public class TSPProblem(int dimension) : PermutationProblem(dimension)
     {
         int fitness = 0;
         for (int i = 1; i < Dimension; i++)
-        {
-            (int, int) p1 = c.Graph[c.Permutation[i-1]];
-            (int, int) p2 = c.Graph[c.Permutation[i]];
-
-            fitness = fitness + EuclidianDistance(p1, p2);
-        }
-        fitness += EuclidianDistance(c.Graph[c.Permutation[Dimension - 1]], c.Graph[c.Permutation[0]]);
+            fitness += GetDistance(c.Permutation[i-1], c.Permutation[i], c);
+    
+        fitness += GetDistance(c.Permutation[Dimension - 1], c.Permutation[0], c);
         return fitness;
     }
 
@@ -53,13 +64,13 @@ public class TSPProblem(int dimension) : PermutationProblem(dimension)
     public TSPInstance MutateTSP_3opt(TSPInstance instance,Random random)
     {
         
-        int rand1 = random.Next(dimension-1);
-        int rand2 = random.Next(dimension-1);
-        int rand3 = random.Next(dimension-1);
+        int rand1 = random.Next(Dimension-1);
+        int rand2 = random.Next(Dimension-1);
+        int rand3 = random.Next(Dimension-1);
         while (rand1 == rand2 || rand3 == rand1 || rand2 == rand3)
         {
-            rand2 = random.Next(dimension-1);
-            rand3 = random.Next(dimension-1);
+            rand2 = random.Next(Dimension-1);
+            rand3 = random.Next(Dimension-1);
         }
         int[] indices = { rand1, rand2, rand3 };
         Array.Sort(indices);
@@ -150,23 +161,16 @@ public class TSPProblem(int dimension) : PermutationProblem(dimension)
 
         return result;
     }
-    // puha grim
+   
     public int IntermediateFitness((int, int) indexPair1, (int, int) indexPair2, (int, int) indexPair3, TSPInstance instance)
     {
-        var total = 0;
-        var graphIndex = CheckBoundary(indexPair1.Item1);
-        var graphIndex2 = CheckBoundary(indexPair1.Item2);
-        total += EuclidianDistance(instance.Graph[graphIndex], 
-            instance.Graph[graphIndex2]);    
-        graphIndex = CheckBoundary(indexPair2.Item1);
-        graphIndex2 = CheckBoundary(indexPair2.Item2);
-        total += EuclidianDistance(instance.Graph[graphIndex],
-            instance.Graph[graphIndex2]);
-        graphIndex = CheckBoundary(indexPair3.Item1);
-        graphIndex2 = CheckBoundary(indexPair3.Item2);
-        total += EuclidianDistance(instance.Graph[graphIndex],
-            instance.Graph[graphIndex2]);
-        return total;
+        int i1 = CheckBoundary(indexPair1.Item1), j1 = CheckBoundary(indexPair1.Item2);
+        int i2 = CheckBoundary(indexPair2.Item1), j2 = CheckBoundary(indexPair2.Item2);
+        int i3 = CheckBoundary(indexPair3.Item1), j3 = CheckBoundary(indexPair3.Item2);
+
+        return GetDistance(i1, j1, instance)
+               + GetDistance(i2, j2, instance)
+               + GetDistance(i3, j3, instance);
     }
 
     public int CheckBoundary(int index)

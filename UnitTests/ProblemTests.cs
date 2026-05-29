@@ -88,4 +88,38 @@ public class ProblemTests
             [(0,0),(0,3),(0,6),(3,6),(3,3),(3,0)]);
         
     }
+    // Claude
+    [Test]
+    public void DistanceMatrixCachesLazily()
+    {
+        TSPProblem problem = new TSPProblem(6);
+        TSPInstance instance = new TSPInstance([0,1,2,3,4,5],
+            [(0,0),(0,3),(0,6),(3,6),(3,3),(3,0)]);
+
+        // Matrix should be unpopulated before any fitness call
+        Assert.That(problem.DistanceMatrix[0, 1], Is.EqualTo(0));
+        Assert.That(problem.DistanceMatrix[0, 2], Is.EqualTo(0)); 
+        Assert.That(problem.DistanceMatrix[2, 3], Is.EqualTo(0));
+        // Trigger fitness evaluation
+        problem.Fitness(instance);
+
+        // Entries that were needed should now be cached
+        Assert.That(problem.DistanceMatrix[0, 1], Is.EqualTo(3)); // (0,0) to (0,3)
+        Assert.That(problem.DistanceMatrix[0, 2], Is.EqualTo(6)); // (0,0) to (0,6)
+        Assert.That(problem.DistanceMatrix[2, 3], Is.EqualTo(3)); // (0,6) to (3,6)
+    }
+    // Claude
+    [Test]
+    public void DistanceMatrixSymmetrical()
+    {
+        TSPProblem problem = new TSPProblem(6);
+        TSPInstance instance = new TSPInstance([0,1,2,3,4,5],
+            [(0,0),(0,3),(0,6),(3,6),(3,3),(3,0)]);
+
+        problem.Fitness(instance);
+
+        // Confirm symmetry — GetDistance(i,j) == GetDistance(j,i)
+        Assert.That(problem.GetDistance(0, 1, instance), Is.EqualTo(problem.GetDistance(1, 0, instance)));
+        Assert.That(problem.GetDistance(2, 5, instance), Is.EqualTo(problem.GetDistance(5, 2, instance)));
+    }
 }

@@ -24,14 +24,15 @@ public abstract class MinMaxAntSystem<T> : Algorithm<T>
     public override bool Iterate()
     {
         Construct();
-        // Todo 
+        // LocalSearch();
         // UpdatePheromones();
         return true;
     }
+    
     public List<(int, int)> Graph;
     public List<int> Permutation;
     public List<int> Neighbourhood;
-    public List<int> Construct() // ordered construction
+    public List<int> Construct() // arbitrary construction
     {
         List<int> result = new List<int>();
         var currentVertex = 0; // arbitrary, start vertex
@@ -76,12 +77,12 @@ public abstract class MinMaxAntSystem<T> : Algorithm<T>
     public void UpdatePheromones(List<int> tourPermutation)
     {
         double addVal =
-            Math.Min((1.0 - evaporationFactor) * EdgePheromones.GetValueOrDefault((tourPermutation[^1], tourPermutation[0]), defaultPheromone),
+            Math.Min((1.0 - evaporationFactor) * EdgePheromones.GetValueOrDefault((tourPermutation[^1], tourPermutation[0]), defaultPheromone) + evaporationFactor,
                     tauMax);
         EdgePheromones[(tourPermutation[^1], tourPermutation[0])] = addVal;
         for (int i = 0; i < Problem.Dimension - 1; i++)
         {
-            addVal = Math.Min((1.0 - evaporationFactor) * EdgePheromones.GetValueOrDefault((tourPermutation[i], tourPermutation[i + 1]), defaultPheromone),
+            addVal = Math.Min((1.0 - evaporationFactor) * EdgePheromones.GetValueOrDefault((tourPermutation[i], tourPermutation[i + 1]), defaultPheromone) + evaporationFactor,
                              tauMax);
             EdgePheromones[(tourPermutation[i], tourPermutation[i + 1])] = addVal;
             
@@ -90,4 +91,6 @@ public abstract class MinMaxAntSystem<T> : Algorithm<T>
         defaultPheromone = tauMin;  // only works for evaporation = 1.0
 
     }
+
+    public abstract void ConstructionGraph();
 }

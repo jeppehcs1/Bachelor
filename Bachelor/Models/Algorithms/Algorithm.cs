@@ -19,13 +19,7 @@ public interface IAlgorithm
 }
 public abstract class Algorithm<T> : IAlgorithm
 {
-    public int FuncEvals
-    {
-        get
-        {
-            return Problem.FuncEvals;
-        }
-    }
+    public int FuncEvals => Problem.FuncEvals;
 
     public double Runtime { get; set; }
     public int BSFF { get; set; } // Best So Far Fitness

@@ -7,7 +7,7 @@ public struct TSPInstance
 {
     public List<int> Permutation;
     public List<(int x, int y)> Graph;
-
+    
     // Constructor
     public TSPInstance(List<int> permutation, List<(int x, int y)> graph)
     {
@@ -25,7 +25,6 @@ public struct TSPInstance
         }
         return "[" + string.Join(", ", a) + "]";
     }
-        
 
     // Deep copy method
     public TSPInstance DeepCopy()
