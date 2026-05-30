@@ -22,7 +22,8 @@ public class TSPProblem : PermutationProblem
     
         return DistanceMatrix[row, col];
     }
-    internal int EuclidianDistance((int, int) p1, (int, int) p2)
+
+    private int EuclidianDistance((int, int) p1, (int, int) p2)
     {
         
         var (x1, y1) = p1;
@@ -162,7 +163,7 @@ public class TSPProblem : PermutationProblem
         return result;
     }
    
-    public int IntermediateFitness((int, int) indexPair1, (int, int) indexPair2, (int, int) indexPair3, TSPInstance instance)
+    private int IntermediateFitness((int, int) indexPair1, (int, int) indexPair2, (int, int) indexPair3, TSPInstance instance)
     {
         int i1 = CheckBoundary(indexPair1.Item1), j1 = CheckBoundary(indexPair1.Item2);
         int i2 = CheckBoundary(indexPair2.Item1), j2 = CheckBoundary(indexPair2.Item2);
@@ -173,14 +174,14 @@ public class TSPProblem : PermutationProblem
                + GetDistance(i3, j3, instance);
     }
 
-    public int CheckBoundary(int index)
+    private int CheckBoundary(int index)
     {
         if (index < 0) 
         { return Dimension - 1;
         }
         return index == Dimension ? 0 : index;
     }
-    public List<List<int>> SplitAtIndices(List<int> list, int[] indices)
+    private List<List<int>> SplitAtIndices(List<int> list, int[] indices)
     {
         var chunks = new List<List<int>>();
 

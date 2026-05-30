@@ -105,7 +105,8 @@ public class ProblemTests
 
         // Entries that were needed should now be cached
         Assert.That(problem.DistanceMatrix[0, 1], Is.EqualTo(3)); // (0,0) to (0,3)
-        Assert.That(problem.DistanceMatrix[0, 2], Is.EqualTo(6)); // (0,0) to (0,6)
+        Assert.That(problem.DistanceMatrix[0, 2], Is.EqualTo(0)); // hasnt been evaluated
+        Assert.That(problem.DistanceMatrix[1, 2], Is.EqualTo(3)); // (0,3) to (0,6)
         Assert.That(problem.DistanceMatrix[2, 3], Is.EqualTo(3)); // (0,6) to (3,6)
     }
     // Claude
