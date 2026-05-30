@@ -13,7 +13,7 @@ public class SimulatedAnnealingPermutation : SimulatedAnnealing<TSPInstance>
     }
     
     
-    public override void Initialize()
+    public override void InitializeCore()
     {
         SearchPoint.Shuffle();
     }

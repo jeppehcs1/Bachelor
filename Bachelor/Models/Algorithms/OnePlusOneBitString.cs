@@ -39,9 +39,10 @@ public class OnePlusOneBitString(ProblemType<BitArray> problem) : OnePlusOne<Bit
     }
 
     
-    public override void Initialize() 
+    
+
+    public override void InitializeCore()
     {
-        base.Initialize();
         var dim = Problem.Dimension;
         var bits = new bool[dim];
         var random = new Random();
@@ -53,5 +54,4 @@ public class OnePlusOneBitString(ProblemType<BitArray> problem) : OnePlusOne<Bit
         }
         SearchPoint = new BitArray(bits);
     }
-    
 }

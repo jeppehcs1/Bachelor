@@ -17,9 +17,8 @@ public class OnePlusOnePermutation : OnePlusOne<TSPInstance>
     
     
 
-    public override void Initialize()
+    public override void InitializeCore()
     {
-        base.Initialize();
         SearchPoint.Shuffle();
     }
 

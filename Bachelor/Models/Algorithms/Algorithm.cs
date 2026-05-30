@@ -37,7 +37,10 @@ public abstract class Algorithm<T> : IAlgorithm
     public virtual void Initialize()
     {
         Problem.FuncEvals = 0;
+        InitializeCore();
     }
+
+    public abstract void InitializeCore();
     protected  Algorithm(ProblemType<T> problem)
     {
         this.Problem = problem;
