@@ -81,8 +81,11 @@ public class HypercubeViewModel : ViewModelBase
         for (int i = 1; i < 100; i++)                                       
         {    
             Algorithm.Iterate();
-            Points.Add(new DataPoint{ x = XCoordinate(Algorithm.SearchPoint), y = YCoordinate(Algorithm.SearchPoint) });
+            var point = new DataPoint{ x = XCoordinate(Algorithm.SearchPoint), y = YCoordinate(Algorithm.SearchPoint) };
+            Points.Add(point);
+            Console.WriteLine($"i={i} x={point.x:F4} y={point.y:F4}");
         }
+        
                                   
     }      
     

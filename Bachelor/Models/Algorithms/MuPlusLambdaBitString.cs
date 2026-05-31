@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Bachelor.Models.Problems;
 namespace Bachelor.Models.Algorithms;
 using System;
@@ -44,6 +45,7 @@ public class MuPlusLambdaBitString(IProblemType<BitArray> problem) : MuPlusLambd
 
         bool improved = best.Any(ba => !old.Contains(ba));
 
+        Population = best;
         SearchPoint = best.OrderByDescending(ba => Problem.Fitness(ba)).First();
         return improved;
     }
@@ -60,7 +62,7 @@ public class MuPlusLambdaBitString(IProblemType<BitArray> problem) : MuPlusLambd
             var bits = new bool[dim];
             for (int j = 0; j < dim; j++)
             {
-                bits[j] = false; //_random.Next(2) == 1;
+                bits[j] = _random.Next(2) == 1;
             }
             Population.Add(new BitArray(bits));
         }
