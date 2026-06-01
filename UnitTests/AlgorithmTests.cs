@@ -8,6 +8,150 @@ namespace UnitTests;
 
 public class AlgorithmTests
 {
+    [TestFixture]
+    public class MuPlusLambdaTests
+    {
+        // ===== BIT STRING TESTS =====
+
+        [Test]
+        public void Initialize_BitString_PopulationHasMuIndividuals()
+        {
+            var problem = new OneMax(10);
+            var algorithm = new MuPlusLambdaBitString(problem);
+            algorithm.Initialize();
+
+            Assert.That(algorithm.Population.Count, Is.EqualTo(algorithm.Mu));
+        }
+
+        [Test]
+        public void Initialize_BitString_SearchPointIsInPopulation()
+        {
+            var problem = new OneMax(10);
+            var algorithm = new MuPlusLambdaBitString(problem);
+            algorithm.Initialize();
+
+            var bestFitness = algorithm.Population.Max(ba => problem.Fitness(ba));
+            Assert.That(problem.Fitness(algorithm.SearchPoint), Is.EqualTo(bestFitness));
+        }
+
+        [Test]
+        public void UpdateSearchPoint_BitString_KeepsMuBestIndividuals()
+        {
+            var problem = new OneMax(10);
+            var algorithm = new MuPlusLambdaBitString(problem);
+            algorithm.Initialize();
+
+            var old = algorithm.CloneSearchPoint();
+            algorithm.MutateSearchPoint();
+            algorithm.UpdateSearchPoint(old);
+
+            Assert.That(algorithm.Population.Count, Is.EqualTo(algorithm.Mu));
+        }
+
+        [Test]
+        public void UpdateSearchPoint_BitString_SearchPointIsBestInPopulation()
+        {
+            var problem = new OneMax(10);
+            var algorithm = new MuPlusLambdaBitString(problem);
+            algorithm.Initialize();
+
+            var old = algorithm.CloneSearchPoint();
+            algorithm.MutateSearchPoint();
+            algorithm.UpdateSearchPoint(old);
+
+            var bestFitness = algorithm.Population.Max(ba => problem.Fitness(ba));
+            Assert.That(problem.Fitness(algorithm.SearchPoint), Is.EqualTo(bestFitness));
+        }
+
+        [Test]
+        public void MutateSearchPoint_BitString_PopulationGrowsToMuPlusLambda()
+        {
+            var problem = new OneMax(10);
+            var algorithm = new MuPlusLambdaBitString(problem);
+            algorithm.Initialize();
+
+            algorithm.MutateSearchPoint();
+
+            Assert.That(algorithm.Population.Count, Is.EqualTo(algorithm.Mu + algorithm.Lambda));
+        }
+
+        [Test]
+        public void Iterate_BitString_FitnessNeverDecreases()
+        {
+            var problem = new OneMax(10);
+            var algorithm = new MuPlusLambdaBitString(problem);
+            algorithm.Initialize();
+
+            int previousFitness = problem.Fitness(algorithm.SearchPoint);
+            for (int i = 0; i < 50; i++)
+            {
+                algorithm.Iterate();
+                int currentFitness = problem.Fitness(algorithm.SearchPoint);
+                Assert.That(currentFitness, Is.GreaterThanOrEqualTo(previousFitness));
+                previousFitness = currentFitness;
+            }
+        }
+
+        // ===== TSP TESTS =====
+
+        [Test]
+        public void Initialize_TSP_PopulationHasMuIndividuals()
+        {
+            var problem = new TSPProblem(6);
+            var instance = new TSPInstance([0, 1, 2, 3, 4, 5], [(2, 4), (1, 4), (4, 2), (3, 1), (7, 7), (8, 2)]);
+            var algorithm = new MuPlusLambdaPermutation(problem, instance);
+            algorithm.Initialize();
+
+            Assert.That(algorithm.Population.Count, Is.EqualTo(algorithm.Mu));
+        }
+
+        [Test]
+        public void Initialize_TSP_SearchPointIsBestInPopulation()
+        {
+            var problem = new TSPProblem(6);
+            var instance = new TSPInstance([0, 1, 2, 3, 4, 5], [(2, 4), (1, 4), (4, 2), (3, 1), (7, 7), (8, 2)]);
+            var algorithm = new MuPlusLambdaPermutation(problem, instance);
+            algorithm.Initialize();
+
+            var bestFitness = algorithm.Population.Min(i => problem.Fitness(i));
+            Assert.That(problem.Fitness(algorithm.SearchPoint), Is.EqualTo(bestFitness));
+        }
+
+        [Test]
+        public void UpdateSearchPoint_TSP_KeepsMuBestIndividuals()
+        {
+            var problem = new TSPProblem(6);
+            var instance = new TSPInstance([0, 1, 2, 3, 4, 5], [(2, 4), (1, 4), (4, 2), (3, 1), (7, 7), (8, 2)]);
+            var algorithm = new MuPlusLambdaPermutation(problem, instance);
+            algorithm.Initialize();
+
+            var old = algorithm.CloneSearchPoint();
+            algorithm.MutateSearchPoint();
+            algorithm.UpdateSearchPoint(old);
+
+            Assert.That(algorithm.Population.Count, Is.EqualTo(algorithm.Mu));
+        }
+
+        [Test]
+        public void Iterate_TSP_FitnessNeverIncreases()
+        {
+            var problem = new TSPProblem(6);
+            var instance = new TSPInstance([0, 1, 2, 3, 4, 5], [(2, 4), (1, 4), (4, 2), (3, 1), (7, 7), (8, 2)]);
+            var algorithm = new MuPlusLambdaPermutation(problem, instance);
+            algorithm.Initialize();
+
+            double previousFitness = problem.Fitness(algorithm.SearchPoint);
+            for (int i = 0; i < 50; i++)
+            {
+                algorithm.Iterate();
+                double currentFitness = problem.Fitness(algorithm.SearchPoint);
+                Assert.That(currentFitness, Is.LessThanOrEqualTo(previousFitness));
+                previousFitness = currentFitness;
+            }
+        }
+    }
+        
+        
     [Test]
     public void UpdateSearchPoint_WhenNewFitnessIsBetter_KeepsNewSearchPoint()
     {

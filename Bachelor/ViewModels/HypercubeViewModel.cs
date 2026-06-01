@@ -83,7 +83,6 @@ public class HypercubeViewModel : ViewModelBase
             Algorithm.Iterate();
             var point = new DataPoint{ x = XCoordinate(Algorithm.SearchPoint), y = YCoordinate(Algorithm.SearchPoint) };
             Points.Add(point);
-            Console.WriteLine($"i={i} x={point.x:F4} y={point.y:F4}");
         }
         
                                   
