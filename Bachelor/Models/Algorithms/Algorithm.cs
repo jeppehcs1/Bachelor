@@ -34,7 +34,7 @@ public abstract class Algorithm<T> : IAlgorithm
     }
     public abstract bool Iterate(); // return true if the mutation is better than before
 
-    public virtual void Initialize()
+    public void Initialize()
     {
         Problem.FuncEvals = 0;
         InitializeCore();
