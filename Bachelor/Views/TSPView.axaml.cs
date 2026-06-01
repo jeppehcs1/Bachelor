@@ -19,7 +19,7 @@ public partial class TSPView : UserControl
     public TSPView()
     {
         InitializeComponent();
-        DataContext = new TSPViewModel(new SimulatedAnnealingPermutation(
+        DataContext = new TSPViewModel(new MuPlusLambdaPermutation(
             new TSPProblem(6),
             new TSPInstance([0, 5, 3, 4, 2, 1], [(2, 4), (1, 4), (4, 2), (3, 1), (7, 7), (8, 2)])));
         
