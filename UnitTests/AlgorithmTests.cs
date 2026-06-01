@@ -151,6 +151,152 @@ public class AlgorithmTests
         }
     }
         
+    [TestFixture]
+    public class SimulatedAnnealingTests
+    {
+        // ===== BIT STRING TESTS =====
+
+    [Test]
+    public void Initialize_BitString_SearchPointHasCorrectDimension()
+    {
+        var problem = new OneMax(10);
+        var algorithm = new SimulatedAnnealingBitString(problem);
+        algorithm.Initialize();
+
+        Assert.That(algorithm.SearchPoint.Length, Is.EqualTo(10));
+    }
+
+    [Test]
+    public void Initialize_BitString_TemperatureIsPositive()
+    {
+        var problem = new OneMax(10);
+        var algorithm = new SimulatedAnnealingBitString(problem);
+        algorithm.Initialize();
+
+        Assert.That(algorithm._temperature, Is.GreaterThan(0));
+    }
+
+    [Test]
+    public void UpdateSearchPoint_BitString_TemperatureDecreasesEachIteration()
+    {
+        var problem = new OneMax(10);
+        var algorithm = new SimulatedAnnealingBitString(problem);
+        algorithm.Initialize();
+
+        double previousTemperature = algorithm._temperature;
+        algorithm.Iterate();
+
+        Assert.That(algorithm._temperature, Is.LessThan(previousTemperature));
+    }
+
+    [Test]
+    public void Iterate_BitString_SearchPointRemainsValidLength()
+    {
+        var problem = new OneMax(10);
+        var algorithm = new SimulatedAnnealingBitString(problem);
+        algorithm.Initialize();
+
+        for (int i = 0; i < 50; i++)
+        {
+            algorithm.Iterate();
+            Assert.That(algorithm.SearchPoint.Length, Is.EqualTo(10));
+        }
+    }
+
+    [Test]
+    public void MutateSearchPoint_BitString_ChangesExactlyOneBit()
+    {
+        var problem = new OneMax(10);
+        var algorithm = new SimulatedAnnealingBitString(problem);
+        algorithm.Initialize();
+
+        var before = algorithm.CloneSearchPoint();
+        algorithm.MutateSearchPoint();
+
+        int differences = 0;
+        for (int i = 0; i < before.Length; i++)
+            if (before[i] != algorithm.SearchPoint[i]) differences++;
+
+        Assert.That(differences, Is.EqualTo(1));
+    }
+
+    // ===== TSP TESTS =====
+
+    [Test]
+    public void Initialize_TSP_SearchPointIsValidPermutation()
+    {
+        var problem = new TSPProblem(6);
+        var instance = new TSPInstance([0, 1, 2, 3, 4, 5], [(2, 4), (1, 4), (4, 2), (3, 1), (7, 7), (8, 2)]);
+        var algorithm = new SimulatedAnnealingPermutation(problem, instance);
+        algorithm.Initialize();
+
+        var sorted = algorithm.SearchPoint.Permutation.OrderBy(x => x).ToList();
+        Assert.That(sorted, Is.EqualTo(new List<int> { 0, 1, 2, 3, 4, 5 }));
+    }
+
+    [Test]
+    public void Initialize_TSP_TemperatureIsPositive()
+    {
+        var problem = new TSPProblem(6);
+        var instance = new TSPInstance([0, 1, 2, 3, 4, 5], [(2, 4), (1, 4), (4, 2), (3, 1), (7, 7), (8, 2)]);
+        var algorithm = new SimulatedAnnealingPermutation(problem, instance);
+        algorithm.Initialize();
+
+        Assert.That(algorithm._temperature, Is.GreaterThan(0));
+    }
+
+    [Test]
+    public void UpdateSearchPoint_TSP_TemperatureDecreasesEachIteration()
+    {
+        var problem = new TSPProblem(6);
+        var instance = new TSPInstance([0, 1, 2, 3, 4, 5], [(2, 4), (1, 4), (4, 2), (3, 1), (7, 7), (8, 2)]);
+        var algorithm = new SimulatedAnnealingPermutation(problem, instance);
+        algorithm.Initialize();
+
+        double previousTemperature = algorithm._temperature;
+        algorithm.Iterate();
+
+        Assert.That(algorithm._temperature, Is.LessThan(previousTemperature));
+    }
+
+    [Test]
+    public void Iterate_TSP_SearchPointRemainsValidPermutation()
+    {
+        var problem = new TSPProblem(6);
+        var instance = new TSPInstance([0, 1, 2, 3, 4, 5], [(2, 4), (1, 4), (4, 2), (3, 1), (7, 7), (8, 2)]);
+        var algorithm = new SimulatedAnnealingPermutation(problem, instance);
+        algorithm.Initialize();
+
+        for (int i = 0; i < 50; i++)
+        {
+            algorithm.Iterate();
+            var sorted = algorithm.SearchPoint.Permutation.OrderBy(x => x).ToList();
+            Assert.That(sorted, Is.EqualTo(new List<int> { 0, 1, 2, 3, 4, 5 }));
+        }
+    }
+
+    [Test]
+    public void UpdateSearchPoint_TSP_AcceptsWorseSolutionWithHighTemperature()
+    {
+        // With very high temperature, worse solutions should sometimes be accepted
+        var problem = new TSPProblem(6);
+        var instance = new TSPInstance([0, 1, 2, 3, 4, 5], [(2, 4), (1, 4), (4, 2), (3, 1), (7, 7), (8, 2)]);
+        var algorithm = new SimulatedAnnealingPermutation(problem, instance);
+        algorithm.Initialize();
+
+        // Run many iterations at high temperature and check it doesn't always revert
+        bool everAcceptedWorse = false;
+        for (int i = 0; i < 100; i++)
+        {
+            double fitnessBefore = problem.Fitness(algorithm.SearchPoint);
+            algorithm.Iterate();
+            double fitnessAfter = problem.Fitness(algorithm.SearchPoint);
+            if (fitnessAfter > fitnessBefore) everAcceptedWorse = true;
+        }
+
+        Assert.That(everAcceptedWorse, Is.True);
+    }
+}
         
     [Test]
     public void UpdateSearchPoint_WhenNewFitnessIsBetter_KeepsNewSearchPoint()
