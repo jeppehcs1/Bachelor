@@ -6,7 +6,7 @@ namespace Bachelor.Models.Algorithms;
 public abstract class SimulatedAnnealing<T> : Algorithm<T>
 {
     protected Random _random = new Random();
-    protected double _temperature;
+    public double _temperature;
     protected double _alpha;
     protected SimulatedAnnealing(ProblemType<T> problem) : base(problem)
     {
