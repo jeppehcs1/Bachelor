@@ -4,9 +4,9 @@ namespace Bachelor.Models.Problems;
 
 using System.Collections.Generic;
 
-public abstract class PermutationProblem(int dimension) : ProblemType<TSPInstance>
+public abstract class PermutationProblem(int dimension) : ProblemType<TSPInstance>(dimension)
 {
-    public int Dimension { get; set; } = dimension;
+    
 
     public int Fitness(TSPInstance c)
     {

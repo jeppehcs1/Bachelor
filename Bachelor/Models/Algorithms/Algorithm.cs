@@ -44,14 +44,16 @@ public abstract class Algorithm<T> : IAlgorithm
     protected  Algorithm(ProblemType<T> problem)
     {
         this.Problem = problem;
+        StoppingCondition = () => FuncEvals >= 10000000;
     }
 
+    private Func<bool> StoppingCondition  { get; set; }
     public void Run()
     {
         
         BSFF = GetFitness();
         long startTime = Stopwatch.GetTimestamp();
-        while (BSFF != 7542 && FuncEvals < 10000000)
+        while (!StoppingCondition())
         {
             int newFitness = GetFitness();
             if (Iterate())

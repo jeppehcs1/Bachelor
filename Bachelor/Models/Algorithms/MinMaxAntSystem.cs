@@ -23,25 +23,25 @@ public abstract class MinMaxAntSystem<T> : Algorithm<T>
     
     public override bool Iterate()
     {
+        T prev = SearchPoint;
         ConstructAntSolutions();
         // ApplyLocalSearch();
-        // UpdatePheromones();
-        return true;
+        UpdatePheromones();
+        return !ReferenceEquals(SearchPoint, prev);
     }
     
 
-    public List<(int, int)> Graph;
-    public List<int> Permutation;
-    public List<int> Neighbourhood;
     
     
     public abstract void ConstructAntSolutions(); // return iteration best as searchpoint
     public abstract void UpdatePheromones();
     
     public abstract void InitializePheromones();
-    public abstract void ConstructionGraph();
+
     public override void InitializeCore()
     {
         InitializePheromones();
     }
+
+    public abstract double GetEdgePheromones(int currentVertex, int potentialVertex);
 }

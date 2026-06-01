@@ -28,9 +28,9 @@ public class OnePlusOneBitString(ProblemType<BitArray> problem) : OnePlusOne<Bit
     {
         //SearchPoint = ((BitStringProblem)Problem).MutateBitArray(SearchPoint, random);
         
-        for (var i = 0; i < problem.Dimension; i++)
+        for (var i = 0; i < Problem.Dimension; i++)
         {
-            if (_random.Next(problem.Dimension) == 0) // 1/dim chance of being 0, i.e. flipping a bit
+            if (_random.Next(Problem.Dimension) == 0) // 1/dim chance of being 0, i.e. flipping a bit
             {
                 SearchPoint[i] = !SearchPoint[i];
             }

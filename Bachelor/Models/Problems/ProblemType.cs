@@ -7,7 +7,10 @@ public abstract class ProblemType<T>
 {
     public int Dimension { get; set; }
     public int FuncEvals { get; set; }
-    
+    protected ProblemType(int dimension)
+    {
+        Dimension = dimension;
+    }
 
     public int Fitness(T c)
     {

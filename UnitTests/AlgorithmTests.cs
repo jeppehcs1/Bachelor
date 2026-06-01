@@ -1,3 +1,4 @@
+using System.Collections;
 using Bachelor.Models.Algorithms;
 using Bachelor.Models.Problems;
 using NUnit.Framework;
@@ -49,4 +50,192 @@ public class AlgorithmTests
         // Assert: Should revert to oldInstance
         Assert.That(oldInstance.Permutation, Is.EqualTo(algorithm.SearchPoint.Permutation)); //, "Should revert to old SearchPoint if new fitness is worse."
     }
+    
+    
+    // MMAS, largely based on output from Claude
+    [Test]
+    public void PheromonesInitialized()
+    {
+        var problem = new TSPProblem(4);
+        var instance = new TSPInstance([0,1,2,3], [(0,0),(0,3),(3,3),(3,0)]);
+        var algo = new MinMaxAntSystemPermutation(problem, instance);
+        algo.Initialize();
+    
+        Assert.That(algo.GetEdgePheromones(0, 1), Is.EqualTo(algo.InitialPheromone));
+        Assert.That(algo.GetEdgePheromones(1, 3), Is.EqualTo(algo.InitialPheromone));
+    }
+    [Test]
+    public void PheromonesAreSymmetric()
+    {
+        var problem = new TSPProblem(4);
+        var instance = new TSPInstance([0,1,2,3], [(0,0),(0,3),(3,3),(3,0)]);
+        var algo = new MinMaxAntSystemPermutation(problem, instance);
+        algo.Initialize();
+    
+        Assert.That(algo.GetEdgePheromones(0, 2), Is.EqualTo(algo.GetEdgePheromones(2, 0)));
+        algo.Iterate();
+        
+    }
+    [Test]
+    public void FitnessDoesNotWorsenAfterIterations()
+    {
+        var problem = new TSPProblem(4);
+        var instance = new TSPInstance([0,1,2,3], [(0,0),(0,3),(3,3),(3,0)]);
+        var algo = new MinMaxAntSystemPermutation(problem, instance);
+        algo.Initialize();
+    
+        int initialFitness = algo.GetFitness();
+        for (int i = 0; i < 100000; i++)
+        {
+            algo.Iterate();
+            Assert.That(algo.GetFitness(), Is.LessThanOrEqualTo(initialFitness));
+        }
+            
+    
+        
+    }
+    [Test]
+    public void ConstructAntSolutions_ProducesValidPermutation()
+    {
+        var problem = new TSPProblem(4);
+        var instance = new TSPInstance([0,1,2,3], [(0,0),(0,3),(3,3),(3,0)]);
+        var algo = new MinMaxAntSystemPermutation(problem, instance);
+        algo.Initialize();
+        for (int i = 0; i < 100000; i++)
+        {
+            algo.ConstructAntSolutions();  
+            Assert.That(algo.SearchPoint.Permutation.Count, Is.EqualTo(4));
+            Assert.That(algo.SearchPoint.Permutation.OrderBy(x => x), Is.EqualTo(new[] {0,1,2,3}));
+        }
+        
+    }
+    [Test]
+    public void ChooseComponent_NeverReturnsVertexOutsideNeighbourhood()
+    {
+        var problem = new TSPProblem(4);
+        var instance = new TSPInstance([0,1,2,3], [(0,0),(0,3),(3,3),(3,0)]);
+        var algo = new MinMaxAntSystemPermutation(problem, instance);
+        algo.Initialize();
+    
+        // Run many times to catch edge cases
+        for (int i = 0; i < 100000; i++)
+            algo.ConstructAntSolutions();
+    
+        // If we get here without an exception or invalid permutation, the neighbourhood logic is likely to be correct
+        Assert.That(algo.SearchPoint.Permutation.OrderBy(x => x), Is.EqualTo(new[] {0,1,2,3}));
+    }
+    [Test]
+    public void ConstructAntSolutions_IncrementsEvalsByNumAnts()
+    {
+        var problem = new TSPProblem(4);
+        var instance = new TSPInstance([0,1,2,3], [(0,0),(0,3),(3,3),(3,0)]);
+        var algo = new MinMaxAntSystemPermutation(problem, instance);
+        algo.Initialize();
+    
+        int evalsBefore = problem.FuncEvals;
+        algo.ConstructAntSolutions();
+    
+        Assert.That(problem.FuncEvals - evalsBefore, Is.EqualTo(algo.NumAnts));
+    }
+    // bit string mmas
+    [Test]
+    public void BitString_PheromonesInitializedToHalf()
+    {
+        var problem = new OneMax(10);
+        var algo = new MinMaxAntSystemBitString(problem);
+        algo.Initialize();
+        
+        for (int i = 0; i < 10; i++)
+            Assert.That(algo.EdgePheromones[i], Is.EqualTo(0.5));
+    }
+
+    [Test]
+    public void BitString_PheromonesStayWithinBounds()
+    {
+        var problem = new OneMax(10);
+        var algo = new MinMaxAntSystemBitString(problem);
+        algo.Initialize();
+        
+        for (int i = 0; i < 1000; i++)
+        {
+            algo.ConstructAntSolutions();
+            algo.UpdatePheromones();
+            for (int j = 0; j < 10; j++)
+                Assert.That(algo.EdgePheromones[j], Is.InRange(algo.TauMin, algo.TauMax));
+        }
+        
+        
+    }
+
+    [Test]
+    public void BitString_PheromonesIncreaseForSetBits()
+    {
+        var problem = new OneMax(10);
+        var algo = new MinMaxAntSystemBitString(problem);
+        algo.Initialize();
+        
+        // Force a known SearchPoint
+        algo.SearchPoint = new BitArray(new bool[] { true, true, true, true, true, true, true, true, true, true });
+        double before = algo.EdgePheromones[0];
+        algo.UpdatePheromones();
+        
+        Assert.That(algo.EdgePheromones[0], Is.GreaterThan(before));
+    }
+
+    [Test]
+    public void BitString_PheromonesDecreaseForUnsetBits()
+    {
+        var problem = new OneMax(10);
+        var algo = new MinMaxAntSystemBitString(problem);
+        algo.Initialize();
+        
+        // Force all bits unset
+        algo.SearchPoint = new BitArray(10, false);
+        double before = algo.EdgePheromones[0];
+        algo.UpdatePheromones();
+        
+        Assert.That(algo.EdgePheromones[0], Is.LessThan(before));
+    }
+
+    [Test]
+    public void BitString_ConstructAntSolutions_IncrementsEvalsByNumAnts()
+    {
+        var problem = new OneMax(10);
+        var algo = new MinMaxAntSystemBitString(problem);
+        algo.Initialize();
+        
+        int evalsBefore = problem.FuncEvals;
+        algo.ConstructAntSolutions();
+        
+        Assert.That(problem.FuncEvals - evalsBefore, Is.EqualTo(algo.NumAnts));
+    }
+
+    [Test]
+    public void BitString_BsffNeverDecreases()
+    {
+        var problem = new OneMax(10);
+        var algo = new MinMaxAntSystemBitString(problem);
+        algo.Initialize();
+        
+        int previous = algo.BSFF;
+        for (int i = 0; i < 100; i++)
+        {
+            algo.ConstructAntSolutions();
+            algo.UpdatePheromones();
+            Assert.That(algo.BSFF, Is.GreaterThanOrEqualTo(previous));
+            previous = algo.BSFF;
+        }
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+

@@ -109,7 +109,7 @@ public partial class AddBatchesViewModel : ViewModelBase
         { 
             MaxDegreeOfParallelism = Environment.ProcessorCount 
         };
-    
+        
         return Task.Run(() =>
         {
             Parallel.ForEach(_items, options, batchItem =>

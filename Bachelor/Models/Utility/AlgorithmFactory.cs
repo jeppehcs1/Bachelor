@@ -18,6 +18,8 @@ public static class AlgorithmFactory
             ("OnePlusOne", "Bit Strings") => new OnePlusOneBitString(new OneMax(dimension)),
             ("OnePlusOne", "Permutations") => new OnePlusOnePermutation(new TSPProblem(dimension), instance),
             ("SimulatedAnnealing", "Bit Strings") => new SimulatedAnnealingBitString(new OneMax(dimension)),
+            ("MinMaxAntSystem", "Bit Strings") => new MinMaxAntSystemBitString(new OneMax(dimension)),
+            ("MinMaxAntSystem", "Permutations") => new MinMaxAntSystemPermutation(new TSPProblem(dimension), instance),
             _ => throw new ArgumentException($"Unknown: {algorithmName}, {searchSpace}")
         };
         return algorithm;

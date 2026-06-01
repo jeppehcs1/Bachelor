@@ -7,20 +7,42 @@ namespace Bachelor.Models.Algorithms;
 
 public class MinMaxAntSystemPermutation: MinMaxAntSystem<TSPInstance>
 {
-    public MinMaxAntSystemPermutation(TSPProblem problem) : base(problem)
+    public MinMaxAntSystemPermutation(TSPProblem problem, TSPInstance instance) : base(problem)
     {
         NumAnts = problem.Dimension;
         TauMax = 1.0 - 1.0/problem.Dimension;
         TauMin = 1.0 / (Problem.Dimension *  Problem.Dimension);
         Alpha = 1.0;
         Beta = 5.0;
+        Rho = 0.002;
         InitialPheromone = TauMax;
+        SearchPoint = instance;
+        BSFF = GetFitness();
+        EdgePheromones = new double[Problem.Dimension, Problem.Dimension];
     }
     private double[,] EdgePheromones;
-    private List<int> IterationBest;
+    private (List<int>, int) IterationBest;
     public override void UpdatePheromones()
     {
-        throw new NotImplementedException();
+        // Evaporate all (only upper triangle since TSP is symmetric)
+        for (int i = 0; i < Problem.Dimension; i++)
+            for (int j = i + 1; j < Problem.Dimension; j++)
+                EdgePheromones[i, j] = Math.Max(TauMin, EdgePheromones[i, j] * (1 - Rho));
+
+        // Deposit on best tour edges
+        var tour = IterationBest.Item1;
+        double deposit = 1.0 / IterationBest.Item2;
+    
+        for (int i = 0; i < tour.Count - 1; i++)
+        {
+            int row = Math.Min(tour[i], tour[i + 1]);
+            int col = Math.Max(tour[i], tour[i + 1]);
+            EdgePheromones[row, col] = Math.Min(TauMax, EdgePheromones[row, col] + deposit);
+        }
+        // closing edge
+        int r = Math.Min(tour[^1], tour[0]);
+        int c = Math.Max(tour[^1], tour[0]);
+        EdgePheromones[r, c] = Math.Min(TauMax, EdgePheromones[r, c] + deposit);
     }
 
     public override void InitializePheromones()
@@ -28,18 +50,12 @@ public class MinMaxAntSystemPermutation: MinMaxAntSystem<TSPInstance>
         for (int i = 0; i < Problem.Dimension; i++)
             for (int j = i + 1; j < Problem.Dimension; j++)
                 EdgePheromones[i, j] = InitialPheromone;
-        return;
-    }
-
-    public override void ConstructionGraph()
-    {
         
     }
 
     public override void ConstructAntSolutions() //ordered construction
     {
-        List<int> iterationBest = [];
-        int iterationBestFitness = 0;
+        int iterationBestFitness = 999999999;
         for (int i = 0; i < NumAnts; i++)
         {
             // initialize ant
@@ -48,26 +64,27 @@ public class MinMaxAntSystemPermutation: MinMaxAntSystem<TSPInstance>
             int currentVertex = _random.Next(antNeighbourhood.Count); // Random start vertex
             if (antNeighbourhood.Remove(currentVertex))
                 antPermutation.Add(currentVertex);
-            int tourLength = 0;
-            // construct tour (tour length computed as it is built)
+            
+            // construct tour 
             for (int j = 0; j < Problem.Dimension - 1; j++)
             {
                 int component = ChooseComponent(currentVertex, antNeighbourhood);
                 antNeighbourhood.Remove(component);
                 antPermutation.Add(component);
-                tourLength += ((TSPProblem) Problem).GetDistance(currentVertex, component, SearchPoint);
+                
+                currentVertex = component;
             }
-
+            int tourLength = ((TSPProblem) Problem).Fitness(new TSPInstance(antPermutation, SearchPoint.Graph));
             if (tourLength < iterationBestFitness)
             {
-                iterationBest = antPermutation;
+                IterationBest = (antPermutation, tourLength);
                 iterationBestFitness = tourLength;
             }
         }
 
         if (iterationBestFitness < BSFF)
         {
-            SearchPoint = new TSPInstance(iterationBest, SearchPoint.Graph);
+            SearchPoint = new TSPInstance(IterationBest.Item1, SearchPoint.Graph);
             BSFF = iterationBestFitness;
         }
     }
@@ -82,7 +99,7 @@ public class MinMaxAntSystemPermutation: MinMaxAntSystem<TSPInstance>
                  * Math.Pow(Heuristic(currentVertex, potentialEdgeVertex), Beta);
         }
         double cum = 0;
-        int chosenVertex = 80000000; // fallback in case of floating point imprecision, TODO
+        int chosenVertex = Problem.Dimension + 2; // fallback in case of floating point imprecision, ensure error
         foreach (var potentialEdgeVertex in antNeighbourhood)
         {
             double probability = Math.Pow(GetEdgePheromones(currentVertex, potentialEdgeVertex), Alpha)
@@ -97,7 +114,7 @@ public class MinMaxAntSystemPermutation: MinMaxAntSystem<TSPInstance>
         return chosenVertex;
     }
 
-    private double GetEdgePheromones(int currentVertex, int potentialEdgeVertex)
+    public override double GetEdgePheromones(int currentVertex, int potentialEdgeVertex)
     {
         int row = Math.Min(currentVertex, potentialEdgeVertex);
         int col = Math.Max(currentVertex, potentialEdgeVertex);
@@ -111,8 +128,12 @@ public class MinMaxAntSystemPermutation: MinMaxAntSystem<TSPInstance>
 
     private double Heuristic(int currentVertex, int potentialEdgeVertex)
     {
-        return ((TSPProblem) Problem).GetDistance(currentVertex, potentialEdgeVertex, SearchPoint);
+        return 1.0/((TSPProblem) Problem).GetDistance(currentVertex, potentialEdgeVertex, SearchPoint);
     }
 
-    
+    public override void InitializeCore()
+    {
+        SearchPoint.Shuffle();
+        base.InitializeCore();
+    }
 }
