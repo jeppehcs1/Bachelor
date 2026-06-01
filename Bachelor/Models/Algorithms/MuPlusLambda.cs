@@ -8,8 +8,8 @@ using Bachelor.Models.Problems;
 public abstract class MuPlusLambda<T> : Algorithm<T>
 {
     protected readonly Random _random = new Random();
-    protected readonly int Mu;
-    protected readonly int Lambda;
+    public readonly int Mu;
+    public readonly int Lambda;
     public List<T> Population;
     
     protected MuPlusLambda(ProblemType<T> problem) : base(problem)
