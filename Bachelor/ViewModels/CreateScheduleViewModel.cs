@@ -47,32 +47,58 @@ public partial class CreateScheduleViewModel : ViewModelBase
         UpdateFinishConditions();
         UpdateVisualizations();
     }
-
+    [ObservableProperty]
+    private string _filePathError = "";
     [RelayCommand]
     private void NextOnClick()
     {
         Schedule schedule;
-        if (IsPermutations)
+        if (IsTSP)
         {
-            ITSPFileReader reader = new Euclid2DTSPFileReader();
-            TSPInstance instance = reader.Read(FilePath);
-            schedule = new Schedule(SelectedSearchSpace,  SelectedAlgorithm, SelectedProblem, SelectedFinishCondition, SelectedVisualization, instance);
+            try
+            {
+                ITSPFileReader reader = new Euclid2DTSPFileReader();
+                TSPInstance instance = reader.Read(FilePath);
+                schedule = new Schedule(SelectedSearchSpace, SelectedAlgorithm, SelectedProblem, 
+                    SelectedFinishCondition, SelectedVisualization, instance);
+            }
+            catch (FileNotFoundException e)
+            {
+                FilePathError = e.Message;
+                return;
+            }
+            catch (FormatException e)
+            {
+                FilePathError = e.Message;
+                return;
+            }
+            catch (Exception)
+            {
+                FilePathError = "Could not read file. Make sure it is a valid .tsp file.";
+                return;
+            }
         }
         else
         {
-            schedule = new Schedule(SelectedSearchSpace, SelectedAlgorithm, SelectedProblem, SelectedFinishCondition, SelectedVisualization, GetDimensionAsInt());
+            schedule = new Schedule(SelectedSearchSpace, SelectedAlgorithm, SelectedProblem, 
+                SelectedFinishCondition, SelectedVisualization, GetDimensionAsInt());
         }
         _addBatchesViewModel.Schedule = schedule;
-        _mainViewModel.CurrentView = _addBatchesViewModel;  
-    } 
+        _mainViewModel.CurrentView = _addBatchesViewModel;
+    }
+    
     [ObservableProperty]
     private string _filePath = "";
     public string Dimension
     {
         get => _dimension;
-        set => this.SetProperty(ref _dimension, value);
+        set
+        {
+            OnPropertyChanged(nameof(CanProceed));
+            this.SetProperty(ref _dimension, value);
+        }
     }
-    
+    partial void OnFilePathChanged(string value) => OnPropertyChanged(nameof(CanProceed));
     public int GetDimensionAsInt() => int.TryParse(_dimension, out var result) ? result : 0;
     [ObservableProperty]
     private bool _isPermutations;
@@ -83,6 +109,7 @@ public partial class CreateScheduleViewModel : ViewModelBase
         {
             SetProperty(ref _selectedSearchSpace, value);
             IsPermutations = value == "Permutations";
+            OnPropertyChanged(nameof(CanProceed));
             UpdateAlgorithms();
         }
     }
@@ -92,15 +119,20 @@ public partial class CreateScheduleViewModel : ViewModelBase
         set
         {
             SetProperty(ref _selectedAlgorithm, value);
+            OnPropertyChanged(nameof(CanProceed));
             UpdateProblems();
         }
     }
+    [ObservableProperty]
+    private bool _isTSP;
     public string SelectedProblem
     {
         get => _selectedProblem;
         set
         {
             SetProperty(ref _selectedProblem, value);
+            IsTSP = value == "TSPProblem";
+            OnPropertyChanged(nameof(CanProceed));
             UpdateFinishConditions();
             UpdateVisualizations();
             
@@ -110,12 +142,21 @@ public partial class CreateScheduleViewModel : ViewModelBase
     public string SelectedFinishCondition
     {
         get => _selectedFinishCondition;
-        set => SetProperty(ref _selectedFinishCondition, value);
+        set
+        {
+            SetProperty(ref _selectedFinishCondition, value); 
+            OnPropertyChanged(nameof(CanProceed));
+        }
+        
     }
     public string SelectedVisualization
     {
         get => _selectedVisualization;
-        set => SetProperty(ref _selectedVisualization, value);
+        set
+        {
+            SetProperty(ref _selectedVisualization, value);
+            OnPropertyChanged(nameof(CanProceed));
+        }
     }
     public ObservableCollection<string> Algorithms
     {
@@ -192,11 +233,18 @@ public partial class CreateScheduleViewModel : ViewModelBase
     {
         var visualizationList = SelectedProblem switch
         {
-            "Bo" => new ObservableCollection<string> { "Onefkx", "Lefewnes"},
-            _ => new ObservableCollection<string> { "No visualization", "hypercube"}
+            "_" => new ObservableCollection<string> { "Onefkx", "Lefewnes"},
+            "" => new ObservableCollection<string> { "No visualization", "hypercube"}
         };
         Visualizations = visualizationList;
     }
+    public bool CanProceed => 
+        !string.IsNullOrEmpty(SelectedSearchSpace) &&
+        !string.IsNullOrEmpty(SelectedAlgorithm) &&
+        !string.IsNullOrEmpty(SelectedProblem) &&
+        !string.IsNullOrEmpty(SelectedFinishCondition) &&
+        !string.IsNullOrEmpty(SelectedVisualization) &&
+        (IsTSP ? !string.IsNullOrEmpty(FilePath) : GetDimensionAsInt() > 0);
 
     
     

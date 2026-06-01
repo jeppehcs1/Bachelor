@@ -11,6 +11,7 @@ public interface IAlgorithm
     int BSFF { get; set; }
     double Runtime { get; set; }
     int FuncEvals { get; }
+    Func<bool> StoppingCondition { get; set; }
     int GetFitness();
     bool Iterate();
     void Initialize();
@@ -47,7 +48,7 @@ public abstract class Algorithm<T> : IAlgorithm
         StoppingCondition = () => FuncEvals >= 10000000;
     }
 
-    private Func<bool> StoppingCondition  { get; set; }
+    public Func<bool> StoppingCondition  { get; set; }
     public void Run()
     {
         

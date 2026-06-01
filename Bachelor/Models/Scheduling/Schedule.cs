@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Bachelor.Models.Algorithms;
 using Bachelor.Models.Problems;
 using Bachelor.Models.Utility;
@@ -12,6 +13,7 @@ public class Schedule
     public string ProblemName;
     public string FinishCondition;
     public string Visualization;
+    public int Optimum;
     public TSPInstance TSPInstance;
     public int Dimension;
     public Schedule(string searchSpace, string algorithm, string problem, string finishCondition, string visualization, int dimension){
@@ -33,6 +35,17 @@ public class Schedule
         Visualization = visualization;
         Dimension = instance.Graph.Count;
         TSPInstance = instance;
+    }
+    public Func<bool> BuildStoppingCondition(IAlgorithm algorithm)
+    {
+        return FinishCondition switch
+        {
+            "Function evaluations" => StoppingConditions.FuncEvals(algorithm, 1000000),
+            "Optimum Reached" => StoppingConditions.Either(
+                StoppingConditions.OptimumReached(algorithm, Optimum),
+                StoppingConditions.FuncEvals(algorithm, 1000000)),
+            _ => throw new ArgumentException($"Unknown finish condition: {FinishCondition}")
+        };
     }
     
 }

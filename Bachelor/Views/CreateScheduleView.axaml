@@ -30,17 +30,20 @@
                 <TextBlock Grid.Column="4" Grid.Row="0" Text="Problem" FontWeight="Bold" 
                            />
                 <ListBox Grid.Column="4" Grid.Row="1" 
-                         IsVisible="{Binding !IsPermutations}"
                          ItemsSource="{Binding Problems}"
                          SelectedItem="{Binding SelectedProblem}"
                          Width="200" />
-                <StackPanel Grid.Column="4" Grid.Row="1" 
-                            Orientation="Horizontal" 
-                            Spacing="8"
-                            IsVisible="{Binding IsPermutations}">
-                    <Button Click="BrowseFileOnClick">Select .tsp File</Button>
-                    <TextBox Text="{Binding FilePath}" Width="200"
-                             Height="40"/>
+                <StackPanel Grid.Column="4" Grid.Row="4"
+                            Orientation="Vertical"
+                            Spacing="4"
+                            IsVisible="{Binding IsTSP}">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button Click="BrowseFileOnClick">Select .tsp File</Button>
+                        <TextBox Text="{Binding FilePath}" Width="200" Height="40"/>
+                    </StackPanel>
+                    <TextBlock Text="{Binding FilePathError}" 
+                               Foreground="Red"
+                               IsVisible="{Binding FilePathError, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
                 </StackPanel>
                 
                 <TextBlock Grid.Column="0" Grid.Row="3" Text="Finish Condition" FontWeight="Bold"/>
@@ -54,11 +57,11 @@
                           ItemsSource="{Binding Visualizations}"
                           SelectedItem="{Binding SelectedVisualization}"
                           Width="200"/>
-                <TextBlock Grid.Column="4" Grid.Row="3" Text="Dimension" FontWeight="Bold"/>
+                <TextBlock Grid.Column="4" Grid.Row="3" Text="Dimension" FontWeight="Bold" IsVisible="{Binding !IsTSP}"/>
                 <TextBox Grid.Column="4" Grid.Row="4" Text="{Binding Dimension}"
-                            Height="40"/>
+                            Height="40" IsVisible="{Binding !IsTSP}"/>
             </Grid>
-            <Button Command="{Binding NextOnClickCommand}">Next</Button>
+            <Button Command="{Binding NextOnClickCommand}" IsEnabled="{Binding CanProceed}">Next</Button>
             
         </StackPanel>
         

@@ -13,6 +13,7 @@ public partial class CreateScheduleView : UserControl
     {
         InitializeComponent();
     }
+
     private async void BrowseFileOnClick(object sender, RoutedEventArgs e)
     {
         var topLevel = TopLevel.GetTopLevel(this);
@@ -21,8 +22,13 @@ public partial class CreateScheduleView : UserControl
             Title = "Open TSP File",
             AllowMultiple = false
         });
-        
+
         if (files.Count >= 1 && DataContext is CreateScheduleViewModel vm)
+        {
             vm.FilePath = files[0].Path.LocalPath;
+            vm.FilePathError = "";
+        }
+
+        
     }
 }

@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Bachelor.Models.Algorithms;
 using Bachelor.Models.Problems;
 using Bachelor.Models.Scheduling;
@@ -9,28 +12,31 @@ public static class AlgorithmFactory
 {
     public static IAlgorithm Create(Schedule schedule)
     {
-        var algorithmName = schedule.AlgorithmName;
-        var searchSpace = schedule.SearchSpace;
-        var problemName = schedule.ProblemName;
-        var dimension = schedule.Dimension;
-        var instance = schedule.TSPInstance;
-    
-        IAlgorithm algorithm = (algorithmName, searchSpace, problemName) switch
+        var assembly = Assembly.GetExecutingAssembly();
+        var suffix = schedule.SearchSpace switch
         {
-            ("OnePlusOne", "Bit Strings", "OneMax") => new OnePlusOneBitString(new OneMax(dimension)),
-            ("OnePlusOne", "Bit Strings", "LeadingOnes") => new OnePlusOneBitString(new LeadingOnes(dimension)),
-            ("OnePlusOne", "Permutations", _) => new OnePlusOnePermutation(new TSPProblem(dimension), instance),
-            ("SimulatedAnnealing", "Bit Strings", "OneMax") => new SimulatedAnnealingBitString(new OneMax(dimension)),
-            ("SimulatedAnnealing", "Bit Strings", "LeadingOnes") => new SimulatedAnnealingBitString(new LeadingOnes(dimension)),
-            ("SimulatedAnnealing", "Permutations", _) => new SimulatedAnnealingPermutation(new TSPProblem(dimension), instance),
-            ("MinMaxAntSystem", "Bit Strings", "OneMax") => new MinMaxAntSystemBitString(new OneMax(dimension)),
-            ("MinMaxAntSystem", "Bit Strings", "LeadingOnes") => new MinMaxAntSystemBitString(new LeadingOnes(dimension)),
-            ("MinMaxAntSystem", "Permutations", _) => new MinMaxAntSystemPermutation(new TSPProblem(dimension), instance),
-            ("MuPlusLambda", "Bit Strings", "OneMax") => new MuPlusLambdaBitString(new OneMax(dimension)),
-            ("MuPlusLambda", "Bit Strings", "LeadingOnes") => new MuPlusLambdaBitString(new LeadingOnes(dimension)),
-            ("MuPlusLambda", "Permutations", _) => new MuPlusLambdaPermutation(new TSPProblem(dimension), instance),
-            _ => throw new ArgumentException($"Unknown: {algorithmName}, {searchSpace}, {problemName}")
+            "Bit Strings" => "BitString",
+            "Permutations" => "Permutation",
+            _ => throw new ArgumentException($"Unknown search space: {schedule.SearchSpace}")
         };
-        return algorithm;
+    
+        var algorithmType = assembly.GetTypes()
+                                .FirstOrDefault(t => t.Namespace == "Bachelor.Models.Algorithms"
+                                                     && t.Name == $"{schedule.AlgorithmName}{suffix}")
+                            ?? throw new ArgumentException($"Unknown algorithm: {schedule.AlgorithmName}{suffix}");
+
+        var problemType = assembly.GetTypes()
+                              .FirstOrDefault(t => t.Namespace == "Bachelor.Models.Problems"
+                                                   && t.Name == schedule.ProblemName)
+                          ?? throw new ArgumentException($"Unknown problem: {schedule.ProblemName}");
+
+        var problem = Activator.CreateInstance(problemType, schedule.Dimension);
+    
+        return schedule.SearchSpace switch
+        {
+            "Bit Strings" => (IAlgorithm) Activator.CreateInstance(algorithmType, problem),
+            "Permutations" => (IAlgorithm) Activator.CreateInstance(algorithmType, problem, schedule.TSPInstance),
+            _ => throw new ArgumentException()
+        };
     }
 }
