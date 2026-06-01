@@ -85,7 +85,7 @@ public class TSPProblem : PermutationProblem
         // chunk[0] first element Perm[indices[2]] last element Perm[indices[0]-1] (wraps around)
         // chunk[1] first element Perm[indices[0]] last element Perm[indices[1]-1]
         // chunk[1] first element Perm[indices[1]] last element Perm[indices[2]-1]
-        var permOriginalIntermediateFitness = IntermediateFitness((chunks[0][^1],chunks[1][0]),
+        var permOriginalIntermediateFitness = Intermediate2DFitness((chunks[0][^1],chunks[1][0]),
                                                                         (chunks[1][^1],chunks[2][0]),
                                                                         (chunks[2][^1],chunks[0][0]), instance);
         var oneRevA = chunks[0].AsEnumerable().Reverse()
@@ -94,7 +94,7 @@ public class TSPProblem : PermutationProblem
             .ToList();
         TSPInstance permA = new TSPInstance(oneRevA, instance.Graph);
         // calculate fitness of new edges
-        var permAIntermediateFitness = IntermediateFitness((chunks[0][0],chunks[1][0]),
+        var permAIntermediateFitness = Intermediate2DFitness((chunks[0][0],chunks[1][0]),
                                                                 (chunks[1][^1],chunks[2][0]),
                                                                 (chunks[2][^1],chunks[0][^1]), instance);
         var oneRevB = chunks[0]
@@ -102,7 +102,7 @@ public class TSPProblem : PermutationProblem
             .Concat(chunks[2])
             .ToList();
         TSPInstance permB = new TSPInstance(oneRevB, instance.Graph);
-        var permBIntermediateFitness = IntermediateFitness((chunks[0][^1],chunks[1][^1]),
+        var permBIntermediateFitness = Intermediate2DFitness((chunks[0][^1],chunks[1][^1]),
                                                                 (chunks[1][0],chunks[2][0]),
                                                                 (chunks[2][^1],chunks[0][0]), instance);
         var oneRevC = chunks[0]
@@ -110,7 +110,7 @@ public class TSPProblem : PermutationProblem
             .Concat(chunks[2].AsEnumerable().Reverse())
             .ToList();
         TSPInstance permC = new TSPInstance(oneRevC, instance.Graph);
-        var permCIntermediateFitness = IntermediateFitness((chunks[0][^1],chunks[1][0]),
+        var permCIntermediateFitness = Intermediate2DFitness((chunks[0][^1],chunks[1][0]),
                                                                 (chunks[1][^1],chunks[2][^1]),
                                                                 (chunks[2][0],chunks[0][0]), instance);
         var twoRevA = chunks[0].AsEnumerable().Reverse()
@@ -118,7 +118,7 @@ public class TSPProblem : PermutationProblem
             .Concat(chunks[2])
             .ToList();
         TSPInstance permD = new TSPInstance(twoRevA, instance.Graph);
-        var permDIntermediateFitness = IntermediateFitness((chunks[0][0],chunks[1][^1]),
+        var permDIntermediateFitness = Intermediate2DFitness((chunks[0][0],chunks[1][^1]),
                                                                 (chunks[1][0],chunks[2][0]),
                                                                 (chunks[2][^1],chunks[0][^1]), instance);
         var twoRevB = chunks[0].AsEnumerable().Reverse()
@@ -126,7 +126,7 @@ public class TSPProblem : PermutationProblem
             .Concat(chunks[2].AsEnumerable().Reverse())
             .ToList();
         TSPInstance permE = new TSPInstance(twoRevB, instance.Graph);
-        var permEIntermediateFitness = IntermediateFitness((chunks[0][0],chunks[1][0]),
+        var permEIntermediateFitness = Intermediate2DFitness((chunks[0][0],chunks[1][0]),
                                                                 (chunks[1][0],chunks[2][^1]),
                                                                 (chunks[2][0],chunks[0][^1]), instance);
         var twoRevC = chunks[0]
@@ -134,7 +134,7 @@ public class TSPProblem : PermutationProblem
             .Concat(chunks[2].AsEnumerable().Reverse())
             .ToList();
         TSPInstance permF = new TSPInstance(twoRevC, instance.Graph);
-        var permFIntermediateFitness = IntermediateFitness((chunks[0][^1],chunks[1][^1]),
+        var permFIntermediateFitness = Intermediate2DFitness((chunks[0][^1],chunks[1][^1]),
                                                                 (chunks[1][0],chunks[2][^1]),
                                                                 (chunks[2][0],chunks[0][0]), instance);
         var threeRev = chunks[0].AsEnumerable().Reverse()
@@ -142,7 +142,7 @@ public class TSPProblem : PermutationProblem
             .Concat(chunks[2].AsEnumerable().Reverse())
             .ToList();
         TSPInstance permG = new TSPInstance(threeRev, instance.Graph);
-        var permGIntermediateFitness = IntermediateFitness((chunks[0][0],chunks[1][^1]),
+        var permGIntermediateFitness = Intermediate2DFitness((chunks[0][0],chunks[1][^1]),
                                                                 (chunks[1][0],chunks[2][^1]),
                                                                 (chunks[2][0],chunks[0][^1]), instance);
 
@@ -163,7 +163,7 @@ public class TSPProblem : PermutationProblem
         return result;
     }
    
-    private int IntermediateFitness((int, int) indexPair1, (int, int) indexPair2, (int, int) indexPair3, TSPInstance instance)
+    private int Intermediate2DFitness((int, int) indexPair1, (int, int) indexPair2, (int, int) indexPair3, TSPInstance instance)
     {
         int i1 = CheckBoundary(indexPair1.Item1), j1 = CheckBoundary(indexPair1.Item2);
         int i2 = CheckBoundary(indexPair2.Item1), j2 = CheckBoundary(indexPair2.Item2);

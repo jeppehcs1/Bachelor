@@ -1,0 +1,81 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:Bachelor.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Bachelor.Views.AlgorithmConfigView"
+        x:DataType="viewModels:AlgorithmConfigViewModel"
+        Title="Configure Algorithm"
+        >
+        <StackPanel Margin="20" Spacing="15">
+        
+                <TextBlock Text="{Binding AlgorithmName}" FontWeight="Bold" FontSize="16"/>
+        
+                <!-- Dynamic config fields based on selected algorithm -->
+                <ContentControl Content="{Binding ConfigViewModel}">
+                        <ContentControl.DataTemplates>
+                                <DataTemplate DataType="viewModels:SimulatedAnnealingConfigViewModel">
+                                        <StackPanel Spacing="10">
+                                                <StackPanel>
+                                                        <TextBlock Text="Initial temperature" FontWeight="Bold"/>
+                                                        <TextBox Text="{Binding Temperature}"/>
+                                                </StackPanel>
+                                                <StackPanel>
+                                                        <TextBlock Text="Cooling rate" FontWeight="Bold"/>
+                                                        <TextBox Text="{Binding Alpha}"/>
+                                                </StackPanel>
+                                        </StackPanel>
+                                </DataTemplate>
+                                <DataTemplate DataType="viewModels:MuPlusLambdaConfigViewModel">
+                                        <StackPanel Spacing="10">
+                                                <StackPanel>
+                                                        <TextBlock Text="Mu (μ)" FontWeight="Bold"/>
+                                                        <TextBox Text="{Binding Mu}"/>
+                                                </StackPanel>
+                                                <StackPanel>
+                                                        <TextBlock Text="Lambda (λ)" FontWeight="Bold"/>
+                                                        <TextBox Text="{Binding Lambda}"/>
+                                                </StackPanel>
+                                        </StackPanel>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type viewModels:MMASConfigViewModel}">
+                                        <StackPanel Spacing="10">
+                                                <StackPanel>
+                                                        <TextBlock Text="Evaporation factor" FontWeight="Bold"/>
+                                                        <TextBox Text="{Binding Rho}"/>
+                                                </StackPanel>
+                                                <StackPanel>
+                                                        <TextBlock Text="Alpha" FontWeight="Bold"/>
+                                                        <TextBox Text="{Binding Alpha}"/>
+                                                </StackPanel>
+                                                <StackPanel>
+                                                        <TextBlock Text="Beta" FontWeight="Bold"/>
+                                                        <TextBox Text="{Binding Beta}"/>
+                                                </StackPanel>
+                                                <StackPanel>
+                                                        <TextBlock Text="Number of ants (m)" FontWeight="Bold"/>
+                                                        <TextBox Text="{Binding Ants}"/>
+                                                </StackPanel>
+                                                <StackPanel>
+                                                        <TextBlock Text="TauMax" FontWeight="Bold"/>
+                                                        <TextBox Text="{Binding TauMax}"/>
+                                                </StackPanel>
+                                                <StackPanel>
+                                                        <TextBlock Text="TauMin" FontWeight="Bold"/>
+                                                        <TextBox Text="{Binding TauMin}"/>
+                                                </StackPanel>
+                                        </StackPanel>
+                                </DataTemplate>
+                        </ContentControl.DataTemplates>
+                </ContentControl>
+        
+                <!-- Confirm/Cancel buttons -->
+                <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right">
+                        <Button Content="OK" Command="{Binding ConfirmCommand}"/>
+                        <Button Content="Cancel" Command="{Binding CancelCommand}"/>
+                </StackPanel>
+        
+        </StackPanel>
+    
+</Window>

@@ -30,7 +30,16 @@ public abstract class MinMaxAntSystem<T> : Algorithm<T>
         return !ReferenceEquals(SearchPoint, prev);
     }
     
-
+    public override void Configure(Dictionary<string, object> config)
+    {
+        if (config.TryGetValue("TauMin", out var taumin)) TauMin = (double)taumin;
+        if (config.TryGetValue("TauMax", out var taumax)) TauMax= (double)taumax;
+        if (config.TryGetValue("Rho", out var rho)) Rho = (double)rho;
+        if (config.TryGetValue("Alpha", out var alpha)) Alpha = (double)alpha;
+        if (config.TryGetValue("Beta", out var beta)) Beta = (double)beta;
+        if (config.TryGetValue("Ants", out var ants)) NumAnts = (int)ants;
+        
+    }
     
     
     public abstract void ConstructAntSolutions(); // return iteration best as searchpoint

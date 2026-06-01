@@ -8,8 +8,8 @@ using Bachelor.Models.Problems;
 public abstract class MuPlusLambda<T> : Algorithm<T>
 {
     protected readonly Random _random = new Random();
-    public readonly int Mu;
-    public readonly int Lambda;
+    public int Mu;
+    public int Lambda;
     public List<T> Population;
     
     protected MuPlusLambda(ProblemType<T> problem) : base(problem)
@@ -17,8 +17,11 @@ public abstract class MuPlusLambda<T> : Algorithm<T>
         Mu = 5;
         Lambda = 20;
     }
-    
-    
+    public override void Configure(Dictionary<string, object> config)
+    {
+        if (config.TryGetValue("Mu", out var mu)) Mu = (int)mu;
+        if (config.TryGetValue("Lambda", out var lambda)) Lambda = (int)lambda;
+    }
     public override bool Iterate()
     {
         var dim = Problem.Dimension;

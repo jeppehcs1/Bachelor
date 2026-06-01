@@ -26,6 +26,12 @@
                           ItemsSource="{Binding Algorithms}"
                           SelectedItem="{Binding SelectedAlgorithm}"
                           Width="200" />
+                <Button Grid.Column="2" Grid.Row="2"
+                        Command="{Binding ConfigureAlgorithmOnClickCommand}"
+                        IsEnabled="{Binding SelectedAlgorithm, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                        Width="200">
+                    Configure Algorithm
+                </Button>
                 
                 <TextBlock Grid.Column="4" Grid.Row="0" Text="Problem" FontWeight="Bold" 
                            />

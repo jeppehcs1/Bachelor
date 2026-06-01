@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Avalonia.Controls;
 using Bachelor.Models;
 using Bachelor.Models.Algorithms;
 using Bachelor.Models.Problems;
@@ -26,14 +27,14 @@ public partial class MainWindowViewModel : ViewModelBase
     private readonly CreateScheduleViewModel _createScheduleViewModel;
     private readonly AddBatchesViewModel _addBatchesViewModel;
 
-    public MainWindowViewModel()
+    public MainWindowViewModel(Window parentWindow)
     {
         // Create ViewModels once
         _plotViewModel = new PlotViewModel();
         _hypercubeViewModel = new HypercubeViewModel(new MuPlusLambdaBitString(new OneMax(20)));
         _tspViewModel = new TSPViewModel();
         _addBatchesViewModel = new AddBatchesViewModel();
-        _createScheduleViewModel = new CreateScheduleViewModel(this, _addBatchesViewModel);
+        _createScheduleViewModel = new CreateScheduleViewModel(this, _addBatchesViewModel, parentWindow);
         // Default view
         CurrentView = new HomeView();
     }

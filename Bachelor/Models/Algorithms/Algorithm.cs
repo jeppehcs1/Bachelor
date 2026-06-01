@@ -16,12 +16,13 @@ public interface IAlgorithm
     bool Iterate();
     void Initialize();
     void Run();
+    void Configure(Dictionary<string, object> config);
     
 }
 public abstract class Algorithm<T> : IAlgorithm
 {
     public int FuncEvals => Problem.FuncEvals;
-
+    
     public double Runtime { get; set; }
     public int BSFF { get; set; } // Best So Far Fitness
 
@@ -62,6 +63,7 @@ public abstract class Algorithm<T> : IAlgorithm
         }
         Runtime = Stopwatch.GetElapsedTime(startTime).TotalSeconds;
     }
+    public abstract void Configure(Dictionary<string, object> config);
     public static string BitArrayToString(BitArray bitArray)
     {
         StringBuilder sb = new StringBuilder();

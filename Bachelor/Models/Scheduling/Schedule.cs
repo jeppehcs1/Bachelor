@@ -16,6 +16,7 @@ public class Schedule
     public int Optimum;
     public TSPInstance TSPInstance;
     public int Dimension;
+    public Dictionary<string, object> AlgorithmConfig;
     public Schedule(string searchSpace, string algorithm, string problem, string finishCondition, string visualization, int dimension){
         SearchSpace = searchSpace;
         AlgorithmName = algorithm;

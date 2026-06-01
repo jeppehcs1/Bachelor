@@ -7,6 +7,7 @@
         <entry key="Bachelor/Stackpanel.axaml" value="Bachelor/Bachelor.csproj" />
         <entry key="Bachelor/Views/AddBatches.axaml" value="Bachelor/Bachelor.csproj" />
         <entry key="Bachelor/Views/AddBatchesView.axaml" value="Bachelor/Bachelor.csproj" />
+        <entry key="Bachelor/Views/AlgorithmConfigView.axaml" value="Bachelor/Bachelor.csproj" />
         <entry key="Bachelor/Views/CreateScheduleView.axaml" value="Bachelor/Bachelor.csproj" />
         <entry key="Bachelor/Views/HomeView.axaml" value="Bachelor/Bachelor.csproj" />
         <entry key="Bachelor/Views/HypercubeView.axaml" value="Bachelor/Bachelor.csproj" />

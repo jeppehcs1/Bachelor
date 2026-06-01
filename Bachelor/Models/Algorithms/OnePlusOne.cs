@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Bachelor.Models.Problems;
 namespace Bachelor.Models.Algorithms;
 
@@ -11,7 +12,10 @@ public abstract class OnePlusOne<T> : Algorithm<T>
         
     }
 
-    
+    public override void Configure(Dictionary<string, object> config)
+    {
+
+    }
 
     public override bool Iterate()
     {

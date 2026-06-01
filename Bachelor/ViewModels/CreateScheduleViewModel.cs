@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using Bachelor.Models.Problems;
@@ -23,6 +24,7 @@ namespace Bachelor.ViewModels;
 public partial class CreateScheduleViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainViewModel;
+    private readonly Window _parentWindow;
     private readonly AddBatchesViewModel _addBatchesViewModel;
     private string _selectedSearchSpace = "";
     private string _selectedAlgorithm = "";
@@ -35,9 +37,11 @@ public partial class CreateScheduleViewModel : ViewModelBase
     private ObservableCollection<string> _finishConditions;
     private ObservableCollection<string> _visualizations;
     public ObservableCollection<string> SearchSpaces { get; }
+    private Dictionary<string, object> _algorithmConfig = new();
     
-    public CreateScheduleViewModel(MainWindowViewModel mainViewModel, AddBatchesViewModel addBatchesViewModel)
+    public CreateScheduleViewModel(MainWindowViewModel mainViewModel, AddBatchesViewModel addBatchesViewModel, Window parentWindow)
     {
+        _parentWindow = parentWindow;
         _mainViewModel = mainViewModel;
         _addBatchesViewModel = addBatchesViewModel;
         _algorithms = new ObservableCollection<string>();
@@ -86,6 +90,17 @@ public partial class CreateScheduleViewModel : ViewModelBase
         _addBatchesViewModel.Schedule = schedule;
         _mainViewModel.CurrentView = _addBatchesViewModel;
     }
+    [RelayCommand]
+    private async Task ConfigureAlgorithmOnClick()
+    {
+        var dialog = new AlgorithmConfigView();
+        var vm = new AlgorithmConfigViewModel(SelectedAlgorithm, SelectedSearchSpace, dialog);
+        dialog.DataContext = vm;
+        await dialog.ShowDialog(_parentWindow);
+
+        if (vm.Confirmed)
+            _algorithmConfig = vm.Config;
+    }
     
     [ObservableProperty]
     private string _filePath = "";
@@ -119,6 +134,7 @@ public partial class CreateScheduleViewModel : ViewModelBase
         set
         {
             SetProperty(ref _selectedAlgorithm, value);
+            _algorithmConfig = new();
             OnPropertyChanged(nameof(CanProceed));
             UpdateProblems();
         }
