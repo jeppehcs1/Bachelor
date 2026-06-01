@@ -11,9 +11,9 @@ public class MuPlusLambdaPermutation : MuPlusLambda<TSPInstance>
         SearchPoint = instance;
     }
     
-    public override void Initialize()
+
+    public override void InitializeCore()
     {
-        base.Initialize();
         Population = new List<TSPInstance>();
         
         for (int i = 0; i < Mu; i++)
@@ -25,6 +25,7 @@ public class MuPlusLambdaPermutation : MuPlusLambda<TSPInstance>
     
         SearchPoint = Population.OrderBy(i => Problem.Fitness(i)).First();
     }
+
     public override List<TSPInstance> CloneSearchPoint()
     {
         return Population.Select(instance => instance.DeepCopy()).ToList();

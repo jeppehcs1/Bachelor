@@ -12,7 +12,7 @@ public abstract class MuPlusLambda<T> : Algorithm<T>
     protected readonly int Lambda;
     public List<T> Population;
     
-    protected MuPlusLambda(IProblemType<T> problem) : base(problem)
+    protected MuPlusLambda(ProblemType<T> problem) : base(problem)
     {
         Mu = 5;
         Lambda = 20;

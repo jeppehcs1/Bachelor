@@ -6,7 +6,7 @@ namespace Bachelor.Models.Algorithms;
 using System;
 using System.Collections;
 
-public class MuPlusLambdaBitString(IProblemType<BitArray> problem) : MuPlusLambda<BitArray>(problem)
+public class MuPlusLambdaBitString(ProblemType<BitArray> problem) : MuPlusLambda<BitArray>(problem)
 {
     public override List<BitArray> CloneSearchPoint()
     {
@@ -49,10 +49,10 @@ public class MuPlusLambdaBitString(IProblemType<BitArray> problem) : MuPlusLambd
         SearchPoint = best.OrderByDescending(ba => Problem.Fitness(ba)).First();
         return improved;
     }
+    
 
-    public override void Initialize() 
+    public override void InitializeCore()
     {
-        base.Initialize();
         var dim = Problem.Dimension; // Dimension of each bit string
         
         Population = new List<BitArray>();
