@@ -110,6 +110,7 @@ public partial class AddBatchesViewModel : ViewModelBase
     private async Task FinishSetupOnClick()
     {
         IsRunning = true;
+        _visualizationAttached = 0; 
         VisualizationViewModel viewModel = Schedule.Visualization switch
         {
             "TSPPlot" => new TSPViewModel(""),

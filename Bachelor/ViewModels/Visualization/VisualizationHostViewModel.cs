@@ -27,6 +27,13 @@ public partial class VisualizationHostViewModel : ViewModelBase
 
     public void Attach(IAlgorithm algorithm, AlgorithmRunner runner)
     {
+        if (_runner != null)
+        {
+            _runner.OnIteration -= OnAlgorithmIteration;
+            _runner.OnInitialization -= OnAlgorithmInitialization;
+        }
+            
+            
         _runner = runner;
         _runner.OnIteration += OnAlgorithmIteration;
         _runner.OnInitialization += OnAlgorithmInitialization;
