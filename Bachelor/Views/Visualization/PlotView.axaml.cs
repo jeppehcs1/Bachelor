@@ -43,7 +43,7 @@ public partial class PlotView : UserControl
         }
         for (int i = 0; i < vm.Points.Count; i++)
         {
-            xs[i] = i;
+            xs[i] = (int) vm.Points[i].x;
         }
         if (ys.Length != vm.Points.Count)
         {
