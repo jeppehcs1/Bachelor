@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using System.IO;
 
@@ -29,7 +30,7 @@ public class CsvLogger
     {
         using var writer = new StreamWriter(_filePath, append: true);
         writer.WriteLine();
-        writer.WriteLine($"Total Time,{_totalTime.ToString(_culture)}");
-        writer.WriteLine($"Average Runtime,{(_totalTime / _runCount).ToString(_culture)}");
+        writer.WriteLine($"Total Time,{_totalTime.ToString("F3",_culture)}");
+        writer.WriteLine($"Average Runtime,{(_totalTime / _runCount).ToString("F3",_culture)}");
     }
 }

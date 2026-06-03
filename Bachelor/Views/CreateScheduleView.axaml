@@ -63,7 +63,7 @@
                           ItemsSource="{Binding Visualizations}"
                           SelectedItem="{Binding SelectedVisualization}"
                           Width="200"/>
-                <TextBlock Grid.Column="4" Grid.Row="3" Text="Dimension" FontWeight="Bold" IsVisible="{Binding !IsTSP}"/>
+                <TextBlock Grid.Column="4" Grid.Row="3" Text="Dimension (default: 500)" FontWeight="Bold" IsVisible="{Binding !IsTSP}"/>
                 <TextBox Grid.Column="4" Grid.Row="4" Text="{Binding Dimension}"
                             Height="40" IsVisible="{Binding !IsTSP}"/>
             </Grid>
