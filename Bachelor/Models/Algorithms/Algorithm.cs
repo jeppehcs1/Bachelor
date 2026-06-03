@@ -62,6 +62,7 @@ public abstract class Algorithm<T> : IAlgorithm
                 BSFF = newFitness;
         }
         Runtime = Stopwatch.GetElapsedTime(startTime).TotalSeconds;
+        Console.WriteLine($"Runtime set inside Run(): {Runtime}, FuncEvals: {FuncEvals}");
     }
     public abstract void Configure(Dictionary<string, object> config);
     public static string BitArrayToString(BitArray bitArray)
