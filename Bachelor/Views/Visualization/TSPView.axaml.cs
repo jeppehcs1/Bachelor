@@ -64,6 +64,7 @@ public partial class TSPView : UserControl
             
         PlotControl.Plot.Clear();
         PlotControl.Plot.Add.Scatter(xs, ys);
+        PlotControl.Plot.Axes.AutoScale();
         PlotControl.Refresh();
     }
 }

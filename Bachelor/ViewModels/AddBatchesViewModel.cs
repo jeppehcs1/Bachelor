@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Bachelor.Models.Algorithms;
@@ -27,6 +28,7 @@ public partial class AddBatchesViewModel : ViewModelBase
     {
         _mainViewModel = mainViewModel;
         _visualizationHostViewModel = visualizationHostViewModel;
+        
     }
     public ObservableCollection<BatchItem> Items
     {
@@ -108,6 +110,14 @@ public partial class AddBatchesViewModel : ViewModelBase
     private async Task FinishSetupOnClick()
     {
         IsRunning = true;
+        VisualizationViewModel viewModel = Schedule.Visualization switch
+        {
+            "TSPPlot" => new TSPViewModel(""),
+            "HyperCube" => new HypercubeViewModel(""),
+            "FitnessPlot" => new PlotViewModel(""),
+            _ => null
+        };
+        _visualizationHostViewModel.CurrentVisualization = viewModel;
         _mainViewModel.CurrentView = _visualizationHostViewModel;
         await RunBatches();
         IsRunning =  false;

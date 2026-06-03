@@ -22,22 +22,22 @@
         </DataTemplate>
 
     </UserControl.DataTemplates>
-    <Grid RowDefinitions="*,Auto" ColumnDefinitions="*,Auto,*">
+    <Grid RowDefinitions="*,Auto" ColumnDefinitions="100,Auto,*,*">
         <StackPanel Grid.Row="0" Grid.Column="0">
             <TextBlock Text="Iterations:"/>
             <TextBlock Text="{Binding IterationCounter}"/>
             <TextBlock Text="BSFF:"/>
             <TextBlock Text="{Binding BSFFCounter}"/>
-            <TextBlock Text="FuncEvals"/>
+            <TextBlock Text="FuncEvals:"/>
             <TextBlock Text="{Binding FuncEvalCounter}"/>
         </StackPanel>
-        <ContentControl Grid.Row="0" Grid.Column="1"
+        <ContentControl Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"
                         Content="{Binding CurrentVisualization}" />
 
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
             
-            <Button> Pause </Button>
-            <Button> Play </Button>
+            <Button Content="Pause" Command="{Binding PauseCommand}"/> 
+            <Button Content="Play" Command="{Binding PlayCommand}"/>
         </StackPanel>
         </Grid>
 </UserControl>

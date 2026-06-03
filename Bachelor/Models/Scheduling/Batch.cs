@@ -52,12 +52,8 @@ public class Batch
     }
     public async Task Run() => await Runner.Run(Algorithm);
     public void Pause() => Runner.Pause();
-    public void Resume() => Runner.Resume();
-    public void Restart()
-    {
-        Runner.Stop();
-        Runner.Restart();
-    }
+    public void Play() => Runner.Play();
+    
 }
 
 public enum Status

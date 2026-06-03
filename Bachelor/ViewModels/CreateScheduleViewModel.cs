@@ -240,8 +240,10 @@ public partial class CreateScheduleViewModel : ViewModelBase
     {
         var finishList = SelectedProblem switch
         {
-            "Bo" => new ObservableCollection<string> { "Onefkx", "Lefewnes"},
-            _ => new ObservableCollection<string> { "Function evaluations", "Optimum Reached"}
+            "TSPProblem" => new ObservableCollection<string> { "Function evaluations", "Optimum Reached"},
+            "LeadingOnes" => new ObservableCollection<string> { "Function evaluations", "Optimum Reached"},
+            "OneMax" => new ObservableCollection<string> { "Function evaluations", "Optimum Reached"},
+            _ => new ObservableCollection<string>()
         };
         FinishConditions = finishList;
     }
@@ -249,8 +251,8 @@ public partial class CreateScheduleViewModel : ViewModelBase
     {
         var visualizationList = SelectedProblem switch
         {
-            "_" => new ObservableCollection<string> { "Onefkx", "Lefewnes"},
-            "" => new ObservableCollection<string> { "No visualization", "hypercube"}
+            "TSPProblem" => new ObservableCollection<string> { "TSPPlot", "FitnessPlot"},
+            _ => new ObservableCollection<string> { "HyperCube", "FitnessPlot"}
         };
         Visualizations = visualizationList;
     }

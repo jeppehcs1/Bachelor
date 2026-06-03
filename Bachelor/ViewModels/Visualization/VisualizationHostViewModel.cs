@@ -19,7 +19,7 @@ public partial class VisualizationHostViewModel : ViewModelBase
     [ObservableProperty] private int _funcEvalCounter;
     public VisualizationHostViewModel()
     {
-        currentVisualization = new HypercubeViewModel("bo");
+        
     }
 
     
@@ -54,8 +54,6 @@ public partial class VisualizationHostViewModel : ViewModelBase
     private void Pause() => _runner?.Pause();
     
     [RelayCommand]
-    private void Resume() => _runner?.Resume();
+    private void Play() => _runner?.Play();
     
-    [RelayCommand]
-    private void Restart() => _runner?.Restart();
 }

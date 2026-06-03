@@ -76,19 +76,12 @@ public void Pause()
         }
     }
 
-    public void Resume()
+    public void Play()
     {
         if (_isPaused)
         {
             _pauseSemaphore.Release();
             _isPaused = false;
         }
-    }
-
-    public void Stop() => _cts.Cancel();
-    
-    public void Restart()
-    {
-        _cts = new CancellationTokenSource();
     }
 }
