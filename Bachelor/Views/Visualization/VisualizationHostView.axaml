@@ -23,16 +23,17 @@
 
     </UserControl.DataTemplates>
     <Grid RowDefinitions="*,Auto" ColumnDefinitions="*,Auto,*">
-
-        <ContentControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
+        <StackPanel Grid.Row="0" Grid.Column="0">
+            <TextBlock Text="{Binding IterationCounter}"/>
+            <TextBlock Text="{Binding BSFFCounter}"/>
+        </StackPanel>
+        <ContentControl Grid.Row="0" Grid.Column="1"
                         Content="{Binding CurrentVisualization}" />
 
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-            <Button> Hello </Button>
-            <Button> Hello </Button>
-            <Button> Pause/Play </Button>
-            <Button> Hello </Button>
-            <Button> Hello </Button>
+            
+            <Button> Pause </Button>
+            <Button> Play </Button>
         </StackPanel>
         </Grid>
 </UserControl>

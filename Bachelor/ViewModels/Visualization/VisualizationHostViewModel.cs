@@ -19,7 +19,10 @@ public partial class VisualizationHostViewModel : ViewModelBase
     {
         currentVisualization = new HypercubeViewModel("bo");
     }
-    
+
+    public int IterationCounter { get; set; }
+    public int BSFFCounter { get; set; }
+
 
     public void Attach(IAlgorithm algorithm, AlgorithmRunner runner)
     {
