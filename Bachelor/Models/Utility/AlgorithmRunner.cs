@@ -50,6 +50,7 @@ public class AlgorithmRunner
                 BSFF = algorithm.BSFF,
                 FuncEvals = algorithm.FuncEvals,
                 Iterations = algorithm.Iterations,
+                Runtime = algorithm.Runtime,
                 TSPSearchPoint = tspAlgo.SearchPoint.DeepCopy()
             };
 
@@ -59,6 +60,7 @@ public class AlgorithmRunner
                 BSFF = algorithm.BSFF,
                 FuncEvals = algorithm.FuncEvals,
                 Iterations = algorithm.Iterations,
+                Runtime = algorithm.Runtime,
                 BitStringSearchPoint = bitAlgo.SearchPoint.Clone() as BitArray
             };
         return new AlgorithmSnapshot { BSFF = algorithm.BSFF, FuncEvals = algorithm.FuncEvals,  Iterations = algorithm.Iterations };

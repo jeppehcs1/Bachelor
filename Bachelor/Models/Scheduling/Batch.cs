@@ -33,34 +33,7 @@ public class Batch
             OutputFilePath = outputFilePath;
         }
     }
-
-    public void clemRun()
-    {
-        double totalTime = 0;
-        // Write header to CSV file
-        using (var writer = new StreamWriter(OutputFilePath, false))
-        {
-            var culture = System.Globalization.CultureInfo.InvariantCulture;
-            writer.WriteLine("Run,Fitness,Runtime,FuncEvals");
-            for (int i = 0; i < NumberRuns; i++)
-            {
-                Algorithm.Initialize();
-                Algorithm.Run();
-                totalTime += Algorithm.Runtime;
-                // Write to file
-                writer.WriteLine(
-                    $"{i + 1},{Algorithm.BSFF},{Algorithm.Runtime.ToString("F3", culture)},{Algorithm.FuncEvals}");
-            }
-
-            writer.WriteLine();
-            writer.WriteLine($"Total Time,{totalTime.ToString(culture)}");
-            writer.WriteLine($"Average Runtime,{(totalTime / NumberRuns).ToString(culture)}");
-        }
-
-        //Console.WriteLine("Total time: " + totalTime);
-        Console.WriteLine($"Results saved to: {OutputFilePath}");
-        Status = Status.Completed;
-    }
+    
     public async Task RunAll()
     {
         Status = Status.Running;
