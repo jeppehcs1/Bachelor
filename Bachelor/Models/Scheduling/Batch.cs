@@ -24,14 +24,24 @@ public class Batch
         // Generate file path if not provided
         if (string.IsNullOrEmpty(outputFilePath))
         {
+            var _random = new Random();
             string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-            OutputFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), 
-                $"batch_results_{Name}_{timestamp}.csv");
+            string logDir = Path.Combine(GetProjectRoot(), "Assets", "LogFiles");
+            Directory.CreateDirectory(logDir); // creates it if it doesn't exist
+            OutputFilePath = Path.Combine(logDir, $"batch_{Name}_{_random.NextInt64(1000)}_{timestamp}.csv");
+            
         }
         else
         {
             OutputFilePath = outputFilePath;
         }
+    }
+    private static string GetProjectRoot()
+    {
+        var dir = new DirectoryInfo(AppContext.BaseDirectory);
+        while (dir != null && dir.Name != "Bachelor")
+            dir = dir.Parent;
+        return dir?.FullName ?? AppContext.BaseDirectory;
     }
     
     public async Task RunAll()
