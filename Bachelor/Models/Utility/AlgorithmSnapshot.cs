@@ -9,6 +9,7 @@ public class AlgorithmSnapshot
     public int FuncEvals { get; init; }
     public int Iterations { get; init; }
     public int Fitness { get; init; }
+    public double Runtime { get; init; }
     public TSPInstance TSPSearchPoint { get; init; }
     public BitArray BitStringSearchPoint { get; init; }
 }

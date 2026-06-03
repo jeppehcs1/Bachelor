@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,9 +27,10 @@ public class AlgorithmRunner
 
         await Task.Run(() =>
         {
+            long startTime = Stopwatch.GetTimestamp();
             while (!algorithm.StoppingCondition() && !token.IsCancellationRequested)
             {
-                _pauseSemaphore.Wait(token); // blocks if paused
+                _pauseSemaphore.Wait(token);
                 _pauseSemaphore.Release();
 
                 algorithm.Iterate();
@@ -36,6 +38,7 @@ public class AlgorithmRunner
                 if (_iterationCount % UpdateInterval == 0)
                     OnIteration?.Invoke(algorithm);
             }
+            algorithm.Runtime = Stopwatch.GetElapsedTime(startTime).TotalSeconds;
         }, token);
     }
 
@@ -47,6 +50,7 @@ public class AlgorithmRunner
                 BSFF = algorithm.BSFF,
                 FuncEvals = algorithm.FuncEvals,
                 Iterations = algorithm.Iterations,
+                Runtime = algorithm.Runtime,
                 TSPSearchPoint = tspAlgo.SearchPoint.DeepCopy()
             };
 
@@ -56,6 +60,7 @@ public class AlgorithmRunner
                 BSFF = algorithm.BSFF,
                 FuncEvals = algorithm.FuncEvals,
                 Iterations = algorithm.Iterations,
+                Runtime = algorithm.Runtime,
                 BitStringSearchPoint = bitAlgo.SearchPoint.Clone() as BitArray
             };
         return new AlgorithmSnapshot { BSFF = algorithm.BSFF, FuncEvals = algorithm.FuncEvals,  Iterations = algorithm.Iterations };

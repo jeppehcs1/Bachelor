@@ -33,45 +33,22 @@ public class Batch
             OutputFilePath = outputFilePath;
         }
     }
-
-    public void clemRun()
-    {
-        double totalTime = 0;
-        // Write header to CSV file
-        using (var writer = new StreamWriter(OutputFilePath, false))
-        {
-            var culture = System.Globalization.CultureInfo.InvariantCulture;
-            writer.WriteLine("Run,Fitness,Runtime,FuncEvals");
-            for (int i = 0; i < NumberRuns; i++)
-            {
-                Algorithm.Initialize();
-                Console.WriteLine($"FuncEvals after Initialize: {Algorithm.FuncEvals}");
-                Algorithm.Run();
-                Console.WriteLine($"FuncEvals after Run: {Algorithm.FuncEvals}, Runtime: {Algorithm.Runtime}");
-                totalTime += Algorithm.Runtime;
-                // Write to file
-                writer.WriteLine(
-                    $"{i + 1},{Algorithm.BSFF},{Algorithm.Runtime.ToString("F3", culture)},{Algorithm.FuncEvals}");
-            }
-
-            writer.WriteLine();
-            writer.WriteLine($"Total Time,{totalTime.ToString(culture)}");
-            writer.WriteLine($"Average Runtime,{(totalTime / NumberRuns).ToString(culture)}");
-        }
-
-        //Console.WriteLine("Total time: " + totalTime);
-        Console.WriteLine($"Results saved to: {OutputFilePath}");
-        Status = Status.Completed;
-    }
+    
     public async Task RunAll()
     {
         Status = Status.Running;
-        double totalTime = 0;
+        var logger = new CsvLogger(OutputFilePath);
+
         for (int i = 0; i < NumberRuns; i++)
         {
             await Run();
-            totalTime += Algorithm.Runtime;
+            var snapshot = Runner.TakeSnapshot(Algorithm);
+            logger.LogRun(snapshot);
         }
+        logger.WriteSummary();
+
+        Console.WriteLine($"Results saved to: {OutputFilePath}");
+        Status = Status.Completed;
     }
     public async Task Run() => await Runner.Run(Algorithm);
     public void Pause() => Runner.Pause();
