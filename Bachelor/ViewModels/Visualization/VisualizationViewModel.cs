@@ -13,4 +13,5 @@ public abstract class VisualizationViewModel : ViewModelBase
     }
 
     public abstract void Update(AlgorithmSnapshot snapshot);
+    public abstract void Initialize();
 }

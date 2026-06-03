@@ -40,8 +40,12 @@ public class HypercubeViewModel : VisualizationViewModel
     }
     public override void Update(AlgorithmSnapshot snapshot)
     {
-        Console.WriteLine("fitness= " + snapshot.BSFF);
         var point = new DataPoint{ x = XCoordinate(snapshot.BitStringSearchPoint), y = YCoordinate(snapshot.BitStringSearchPoint) };
         Points.Add(point);
+    }
+
+    public override void Initialize()
+    {
+        Points.Clear();
     }
 }
