@@ -14,14 +14,15 @@ public partial class VisualizationHostViewModel : ViewModelBase
     private VisualizationViewModel? currentVisualization;
     private IAlgorithm? _algorithm;
     private AlgorithmRunner? _runner;
-
+    [ObservableProperty] private int _iterationCounter;
+    [ObservableProperty] private int _bSFFCounter;
+    [ObservableProperty] private int _funcEvalCounter;
     public VisualizationHostViewModel()
     {
         currentVisualization = new HypercubeViewModel("bo");
     }
 
-    public int IterationCounter { get; set; }
-    public int BSFFCounter { get; set; }
+    
 
 
     public void Attach(IAlgorithm algorithm, AlgorithmRunner runner)
@@ -35,7 +36,11 @@ public partial class VisualizationHostViewModel : ViewModelBase
     {
         Avalonia.Threading.Dispatcher.UIThread.Post(() =>
         {
-            CurrentVisualization?.Update(_runner.TakeSnapshot(_algorithm));
+            AlgorithmSnapshot snapshot = _runner.TakeSnapshot(_algorithm);
+            IterationCounter = snapshot.Iterations;
+            BSFFCounter = snapshot.BSFF;
+            FuncEvalCounter = snapshot.FuncEvals;
+            CurrentVisualization?.Update(snapshot);
         });
     }
     private void OnAlgorithmInitialization()
