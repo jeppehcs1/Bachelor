@@ -14,6 +14,8 @@ public class AlgorithmRunner
     private CancellationTokenSource _cts = new();
     private SemaphoreSlim _pauseSemaphore = new(1, 1);
     private bool _isPaused = false;
+    private int _iterationCount = 0;
+    private const int UpdateInterval = 1000;
     public event Action<IAlgorithm>? OnIteration;
 
     public async Task Run(IAlgorithm algorithm)
@@ -30,7 +32,9 @@ public class AlgorithmRunner
                 _pauseSemaphore.Release();
 
                 algorithm.Iterate();
-                OnIteration?.Invoke(algorithm);
+                _iterationCount++;
+                if (_iterationCount % UpdateInterval == 0)
+                    OnIteration?.Invoke(algorithm);
             }
             algorithm.Runtime = Stopwatch.GetElapsedTime(startTime).TotalSeconds;
         }, token);
@@ -44,7 +48,6 @@ public class AlgorithmRunner
                 BSFF = algorithm.BSFF,
                 FuncEvals = algorithm.FuncEvals,
                 Iterations = algorithm.Iterations,
-                Fitness = algorithm.BSFF,
                 TSPSearchPoint = tspAlgo.SearchPoint.DeepCopy()
             };
 
@@ -54,8 +57,7 @@ public class AlgorithmRunner
                 BSFF = algorithm.BSFF,
                 FuncEvals = algorithm.FuncEvals,
                 Iterations = algorithm.Iterations,
-                Fitness = algorithm.BSFF,
-                BitStringSearchPoint = bitAlgo.SearchPoint
+                BitStringSearchPoint = bitAlgo.SearchPoint.Clone() as BitArray
             };
         return new AlgorithmSnapshot { BSFF = algorithm.BSFF, FuncEvals = algorithm.FuncEvals,  Iterations = algorithm.Iterations };
     }

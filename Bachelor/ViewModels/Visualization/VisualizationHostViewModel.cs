@@ -16,7 +16,7 @@ public partial class VisualizationHostViewModel : ViewModelBase
 
     public VisualizationHostViewModel()
     {
-        currentVisualization = new PlotViewModel("jo");
+        currentVisualization = new HypercubeViewModel("bo");
     }
     
 

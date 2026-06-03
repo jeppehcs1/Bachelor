@@ -15,6 +15,8 @@ public partial class PlotView : UserControl
     public PlotView()
     {
         InitializeComponent();
+        PlotControl.UserInputProcessor.IsEnabled = false;
+        PlotControl.Plot.Grid.IsVisible = false;
     }
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
@@ -27,7 +29,10 @@ public partial class PlotView : UserControl
     {
         base.OnDataContextChanged(e);
         if (DataContext is PlotViewModel vm)
+        {
+            vm.Points.CollectionChanged += (_, _) => RenderPlot(vm);
             RenderPlot(vm);
+        }
     }
     protected void RenderPlot(PlotViewModel vm)
     {
@@ -51,6 +56,7 @@ public partial class PlotView : UserControl
         
         PlotControl.Plot.Clear();
         PlotControl.Plot.Add.Scatter(xs, ys);
+        PlotControl.Plot.Axes.AutoScale();
         PlotControl.Refresh();
         
     }

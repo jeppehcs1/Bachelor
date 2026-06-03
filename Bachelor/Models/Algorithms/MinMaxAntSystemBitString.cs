@@ -17,6 +17,7 @@ public class MinMaxAntSystemBitString : MinMaxAntSystem<BitArray>
         Rho = 0.002;
         InitialPheromone = 0.5;
         SearchPoint = new BitArray(Problem.Dimension);
+        SearchPoint.SetAll(false);
         BSFF = GetFitness();
         EdgePheromones = new double [Problem.Dimension];
     }

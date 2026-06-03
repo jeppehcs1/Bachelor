@@ -9,6 +9,146 @@ namespace UnitTests;
 public class AlgorithmTests
 {
     [TestFixture]
+    public class OnePlusOneTests
+    {
+        [Test]
+        public void OnePlusOneBitString_RevertsWhenMutationIsWorse()
+        {
+            var problem = new OneMax(5);
+            var algo = new OnePlusOneBitString(problem);
+            algo.Initialize();
+    
+            // old (pre-mutation) is good
+            var old = new BitArray(new bool[] { true, true, true, true, true });
+            algo.BSFF = 5;
+    
+            // SearchPoint (post-mutation) is worse
+            algo.SearchPoint = new BitArray(new bool[] { false, false, false, false, false });
+    
+            bool improved = algo.UpdateSearchPoint(old);
+    
+            // Should revert to old, no improvement
+            Assert.That(improved, Is.False);
+            Assert.That(algo.BSFF, Is.EqualTo(5));
+            Assert.That(algo.SearchPoint, Is.EqualTo(old));
+        }
+
+        [Test]
+        public void OnePlusOneBitString_AcceptsBetterMutation()
+        {
+            var problem = new OneMax(5);
+            var algo = new OnePlusOneBitString(problem);
+            algo.Initialize();
+    
+            // old (pre-mutation) is worse
+            var old = new BitArray(new bool[] { false, false, false, false, false });
+            algo.BSFF = 0;
+    
+            // SearchPoint (post-mutation) is better
+            algo.SearchPoint = new BitArray(new bool[] { true, true, true, true, true });
+    
+            bool improved = algo.UpdateSearchPoint(old);
+    
+            Assert.That(improved, Is.True);
+            Assert.That(algo.BSFF, Is.EqualTo(5));
+        }
+
+        [Test]
+        public void OnePlusOneBitString_AcceptsBetterSolution()
+        {
+            var problem = new OneMax(5);
+            var algo = new OnePlusOneBitString(problem);
+            algo.Initialize();
+            
+            algo.SearchPoint = new BitArray(new bool[] { false, false, false, false, false });
+            algo.BSFF = 0;
+            
+            var better = new BitArray(new bool[] { true, true, true, true, true });
+            // Mutate to better manually
+            algo.SearchPoint = better;
+            bool improved = algo.UpdateSearchPoint(new BitArray(new bool[] { false, false, false, false, false }));
+            
+            Assert.That(algo.BSFF, Is.EqualTo(5));
+            Assert.That(improved, Is.True);
+        }
+
+        [Test]
+        public void OnePlusOneBitString_BsffNeverDecreases()
+        {
+            var problem = new OneMax(20);
+            var algo = new OnePlusOneBitString(problem);
+            algo.Initialize();
+            
+            int prev = algo.BSFF;
+            for (int i = 0; i < 1000; i++)
+            {
+                algo.Iterate();
+                Assert.That(algo.BSFF, Is.GreaterThanOrEqualTo(prev));
+                prev = algo.BSFF;
+            }
+        }
+
+        [Test]
+        public void OnePlusOnePermutation_KeepsLowerTourLength()
+        {
+            var problem = new TSPProblem(4);
+            var instance = new TSPInstance([0,1,2,3], [(0,0),(0,3),(3,3),(3,0)]);
+            var algo = new OnePlusOnePermutation(problem, instance);
+            algo.Initialize();
+            
+            int initialBSFF = algo.BSFF;
+            int prev = algo.BSFF;
+            for (int i = 0; i < 1000; i++)
+            {
+                algo.Iterate();
+                Assert.That(algo.BSFF, Is.LessThanOrEqualTo(prev)); // TSP: lower is better
+                prev = algo.BSFF;
+            }
+        }
+
+        [Test]
+        public void OnePlusOnePermutation_BsffNeverIncreases()
+        {
+            var problem = new TSPProblem(4);
+            var instance = new TSPInstance([0,1,2,3], [(0,0),(0,3),(3,3),(3,0)]);
+            var algo = new OnePlusOnePermutation(problem, instance);
+            algo.Initialize();
+            
+            int prev = algo.BSFF;
+            for (int i = 0; i < 1000; i++)
+            {
+                algo.Iterate();
+                Assert.That(algo.BSFF, Is.LessThanOrEqualTo(prev));
+                prev = algo.BSFF;
+            }
+        }
+
+        [Test]
+        public void OnePlusOneBitString_InitializesToAllFalse()
+        {
+            var problem = new OneMax(5);
+            var algo = new OnePlusOneBitString(problem);
+            algo.Initialize();
+            
+            for (int i = 0; i < 5; i++)
+                Assert.That(algo.SearchPoint[i], Is.False);
+            Assert.That(algo.BSFF, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void OnePlusOneBitString_IterationsIncrementCorrectly()
+        {
+            var problem = new OneMax(5);
+            var algo = new OnePlusOneBitString(problem);
+            algo.Initialize();
+            
+            for (int i = 0; i < 10; i++)
+                algo.Iterate();
+            
+            Assert.That(algo.Iterations, Is.EqualTo(10));
+        }
+    }
+    [TestFixture]
     public class MuPlusLambdaTests
     {
         // ===== BIT STRING TESTS =====
@@ -344,7 +484,10 @@ public class AlgorithmTests
     
     
     // MMAS, largely based on output from Claude
-    [Test]
+    [TestFixture]
+    public class MinMaxAntSystemPermutationTests
+    {
+        [Test]
     public void PheromonesInitialized()
     {
         var problem = new TSPProblem(4);
@@ -517,6 +660,8 @@ public class AlgorithmTests
             previous = algo.BSFF;
         }
     }
+    }
+    
 }
 
 
