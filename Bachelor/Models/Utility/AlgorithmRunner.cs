@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,14 +23,16 @@ public class AlgorithmRunner
 
         await Task.Run(() =>
         {
+            long startTime = Stopwatch.GetTimestamp();
             while (!algorithm.StoppingCondition() && !token.IsCancellationRequested)
             {
-                _pauseSemaphore.Wait(token); // blocks if paused
+                _pauseSemaphore.Wait(token);
                 _pauseSemaphore.Release();
 
                 algorithm.Iterate();
                 OnIteration?.Invoke(algorithm);
             }
+            algorithm.Runtime = Stopwatch.GetElapsedTime(startTime).TotalSeconds;
         }, token);
     }
 

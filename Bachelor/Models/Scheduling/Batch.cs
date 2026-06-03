@@ -45,9 +45,7 @@ public class Batch
             for (int i = 0; i < NumberRuns; i++)
             {
                 Algorithm.Initialize();
-                Console.WriteLine($"FuncEvals after Initialize: {Algorithm.FuncEvals}");
                 Algorithm.Run();
-                Console.WriteLine($"FuncEvals after Run: {Algorithm.FuncEvals}, Runtime: {Algorithm.Runtime}");
                 totalTime += Algorithm.Runtime;
                 // Write to file
                 writer.WriteLine(
@@ -66,12 +64,18 @@ public class Batch
     public async Task RunAll()
     {
         Status = Status.Running;
-        double totalTime = 0;
+        var logger = new CsvLogger(OutputFilePath);
+
         for (int i = 0; i < NumberRuns; i++)
         {
             await Run();
-            totalTime += Algorithm.Runtime;
+            var snapshot = Runner.TakeSnapshot(Algorithm);
+            logger.LogRun(snapshot);
         }
+        logger.WriteSummary();
+
+        Console.WriteLine($"Results saved to: {OutputFilePath}");
+        Status = Status.Completed;
     }
     public async Task Run() => await Runner.Run(Algorithm);
     public void Pause() => Runner.Pause();
