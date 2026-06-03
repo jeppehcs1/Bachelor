@@ -14,7 +14,7 @@
             <StackPanel Spacing="20">
                 <TextBlock Text="Create Batch" FontWeight="Black"/>
                 <TextBox Watermark="Enter batch name" Text="{Binding NewBatchName}"/>
-                <TextBox Watermark="Enter number of runs" Text="{Binding NewBatchRuns}"/>
+                <TextBox Watermark="Enter number of runs (default: 1)" Text="{Binding NewBatchRuns}"/>
                 <Button Width="120"  Content="Finish setup" Command="{Binding FinishSetupOnClickCommand}"/>
             </StackPanel>
         </Border>

@@ -53,7 +53,7 @@ public partial class AddBatchesViewModel : ViewModelBase
         set => this.SetProperty(ref _newBatchRuns, value);
     }
 
-    private int GetNewBatchRunsAsInt() => int.TryParse(_newBatchRuns, out var result) ? result : 0;
+    private int GetNewBatchRunsAsInt() => int.TryParse(_newBatchRuns, out var result) ? result : 1;
 
 
     private void AddItem(string name,  int runs)

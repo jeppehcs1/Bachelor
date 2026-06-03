@@ -114,7 +114,7 @@ public partial class CreateScheduleViewModel : ViewModelBase
         }
     }
     partial void OnFilePathChanged(string value) => OnPropertyChanged(nameof(CanProceed));
-    public int GetDimensionAsInt() => int.TryParse(_dimension, out var result) ? result : 0;
+    public int GetDimensionAsInt() => int.TryParse(_dimension, out var result) ? result : 500;
     [ObservableProperty]
     private bool _isPermutations;
     public string SelectedSearchSpace
