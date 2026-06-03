@@ -29,7 +29,6 @@
       <AdditionalFiles Include="Views\Visualization\HypercubeView.axaml" />
       <AdditionalFiles Include="Views\Visualization\PlotView.axaml" />
       <AdditionalFiles Include="Views\Visualization\TSPView.axaml" />
-      <AdditionalFiles Include="Views\Visualization\VisualizationView.axaml" />
     </ItemGroup>
 
     <ItemGroup>

@@ -29,6 +29,6 @@ public class PlotViewModel : VisualizationViewModel
     {
         
         Points.Add(new DataPoint{ x = snapshot.Iterations, y = snapshot.BSFF });
-        Console.WriteLine("point added " + snapshot.Iterations + " " + snapshot.BSFF);
+        
     }
 }

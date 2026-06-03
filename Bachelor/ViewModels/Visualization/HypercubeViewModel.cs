@@ -8,44 +8,7 @@ namespace Bachelor.ViewModels.Visualization;
 
 public class HypercubeViewModel : VisualizationViewModel
 {
-    public Algorithm<BitArray> Algorithm = null;
-    public ObservableCollection<DataPoint> Points { get; }
-    
-    public (int, int) BitDistribution(BitArray bits) // Returns number of 1-bit left and right of center, respectively
-    {
-        int mid = bits.Length / 2;
-        int leftCount = 0;
-        int rightCount = 0;
-
-        // left side
-        for (int i = 0; i < mid; i++)
-            if (bits[i]) leftCount++;
-
-        // right side
-        for (int i = mid; i < bits.Length; i++)
-            if (bits[i]) rightCount++;
-
-        return (leftCount, rightCount);
-    }
-
-    /*public double XCoordinate(BitArray bits)
-    {
-        var (left, right) = BitDistribution(bits);
-        
-        double xNonAdjusted = 0;
-        for (int i = 0; i < bits.Length; i++)
-        {
-            if (bits[i]) xNonAdjusted += i - bits.Length/(double)2;
-        }
-        double max = ((bits.Length /(double) 2) * (bits.Length /(double) 2) + (bits.Length /(double) 2)) / 2;
-        xNonAdjusted /= max;
-        
-        var difference = Math.Abs(left - right) * 2;
-        var adjustment = difference / (double)bits.Length;
-        
-        return xNonAdjusted * adjustment;
-    }*/
-    
+    public ObservableCollection<DataPoint> Points = new ObservableCollection<DataPoint>();
     public double XCoordinate(BitArray bits)
     {
         int onemax = 0, sumOfIndices = 0;
@@ -62,7 +25,6 @@ public class HypercubeViewModel : VisualizationViewModel
         
         return xNormalized * Math.Sin(Math.PI * y);
     }
-    
     public double YCoordinate(BitArray bits)
     {
         int onemax = 0;
@@ -71,26 +33,15 @@ public class HypercubeViewModel : VisualizationViewModel
         return onemax / (double)bits.Length;
     }
     
-    public HypercubeViewModel(string name, Algorithm<BitArray> algorithm) : base(name)
+    public HypercubeViewModel(string name) : base(name)
     {
-        
-        Algorithm = algorithm;                                             
-        Algorithm.Initialize();
-        Points = new ObservableCollection<DataPoint>();                    
-        
-        for (int i = 1; i < 1000; i++)                                       
-        {    
-            Algorithm.Iterate();
-            var point = new DataPoint{ x = XCoordinate(Algorithm.SearchPoint), y = YCoordinate(Algorithm.SearchPoint) };
-            Points.Add(point);
-        }
         
                                   
     }
-
-
-    public override void Update(AlgorithmSnapshot algorithm)
+    public override void Update(AlgorithmSnapshot snapshot)
     {
-        throw new NotImplementedException();
+        Console.WriteLine("fitness= " + snapshot.BSFF);
+        var point = new DataPoint{ x = XCoordinate(snapshot.BitStringSearchPoint), y = YCoordinate(snapshot.BitStringSearchPoint) };
+        Points.Add(point);
     }
 }

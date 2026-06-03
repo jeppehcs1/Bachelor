@@ -19,16 +19,6 @@ public partial class HypercubeView : UserControl
         PlotControl.Plot.Axes.SetLimits(-1, 1, -0, 1);
         PlotControl.UserInputProcessor.IsEnabled = false;
         PlotControl.Plot.Grid.IsVisible = false;
-
-
-        /*
-        PlotControl.Plot.Axes.Left.IsVisible = false;
-        PlotControl.Plot.Axes.Right.IsVisible = false;
-        PlotControl.Plot.Axes.Top.IsVisible = false;
-        PlotControl.Plot.Axes.Bottom.IsVisible = false;
-        PlotControl.Plot.Grid.IsVisible = false;
-        */
-        //DataContext = new HypercubeViewModel(new SimulatedAnnealingBitString(new LeadingOnes(10)));
         PlotControl.Refresh();
     }
 
@@ -42,13 +32,14 @@ public partial class HypercubeView : UserControl
     {
         base.OnDataContextChanged(e);
         if (DataContext is HypercubeViewModel vm)
+        {
+            vm.Points.CollectionChanged += (_, _) => RenderPlot(vm);
             RenderPlot(vm);
+        }
     }
 
     private void RenderPlot(HypercubeViewModel vm)
     {
-        
-        
         if (xs.Length != vm.Points.Count)
         {
             xs = new double[vm.Points.Count];
@@ -68,7 +59,6 @@ public partial class HypercubeView : UserControl
         
         PlotControl.Plot.Clear();
         PlotControl.Plot.Add.Scatter(xs, ys);
-        
         double[] boundY = Enumerable.Range(0, 300).Select(i => i / 299.0).ToArray();
         double[] rightX = boundY.Select(y => Math.Sin(Math.PI * y)).ToArray();
         double[] leftX  = boundY.Select(y => -Math.Sin(Math.PI * y)).ToArray();

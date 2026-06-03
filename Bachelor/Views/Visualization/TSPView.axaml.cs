@@ -14,6 +14,8 @@ public partial class TSPView : UserControl
     public TSPView()
     {
         InitializeComponent();
+        PlotControl.UserInputProcessor.IsEnabled = false;
+        PlotControl.Plot.Grid.IsVisible = false;
     }
     
     protected override void OnDataContextChanged(EventArgs e)
@@ -24,7 +26,7 @@ public partial class TSPView : UserControl
             _currentVm.PropertyChanged -= OnViewModelPropertyChanged;
         }
 
-        if (DataContext is ViewModels.Visualization.TSPViewModel vm)
+        if (DataContext is TSPViewModel vm)
         {
             _currentVm = vm;
             _currentVm.PropertyChanged += OnViewModelPropertyChanged;

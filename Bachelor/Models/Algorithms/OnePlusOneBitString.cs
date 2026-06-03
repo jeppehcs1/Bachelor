@@ -15,14 +15,14 @@ public class OnePlusOneBitString(ProblemType<BitArray> problem) : OnePlusOne<Bit
     }
     public override bool UpdateSearchPoint(BitArray old)
     {
-        int oldFitness = Problem.Fitness(old);
-        if (BSFF < oldFitness)
+        int newFitness = Problem.Fitness(SearchPoint);
+        if (BSFF > newFitness) 
         {
-            BSFF = oldFitness;
-            SearchPoint = old;
-            return true;
+            SearchPoint = old; // old is better
+            return false;
         }
-        return false;
+        BSFF = newFitness;
+        return true;
     }
 
     

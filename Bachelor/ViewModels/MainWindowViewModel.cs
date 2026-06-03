@@ -33,7 +33,7 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         // Create ViewModels once
         _plotViewModel = new PlotViewModel("");
-        _hypercubeViewModel = new HypercubeViewModel("", new MuPlusLambdaBitString(new OneMax(20)));
+        _hypercubeViewModel = new HypercubeViewModel("");
         _tspViewModel = new TSPViewModel("bo");
         _visualizationHostViewModel = new VisualizationHostViewModel();
         _addBatchesViewModel = new AddBatchesViewModel(_visualizationHostViewModel, this);
