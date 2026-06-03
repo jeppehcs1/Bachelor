@@ -31,4 +31,9 @@ public class PlotViewModel : VisualizationViewModel
         Points.Add(new DataPoint{ x = snapshot.Iterations, y = snapshot.BSFF });
         
     }
+
+    public override void Initialize()
+    {
+        Points.Clear();
+    }
 }

@@ -17,10 +17,12 @@ public class AlgorithmRunner
     private int _iterationCount = 0;
     private const int UpdateInterval = 1000;
     public event Action<IAlgorithm>? OnIteration;
+    public event Action? OnInitialization;
 
     public async Task Run(IAlgorithm algorithm)
     {
         algorithm.Initialize();
+        OnInitialization?.Invoke();
         var token = _cts.Token;
 
         await Task.Run(() =>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Threading;
 using System.Threading.Tasks;
 using Bachelor.Models.Algorithms;
 using Bachelor.Models.Problems;
@@ -21,6 +22,7 @@ public partial class AddBatchesViewModel : ViewModelBase
     private string _newBatchRuns = "";
     private readonly MainWindowViewModel _mainViewModel;
     private readonly VisualizationHostViewModel _visualizationHostViewModel;
+    private int _visualizationAttached = 0;
     public AddBatchesViewModel(VisualizationHostViewModel visualizationHostViewModel, MainWindowViewModel mainViewModel)
     {
         _mainViewModel = mainViewModel;
@@ -121,7 +123,8 @@ public partial class AddBatchesViewModel : ViewModelBase
         return Parallel.ForEachAsync(_items, options, async (batchItem, ct) =>
         {
             Avalonia.Threading.Dispatcher.UIThread.Post(() => batchItem.Status = Status.Running);
-            _visualizationHostViewModel.Attach(batchItem.Batch.Algorithm, batchItem.Batch.Runner);
+            if (Interlocked.CompareExchange(ref _visualizationAttached, 1, 0) == 0)
+                _visualizationHostViewModel.Attach(batchItem.Batch.Algorithm, batchItem.Batch.Runner);
             await batchItem.Batch.RunAll();
             Avalonia.Threading.Dispatcher.UIThread.Post(() => batchItem.Status = Status.Completed);
         });

@@ -42,4 +42,9 @@ public partial class TSPViewModel : VisualizationViewModel
     {
         GenerateTSPPoints(snapshot);
     }
+
+    public override void Initialize()
+    {
+        Points.Clear();
+    }
 }

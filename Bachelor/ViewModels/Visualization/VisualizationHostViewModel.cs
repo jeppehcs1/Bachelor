@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Bachelor.Models.Algorithms;
 using Bachelor.Models.Problems;
 using Bachelor.Models.Utility;
@@ -24,6 +25,7 @@ public partial class VisualizationHostViewModel : ViewModelBase
     {
         _runner = runner;
         _runner.OnIteration += OnAlgorithmIteration;
+        _runner.OnInitialization += OnAlgorithmInitialization;
         _algorithm = algorithm;
     }
     private void OnAlgorithmIteration(IAlgorithm algoritm)
@@ -31,6 +33,13 @@ public partial class VisualizationHostViewModel : ViewModelBase
         Avalonia.Threading.Dispatcher.UIThread.Post(() =>
         {
             CurrentVisualization?.Update(_runner.TakeSnapshot(_algorithm));
+        });
+    }
+    private void OnAlgorithmInitialization()
+    {
+        Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+        {
+            CurrentVisualization?.Initialize();
         });
     }
     [RelayCommand]
