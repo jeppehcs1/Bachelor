@@ -24,6 +24,7 @@ public class MuPlusLambdaPermutation : MuPlusLambda<TSPInstance>
         }
     
         SearchPoint = Population.OrderBy(i => Problem.Fitness(i)).First();
+        BSFF = Problem.Fitness(SearchPoint);
     }
 
     public override List<TSPInstance> CloneSearchPoint()
@@ -62,6 +63,7 @@ public class MuPlusLambdaPermutation : MuPlusLambda<TSPInstance>
 
         Population = best;
         SearchPoint = best.First();
+        BSFF = Problem.Fitness(SearchPoint);
         return improved;
     }
     

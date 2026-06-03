@@ -2,12 +2,9 @@ using System;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
-using Bachelor.Models.Algorithms;
-using Bachelor.Models.Problems;
-using Bachelor.ViewModels;
+using Bachelor.ViewModels.Visualization;
 
-namespace Bachelor.Views;
+namespace Bachelor.Views.Visualization;
 
 public partial class HypercubeView : UserControl
 {

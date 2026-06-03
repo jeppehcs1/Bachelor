@@ -332,6 +332,7 @@ public class AlgorithmTests
 
         var algorithm = new OnePlusOnePermutation(problem, oldInstance);
         Assert.That(algorithm.GetFitness(), Is.EqualTo(21));
+        algorithm.BSFF = 21;
         algorithm.SearchPoint = worseInstance;
         
         // Act

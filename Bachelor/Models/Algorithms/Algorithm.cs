@@ -14,16 +14,18 @@ public interface IAlgorithm
     Func<bool> StoppingCondition { get; set; }
     int GetFitness();
     bool Iterate();
+    int Iterations { get; }
     void Initialize();
     void Run();
     void Configure(Dictionary<string, object> config);
+    
     
 }
 public abstract class Algorithm<T> : IAlgorithm
 {
     public int FuncEvals => Problem.FuncEvals;
-    
     public double Runtime { get; set; }
+    public int Iterations { get; private set; }
     public int BSFF { get; set; } // Best So Far Fitness
 
     protected ProblemType<T> Problem  { get; set; }
@@ -34,10 +36,19 @@ public abstract class Algorithm<T> : IAlgorithm
     {
         return Problem.Fitness(SearchPoint);
     }
-    public abstract bool Iterate(); // return true if the mutation is better than before
+
+    public bool Iterate() // return true if the mutation is better than before
+    {
+        Iterations++;
+        return IterateCore();
+    }
+
+    
+    public abstract bool IterateCore();
 
     public void Initialize()
     {
+        Iterations = 0;
         Problem.FuncEvals = 0;
         InitializeCore();
     }

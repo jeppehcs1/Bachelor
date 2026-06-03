@@ -2,11 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.ObjectModel;
 using Bachelor.Models.Algorithms;
-using SkiaSharp;
+using Bachelor.Models.Utility;
 
-namespace Bachelor.ViewModels;
+namespace Bachelor.ViewModels.Visualization;
 
-public class HypercubeViewModel : ViewModelBase
+public class HypercubeViewModel : VisualizationViewModel
 {
     public Algorithm<BitArray> Algorithm = null;
     public ObservableCollection<DataPoint> Points { get; }
@@ -71,14 +71,14 @@ public class HypercubeViewModel : ViewModelBase
         return onemax / (double)bits.Length;
     }
     
-    public HypercubeViewModel(Algorithm<BitArray> algorithm)
-    {             
+    public HypercubeViewModel(string name, Algorithm<BitArray> algorithm) : base(name)
+    {
         
         Algorithm = algorithm;                                             
         Algorithm.Initialize();
         Points = new ObservableCollection<DataPoint>();                    
         
-        for (int i = 1; i < 100; i++)                                       
+        for (int i = 1; i < 1000; i++)                                       
         {    
             Algorithm.Iterate();
             var point = new DataPoint{ x = XCoordinate(Algorithm.SearchPoint), y = YCoordinate(Algorithm.SearchPoint) };
@@ -86,7 +86,11 @@ public class HypercubeViewModel : ViewModelBase
         }
         
                                   
-    }      
-    
-    
+    }
+
+
+    public override void Update(AlgorithmSnapshot algorithm)
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -20,6 +20,7 @@ public class OnePlusOnePermutation : OnePlusOne<TSPInstance>
     public override void InitializeCore()
     {
         SearchPoint.Shuffle();
+        BSFF = GetFitness();
     }
 
     public override TSPInstance CloneSearchPoint()
@@ -29,9 +30,11 @@ public class OnePlusOnePermutation : OnePlusOne<TSPInstance>
 
     public override bool UpdateSearchPoint(TSPInstance old)
     {
-        if (Problem.Fitness(SearchPoint) >= Problem.Fitness(old))
+        int oldFitness = Problem.Fitness(old);
+        if (BSFF >= oldFitness)
         {
             //Console.WriteLine(Problem.Fitness(SearchPoint) + " :wen old: " + Problem.Fitness(old));
+            BSFF = oldFitness;
             SearchPoint = old;
             return false;
         }

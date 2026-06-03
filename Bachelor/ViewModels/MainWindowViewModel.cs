@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Bachelor.Models;
 using Bachelor.Models.Algorithms;
 using Bachelor.Models.Problems;
+using Bachelor.ViewModels.Visualization;
 using Bachelor.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -26,15 +27,18 @@ public partial class MainWindowViewModel : ViewModelBase
     private readonly TSPViewModel _tspViewModel;
     private readonly CreateScheduleViewModel _createScheduleViewModel;
     private readonly AddBatchesViewModel _addBatchesViewModel;
+    private readonly VisualizationHostViewModel _visualizationHostViewModel;
 
     public MainWindowViewModel(Window parentWindow)
     {
         // Create ViewModels once
-        _plotViewModel = new PlotViewModel();
-        _hypercubeViewModel = new HypercubeViewModel(new MuPlusLambdaBitString(new OneMax(20)));
-        _tspViewModel = new TSPViewModel();
-        _addBatchesViewModel = new AddBatchesViewModel();
+        _plotViewModel = new PlotViewModel("");
+        _hypercubeViewModel = new HypercubeViewModel("", new MuPlusLambdaBitString(new OneMax(20)));
+        _tspViewModel = new TSPViewModel("bo");
+        _visualizationHostViewModel = new VisualizationHostViewModel();
+        _addBatchesViewModel = new AddBatchesViewModel(_visualizationHostViewModel, this);
         _createScheduleViewModel = new CreateScheduleViewModel(this, _addBatchesViewModel, parentWindow);
+        
         // Default view
         CurrentView = new HomeView();
     }
@@ -48,9 +52,11 @@ public partial class MainWindowViewModel : ViewModelBase
     private void ShowTSP() => CurrentView = _tspViewModel;
     [RelayCommand]
     private void ShowCreateSchedule() => CurrentView = _createScheduleViewModel;
+    [RelayCommand]
+    private void ShowVisualization() => CurrentView = _visualizationHostViewModel;
     
     
-    //public ObservableCollection<DataPoint> Points { get; }
+    
     
     
     public string Greeting { get; } = "Welcome to Avalonia!";

@@ -15,7 +15,7 @@ public abstract class SimulatedAnnealing<T> : Algorithm<T>
         _temperature = problem.Dimension * problem.Dimension * problem.Dimension;
     }
 
-    public override bool Iterate()
+    public override bool IterateCore()
     {
         var dim = Problem.Dimension;
         var old = CloneSearchPoint();

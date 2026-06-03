@@ -1,15 +1,10 @@
 using System;
+using Avalonia.Controls;
 using Bachelor.Models.Algorithms;
 using Bachelor.Models.Problems;
+using Bachelor.ViewModels.Visualization;
 
-namespace Bachelor.Views;
-
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
-using Bachelor.ViewModels;
-
-
+namespace Bachelor.Views.Visualization;
 
 public partial class TSPView : UserControl
 {
@@ -19,10 +14,6 @@ public partial class TSPView : UserControl
     public TSPView()
     {
         InitializeComponent();
-        DataContext = new TSPViewModel(new MuPlusLambdaPermutation(
-            new TSPProblem(6),
-            new TSPInstance([0, 5, 3, 4, 2, 1], [(2, 4), (1, 4), (4, 2), (3, 1), (7, 7), (8, 2)])));
-        
     }
     
     protected override void OnDataContextChanged(EventArgs e)
@@ -33,7 +24,7 @@ public partial class TSPView : UserControl
             _currentVm.PropertyChanged -= OnViewModelPropertyChanged;
         }
 
-        if (DataContext is TSPViewModel vm)
+        if (DataContext is ViewModels.Visualization.TSPViewModel vm)
         {
             _currentVm = vm;
             _currentVm.PropertyChanged += OnViewModelPropertyChanged;

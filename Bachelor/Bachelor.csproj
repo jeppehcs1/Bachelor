@@ -26,9 +26,32 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Views\TSPView.axaml.cs">
-        <DependentUpon>TSPView.axaml</DependentUpon>
+      <AdditionalFiles Include="Views\Visualization\HypercubeView.axaml" />
+      <AdditionalFiles Include="Views\Visualization\PlotView.axaml" />
+      <AdditionalFiles Include="Views\Visualization\TSPView.axaml" />
+      <AdditionalFiles Include="Views\Visualization\VisualizationView.axaml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Views\Visualizations\HypercubeView.axaml.cs">
+        <DependentUpon>HypercubeView.axaml</DependentUpon>
+        <SubType>Code</SubType>
       </Compile>
-      
+      <Compile Update="Views\Visualizations\PlotView.axaml.cs">
+        <DependentUpon>PlotView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Visualizations\TSPView.axaml.cs">
+        <DependentUpon>TSPView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Visualizations\VisualizationView.axaml.cs">
+        <DependentUpon>VisualizationView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\AddBatchesView.axaml.cs">
+        <DependentUpon>AddBatchesView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 </Project>

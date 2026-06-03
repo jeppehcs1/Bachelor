@@ -21,7 +21,7 @@ public abstract class MinMaxAntSystem<T> : Algorithm<T>
     public double Beta; // determines impact of heuristic
     public double Rho; // determines evaporation of pheromone
     
-    public override bool Iterate()
+    public override bool IterateCore()
     {
         T prev = SearchPoint;
         ConstructAntSolutions();

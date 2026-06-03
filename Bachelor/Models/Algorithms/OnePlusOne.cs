@@ -17,7 +17,7 @@ public abstract class OnePlusOne<T> : Algorithm<T>
 
     }
 
-    public override bool Iterate()
+    public override bool IterateCore()
     {
         var dim = Problem.Dimension;
         var old = CloneSearchPoint();

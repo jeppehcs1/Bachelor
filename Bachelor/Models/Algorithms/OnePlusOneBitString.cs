@@ -15,8 +15,10 @@ public class OnePlusOneBitString(ProblemType<BitArray> problem) : OnePlusOne<Bit
     }
     public override bool UpdateSearchPoint(BitArray old)
     {
-        if (Problem.Fitness(SearchPoint) < Problem.Fitness(old))
+        int oldFitness = Problem.Fitness(old);
+        if (BSFF < oldFitness)
         {
+            BSFF = oldFitness;
             SearchPoint = old;
             return true;
         }
@@ -52,6 +54,8 @@ public class OnePlusOneBitString(ProblemType<BitArray> problem) : OnePlusOne<Bit
             //bits[i] = random.Next(2) == 1;  // Random true or false
             bits[i] = false;
         }
+
+        BSFF = 0;
         SearchPoint = new BitArray(bits);
     }
 }

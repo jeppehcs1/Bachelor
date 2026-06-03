@@ -1,0 +1,38 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:visualization="clr-namespace:Bachelor.Views.Visualization"
+             xmlns:visualization1="clr-namespace:Bachelor.ViewModels.Visualization"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Bachelor.Views.Visualization.VisualizationHostView"
+             x:DataType="visualization1:VisualizationHostViewModel">
+    <UserControl.DataTemplates>
+
+        <DataTemplate x:DataType="visualization1:TSPViewModel">
+            <visualization:TSPView />
+        </DataTemplate>
+
+        <DataTemplate x:DataType="visualization1:PlotViewModel">
+            <visualization:PlotView />
+        </DataTemplate>
+
+        <DataTemplate x:DataType="visualization1:HypercubeViewModel">
+            <visualization:HypercubeView />
+        </DataTemplate>
+
+    </UserControl.DataTemplates>
+    <Grid RowDefinitions="*,Auto" ColumnDefinitions="*,Auto,*">
+
+        <ContentControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
+                        Content="{Binding CurrentVisualization}" />
+
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+            <Button> Hello </Button>
+            <Button> Hello </Button>
+            <Button> Pause/Play </Button>
+            <Button> Hello </Button>
+            <Button> Hello </Button>
+        </StackPanel>
+        </Grid>
+</UserControl>

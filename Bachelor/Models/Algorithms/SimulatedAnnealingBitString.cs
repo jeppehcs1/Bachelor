@@ -31,6 +31,7 @@ public class SimulatedAnnealingBitString(ProblemType<BitArray> problem) : Simula
         }
         
         SearchPoint = old;
+        BSFF = Problem.Fitness(SearchPoint);
         return true;
     }
 

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using Bachelor.Models.Algorithms;
 using Bachelor.Models.Problems;
 using Bachelor.Models.Scheduling;
 using Bachelor.Models.Utility;
+using Bachelor.ViewModels.Visualization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -20,7 +19,13 @@ public partial class AddBatchesViewModel : ViewModelBase
     private BatchItem? _selectedItem;
     private string _newBatchName = "";
     private string _newBatchRuns = "";
-
+    private readonly MainWindowViewModel _mainViewModel;
+    private readonly VisualizationHostViewModel _visualizationHostViewModel;
+    public AddBatchesViewModel(VisualizationHostViewModel visualizationHostViewModel, MainWindowViewModel mainViewModel)
+    {
+        _mainViewModel = mainViewModel;
+        _visualizationHostViewModel = visualizationHostViewModel;
+    }
     public ObservableCollection<BatchItem> Items
     {
         get => _items;
@@ -47,12 +52,12 @@ public partial class AddBatchesViewModel : ViewModelBase
     private int GetNewBatchRunsAsInt() => int.TryParse(_newBatchRuns, out var result) ? result : 0;
 
 
-    private void AddItem(string name,  int runs, int dimension)
+    private void AddItem(string name,  int runs)
     {
         IAlgorithm algorithm = AlgorithmFactory.Create(Schedule);
         algorithm.StoppingCondition = Schedule.BuildStoppingCondition(algorithm);
         Batch batch = new Batch(algorithm , runs, name);
-        Items.Add(new BatchItem(name, runs, dimension, batch));
+        Items.Add(new BatchItem(name, runs, batch));
     }
 
     public void RemoveItem(BatchItem item)
@@ -60,9 +65,9 @@ public partial class AddBatchesViewModel : ViewModelBase
         Items.Remove(item);
     }
     [RelayCommand]
-    private void AddBatchOnClick() => AddItem(_newBatchName, GetNewBatchRunsAsInt(), Dimension);
+    private void AddBatchOnClick() => AddItem(_newBatchName, GetNewBatchRunsAsInt());
     [RelayCommand]
-    private void CopyBatchOnClick() => AddItem(_selectedItem.Name, _selectedItem.Runs, _selectedItem.Dimension);
+    private void CopyBatchOnClick() => AddItem(_selectedItem.Name, _selectedItem.Runs);
 
     [RelayCommand]
     private void DeleteBatchOnClick()
@@ -101,6 +106,7 @@ public partial class AddBatchesViewModel : ViewModelBase
     private async Task FinishSetupOnClick()
     {
         IsRunning = true;
+        _mainViewModel.CurrentView = _visualizationHostViewModel;
         await RunBatches();
         IsRunning =  false;
     }
@@ -112,23 +118,20 @@ public partial class AddBatchesViewModel : ViewModelBase
             MaxDegreeOfParallelism = Environment.ProcessorCount 
         };
         
-        return Task.Run(() =>
+        return Parallel.ForEachAsync(_items, options, async (batchItem, ct) =>
         {
-            Parallel.ForEach(_items, options, batchItem =>
-            {
-                Avalonia.Threading.Dispatcher.UIThread.Post(() => batchItem.Status = Status.Running);
-                batchItem.Batch.Run();
-                Avalonia.Threading.Dispatcher.UIThread.Post(() => batchItem.Status = Status.Completed);
-            });
+            Avalonia.Threading.Dispatcher.UIThread.Post(() => batchItem.Status = Status.Running);
+            _visualizationHostViewModel.Attach(batchItem.Batch.Algorithm, batchItem.Batch.Runner);
+            await batchItem.Batch.RunAll();
+            Avalonia.Threading.Dispatcher.UIThread.Post(() => batchItem.Status = Status.Completed);
         });
     }
 }
 
-public partial class BatchItem(string name, int runs, int dimension, Batch batch) : ObservableObject
+public partial class BatchItem(string name, int runs, Batch batch) : ObservableObject
 {
     public string Name { get; set; } = name;
     public int Runs { get; set; } = runs;
-    public int Dimension { get; set; } = dimension;
     
     [ObservableProperty]
     private Status _status;

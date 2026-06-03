@@ -45,6 +45,7 @@ public class SimulatedAnnealingPermutation : SimulatedAnnealing<TSPInstance>
         }
         
         SearchPoint = old;
+        BSFF = Problem.Fitness(SearchPoint);
         return false;
         
     }

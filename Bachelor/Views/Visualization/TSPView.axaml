@@ -4,9 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:Bachelor.ViewModels"
              xmlns:avaPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+             xmlns:visualization="clr-namespace:Bachelor.ViewModels.Visualization"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Bachelor.Views.TSPView"
-             x:DataType="vm:TSPViewModel">
+             x:Class="Bachelor.Views.Visualization.TSPView"
+             x:DataType="visualization:TSPViewModel">
              
     
     
@@ -14,7 +15,7 @@
     
     <StackPanel>
         <avaPlot:AvaPlot x:Name="PlotControl" DockPanel.Dock="Bottom" Height="400"/>
-        <Button Command="{Binding IterateTSPOnClickCommand}">Iterate</Button>
+        
     
     </StackPanel>    
 </UserControl>

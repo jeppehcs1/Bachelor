@@ -1,0 +1,85 @@
+﻿using System;
+using System.Collections;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Bachelor.Models.Algorithms;
+using Bachelor.Models.Problems;
+
+namespace Bachelor.Models.Utility;
+
+public class AlgorithmRunner
+{
+    private CancellationTokenSource _cts = new();
+    private SemaphoreSlim _pauseSemaphore = new(1, 1);
+    private bool _isPaused = false;
+    public event Action<IAlgorithm>? OnIteration;
+
+    public async Task Run(IAlgorithm algorithm)
+    {
+        algorithm.Initialize();
+        var token = _cts.Token;
+
+        await Task.Run(() =>
+        {
+            while (!algorithm.StoppingCondition() && !token.IsCancellationRequested)
+            {
+                _pauseSemaphore.Wait(token); // blocks if paused
+                _pauseSemaphore.Release();
+
+                algorithm.Iterate();
+                OnIteration?.Invoke(algorithm);
+            }
+        }, token);
+    }
+
+    public AlgorithmSnapshot TakeSnapshot(IAlgorithm algorithm)
+    {
+        if (algorithm is Algorithm<TSPInstance> tspAlgo)
+            return new AlgorithmSnapshot
+            {
+                BSFF = algorithm.BSFF,
+                FuncEvals = algorithm.FuncEvals,
+                Iterations = algorithm.Iterations,
+                Fitness = algorithm.BSFF,
+                TSPSearchPoint = tspAlgo.SearchPoint.DeepCopy()
+            };
+
+        if (algorithm is Algorithm<BitArray> bitAlgo)
+            return new AlgorithmSnapshot
+            {
+                BSFF = algorithm.BSFF,
+                FuncEvals = algorithm.FuncEvals,
+                Iterations = algorithm.Iterations,
+                Fitness = algorithm.BSFF,
+                BitStringSearchPoint = bitAlgo.SearchPoint
+            };
+        return new AlgorithmSnapshot { BSFF = algorithm.BSFF, FuncEvals = algorithm.FuncEvals,  Iterations = algorithm.Iterations };
+    }
+
+
+public void Pause()
+    {
+        if (!_isPaused)
+        {
+            _pauseSemaphore.Wait();
+            _isPaused = true;
+        }
+    }
+
+    public void Resume()
+    {
+        if (_isPaused)
+        {
+            _pauseSemaphore.Release();
+            _isPaused = false;
+        }
+    }
+
+    public void Stop() => _cts.Cancel();
+    
+    public void Restart()
+    {
+        _cts = new CancellationTokenSource();
+    }
+}

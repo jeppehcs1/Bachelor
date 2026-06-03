@@ -1,13 +1,16 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using Bachelor.Models.Algorithms;
+using Bachelor.Models.Utility;
 
 namespace Bachelor.Models.Scheduling;
 
 public class Batch
 {
     int NumberRuns { get; set; }
-    IAlgorithm Algorithm { get; set; }
+    public IAlgorithm Algorithm { get; set; }
+    public AlgorithmRunner Runner { get; } = new();
     public string Name { get; set; }
     public Status Status { get; set; }
     string OutputFilePath { get; set; }
@@ -31,11 +34,9 @@ public class Batch
         }
     }
 
-    public void Run()
+    public void clemRun()
     {
-        Status = Status.Running;
         double totalTime = 0;
-        
         // Write header to CSV file
         using (var writer = new StreamWriter(OutputFilePath, false))
         {
@@ -49,7 +50,8 @@ public class Batch
                 Console.WriteLine($"FuncEvals after Run: {Algorithm.FuncEvals}, Runtime: {Algorithm.Runtime}");
                 totalTime += Algorithm.Runtime;
                 // Write to file
-                writer.WriteLine($"{i + 1},{Algorithm.BSFF},{Algorithm.Runtime.ToString("F3", culture)},{Algorithm.FuncEvals}");
+                writer.WriteLine(
+                    $"{i + 1},{Algorithm.BSFF},{Algorithm.Runtime.ToString("F3", culture)},{Algorithm.FuncEvals}");
             }
 
             writer.WriteLine();
@@ -60,6 +62,24 @@ public class Batch
         //Console.WriteLine("Total time: " + totalTime);
         Console.WriteLine($"Results saved to: {OutputFilePath}");
         Status = Status.Completed;
+    }
+    public async Task RunAll()
+    {
+        Status = Status.Running;
+        double totalTime = 0;
+        for (int i = 0; i < NumberRuns; i++)
+        {
+            await Run();
+            totalTime += Algorithm.Runtime;
+        }
+    }
+    public async Task Run() => await Runner.Run(Algorithm);
+    public void Pause() => Runner.Pause();
+    public void Resume() => Runner.Resume();
+    public void Restart()
+    {
+        Runner.Stop();
+        Runner.Restart();
     }
 }
 

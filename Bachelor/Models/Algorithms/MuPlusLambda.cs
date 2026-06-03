@@ -22,7 +22,7 @@ public abstract class MuPlusLambda<T> : Algorithm<T>
         if (config.TryGetValue("Mu", out var mu)) Mu = (int)mu;
         if (config.TryGetValue("Lambda", out var lambda)) Lambda = (int)lambda;
     }
-    public override bool Iterate()
+    public override bool IterateCore()
     {
         var dim = Problem.Dimension;
         var old = CloneSearchPoint();

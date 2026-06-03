@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:avaPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Bachelor.Views.PlotView">
+             x:Class="Bachelor.Views.Visualization.PlotView">
     
     <avaPlot:AvaPlot x:Name="PlotControl" DockPanel.Dock="Bottom" Height="400"/>
 </UserControl>
