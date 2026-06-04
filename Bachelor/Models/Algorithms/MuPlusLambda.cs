@@ -7,7 +7,7 @@ using Bachelor.Models.Problems;
 
 public abstract class MuPlusLambda<T> : Algorithm<T>
 {
-    protected readonly Random _random = new Random();
+    
     public int Mu;
     public int Lambda;
     public List<T> Population;

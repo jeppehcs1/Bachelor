@@ -6,21 +6,10 @@ using System.Diagnostics;
 using System.Text;
 using Bachelor.Models.Problems;
 namespace Bachelor.Models.Algorithms;
-public interface IAlgorithm
-{
-    int BSFF { get; set; }
-    double Runtime { get; set; }
-    int FuncEvals { get; }
-    Func<bool> StoppingCondition { get; set; }
-    int GetFitness();
-    int? Optimum { get; }
-    bool Iterate();
-    int Iterations { get; }
-    void Initialize();
-    void Configure(Dictionary<string, object> config);
-}
+
 public abstract class Algorithm<T> : IAlgorithm
 {
+    protected Random _random = new Random();
     public int FuncEvals => Problem.FuncEvals;
     public double Runtime { get; set; }
     public int Iterations { get; private set; }

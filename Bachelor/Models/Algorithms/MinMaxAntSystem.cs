@@ -7,7 +7,7 @@ namespace Bachelor.Models.Algorithms;
 
 public abstract class MinMaxAntSystem<T> : Algorithm<T>
 {
-    protected Random _random = new Random();
+   
     public MinMaxAntSystem(ProblemType<T> problem) : base(problem)
     {
         

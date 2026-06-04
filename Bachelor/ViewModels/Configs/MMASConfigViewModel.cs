@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace Bachelor.ViewModels;
+namespace Bachelor.ViewModels.Configs;
 
 public partial class MMASConfigViewModel : ViewModelBase
 {

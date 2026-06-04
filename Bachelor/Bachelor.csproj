@@ -53,7 +53,9 @@
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>
-
+    <ItemGroup>
+        <PackageReference Include="Tmds.DBus.Protocol" Version="0.22.0" />
+    </ItemGroup>
     <ItemGroup>
       <Folder Include="Assets\LogFiles\" />
     </ItemGroup>

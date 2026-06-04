@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using Avalonia.Controls;
-using Bachelor.ViewModels;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-namespace Bachelor.ViewModels;
+namespace Bachelor.ViewModels.Configs;
 
 public partial class AlgorithmConfigViewModel : ViewModelBase
 {

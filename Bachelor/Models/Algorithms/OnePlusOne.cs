@@ -6,7 +6,7 @@ namespace Bachelor.Models.Algorithms;
 
 public abstract class OnePlusOne<T> : Algorithm<T>
 {
-    protected readonly Random _random = new Random();
+    
     protected OnePlusOne(ProblemType<T> problem) : base(problem)
     {
         

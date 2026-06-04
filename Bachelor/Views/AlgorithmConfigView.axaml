@@ -3,9 +3,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:Bachelor.ViewModels"
+        xmlns:configs="clr-namespace:Bachelor.ViewModels.Configs"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Bachelor.Views.AlgorithmConfigView"
-        x:DataType="viewModels:AlgorithmConfigViewModel"
+        x:DataType="configs:AlgorithmConfigViewModel"
         Title="Configure Algorithm"
         >
         <StackPanel Margin="20" Spacing="15">
@@ -15,7 +16,7 @@
                 <!-- Dynamic config fields based on selected algorithm -->
                 <ContentControl Content="{Binding ConfigViewModel}">
                         <ContentControl.DataTemplates>
-                                <DataTemplate DataType="viewModels:SimulatedAnnealingConfigViewModel">
+                                <DataTemplate DataType="configs:SimulatedAnnealingConfigViewModel">
                                         <StackPanel Spacing="10">
                                                 <StackPanel>
                                                         <TextBlock Text="Initial temperature" FontWeight="Bold"/>
@@ -27,7 +28,7 @@
                                                 </StackPanel>
                                         </StackPanel>
                                 </DataTemplate>
-                                <DataTemplate DataType="viewModels:MuPlusLambdaConfigViewModel">
+                                <DataTemplate DataType="configs:MuPlusLambdaConfigViewModel">
                                         <StackPanel Spacing="10">
                                                 <StackPanel>
                                                         <TextBlock Text="Mu (μ)" FontWeight="Bold"/>
@@ -39,7 +40,7 @@
                                                 </StackPanel>
                                         </StackPanel>
                                 </DataTemplate>
-                                <DataTemplate DataType="{x:Type viewModels:MMASConfigViewModel}">
+                                <DataTemplate DataType="{x:Type configs:MMASConfigViewModel}">
                                         <StackPanel Spacing="10">
                                                 <StackPanel>
                                                         <TextBlock Text="Evaporation factor" FontWeight="Bold"/>

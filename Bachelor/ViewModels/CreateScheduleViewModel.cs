@@ -106,7 +106,7 @@ public partial class CreateScheduleViewModel : ViewModelBase
     private async Task ConfigureAlgorithmOnClick()
     {
         var dialog = new AlgorithmConfigView();
-        var vm = new AlgorithmConfigViewModel(SelectedAlgorithm, SelectedSearchSpace, dialog);
+        var vm = new Configs.AlgorithmConfigViewModel(SelectedAlgorithm, SelectedSearchSpace, dialog);
         dialog.DataContext = vm;
         await dialog.ShowDialog(_parentWindow);
 
