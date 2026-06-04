@@ -12,6 +12,7 @@
         <entry key="Bachelor/Views/HomeView.axaml" value="Bachelor/Bachelor.csproj" />
         <entry key="Bachelor/Views/HypercubeView.axaml" value="Bachelor/Bachelor.csproj" />
         <entry key="Bachelor/Views/HypercubeVisual.axaml" value="Bachelor/Bachelor.csproj" />
+        <entry key="Bachelor/Views/LogView.axaml" value="Bachelor/Bachelor.csproj" />
         <entry key="Bachelor/Views/MainWindow.axaml" value="Bachelor/Bachelor.csproj" />
         <entry key="Bachelor/Views/PlotView.axaml" value="Bachelor/Bachelor.csproj" />
         <entry key="Bachelor/Views/PlotWindow.axaml" value="Bachelor/Bachelor.csproj" />

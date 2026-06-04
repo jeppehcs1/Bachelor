@@ -20,6 +20,7 @@
                         <MenuItem Header="Home" Command="{Binding ShowHomeCommand}"/>
                         <MenuItem Header="Create Schedule" Command="{Binding ShowCreateScheduleCommand}" />
                         <MenuItem Header="Visualization" Command="{Binding ShowVisualizationCommand}"/>
+                        <MenuItem Header="Logs" Command="{Binding ShowLogCommand}"/>
                     </MenuItem>
                 </Menu>
         <!-- Content Area -->

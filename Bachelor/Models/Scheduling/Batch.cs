@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Bachelor.Models.Algorithms;
 using Bachelor.Models.Utility;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace Bachelor.Models.Scheduling;
 
@@ -59,7 +60,7 @@ public class Batch
             logger.LogRun(snapshot);
         }
         logger.WriteSummary();
-        Console.WriteLine($"Results saved to: {OutputFilePath}");
+        WeakReferenceMessenger.Default.Send($"Results saved to: {OutputFilePath}");
         Status = Status.Completed;
     }
     public async Task Run(CancellationToken ct) => await Runner.Run(Algorithm, ct);

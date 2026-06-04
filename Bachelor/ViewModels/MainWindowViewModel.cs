@@ -27,7 +27,7 @@ public partial class MainWindowViewModel : ViewModelBase
     private readonly CreateScheduleViewModel _createScheduleViewModel;
     private readonly AddBatchesViewModel _addBatchesViewModel;
     private readonly VisualizationHostViewModel _visualizationHostViewModel;
-
+    public LogViewModel LogViewModel { get; } = new();
     public MainWindowViewModel(Window parentWindow)
     {
         // Create ViewModels once
@@ -47,6 +47,8 @@ public partial class MainWindowViewModel : ViewModelBase
     private void ShowCreateSchedule() => CurrentView = _createScheduleViewModel;
     [RelayCommand]
     private void ShowVisualization() => CurrentView = _visualizationHostViewModel;
+    [RelayCommand]
+    private void ShowLog() => CurrentView = LogViewModel;
     
     
     
