@@ -7,7 +7,7 @@
              x:Class="Bachelor.Views.LogView"
              x:DataType="vm:LogViewModel">
     <ListBox ItemsSource="{Binding LogMessages}"
-             Height="150"
+             Height="400"
              ScrollViewer.VerticalScrollBarVisibility="Auto">
         <ListBox.ItemTemplate>
             <DataTemplate>
