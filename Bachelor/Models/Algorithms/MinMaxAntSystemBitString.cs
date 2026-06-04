@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using Bachelor.Models.Problems;
 
 namespace Bachelor.Models.Algorithms;

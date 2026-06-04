@@ -122,6 +122,7 @@ public partial class AddBatchesViewModel : ViewModelBase
         };
         _visualizationHostViewModel.CurrentVisualization = viewModel;
         _mainViewModel.CurrentView = _visualizationHostViewModel;
+        
         try
         {
             await RunBatches(_batchCts.Token);

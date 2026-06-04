@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Avalonia.Markup.Xaml;
+﻿using System.Collections.Generic;
 using Bachelor.Models.Problems;
 
 namespace Bachelor.Models.Algorithms;

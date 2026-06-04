@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Bachelor.Models.Algorithms;
 using Bachelor.Views;
-using CommunityToolkit.Mvvm;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Avalonia.Controls;
-using Avalonia.Platform.Storage;
 using Bachelor.Models.Problems;
 using Bachelor.Models.Scheduling;
 using Bachelor.Models.Utility;

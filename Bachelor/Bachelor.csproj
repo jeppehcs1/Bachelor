@@ -54,7 +54,7 @@
       </Compile>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Tmds.DBus.Protocol" Version="0.22.0" />
+        <PackageReference Include="Tmds.DBus.Protocol" Version="0.21.3" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Assets\LogFiles\" />

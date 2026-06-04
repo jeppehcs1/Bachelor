@@ -7,9 +7,5 @@ namespace Bachelor.Models.Problems;
 public abstract class BitStringProblem(int dimension) : ProblemType<BitArray>(dimension)
 {
     
-    public int Fitness(BitArray c)
-    {
-        return base.Fitness(c);
-    }
 
 }
