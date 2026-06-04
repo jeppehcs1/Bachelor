@@ -12,7 +12,7 @@ public class TSPProblem : PermutationProblem
         DistanceMatrix = new int[dimension,dimension];
     }
     public int[,] DistanceMatrix;
-    public int GetDistance(int i, int j, TSPInstance instance)
+    public int GetEuclidianDistance(int i, int j, TSPInstance instance)
     {
         int row = Math.Min(i, j);
         int col = Math.Max(i, j);
@@ -40,9 +40,9 @@ public class TSPProblem : PermutationProblem
     {
         int fitness = 0;
         for (int i = 1; i < Dimension; i++)
-            fitness += GetDistance(c.Permutation[i-1], c.Permutation[i], c);
+            fitness += GetEuclidianDistance(c.Permutation[i-1], c.Permutation[i], c);
     
-        fitness += GetDistance(c.Permutation[Dimension - 1], c.Permutation[0], c);
+        fitness += GetEuclidianDistance(c.Permutation[Dimension - 1], c.Permutation[0], c);
         return fitness;
     }
 
@@ -169,9 +169,9 @@ public class TSPProblem : PermutationProblem
         int i2 = CheckBoundary(indexPair2.Item1), j2 = CheckBoundary(indexPair2.Item2);
         int i3 = CheckBoundary(indexPair3.Item1), j3 = CheckBoundary(indexPair3.Item2);
 
-        return GetDistance(i1, j1, instance)
-               + GetDistance(i2, j2, instance)
-               + GetDistance(i3, j3, instance);
+        return GetEuclidianDistance(i1, j1, instance)
+               + GetEuclidianDistance(i2, j2, instance)
+               + GetEuclidianDistance(i3, j3, instance);
     }
 
     private int CheckBoundary(int index)

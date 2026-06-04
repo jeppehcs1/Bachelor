@@ -119,8 +119,8 @@ public class ProblemTests
 
         problem.Fitness(instance);
 
-        // Confirm symmetry — GetDistance(i,j) == GetDistance(j,i)
-        Assert.That(problem.GetDistance(0, 1, instance), Is.EqualTo(problem.GetDistance(1, 0, instance)));
-        Assert.That(problem.GetDistance(2, 5, instance), Is.EqualTo(problem.GetDistance(5, 2, instance)));
+        // Confirm symmetry — GetEuclidianDistance(i,j) == GetEuclidianDistance(j,i)
+        Assert.That(problem.GetEuclidianDistance(0, 1, instance), Is.EqualTo(problem.GetEuclidianDistance(1, 0, instance)));
+        Assert.That(problem.GetEuclidianDistance(2, 5, instance), Is.EqualTo(problem.GetEuclidianDistance(5, 2, instance)));
     }
 }

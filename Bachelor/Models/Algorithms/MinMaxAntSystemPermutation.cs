@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Bachelor.Models.Problems;
+using Bachelor.Models.Utility;
 
 namespace Bachelor.Models.Algorithms;
 
@@ -10,52 +11,55 @@ public class MinMaxAntSystemPermutation: MinMaxAntSystem<TSPInstance>
     public MinMaxAntSystemPermutation(TSPProblem problem, TSPInstance instance) : base(problem)
     {
         NumAnts = problem.Dimension;
-        TauMax = 1.0 - 1.0/problem.Dimension;
-        TauMin = 1.0 / (Problem.Dimension *  Problem.Dimension);
         Alpha = 1.0;
         Beta = 5.0;
         Rho = 0.002;
+        TauMax = 1.0 / (Rho * Problem.Fitness(NearestNeighbour.Solve(instance, problem)));
+        TauMin = TauMax * (1 - Math.Pow(0.05, 1.0/NumAnts)) / ((NumAnts/2.0 - 1.0) * Math.Pow(0.05, 1.0/NumAnts));
         InitialPheromone = TauMax;
         SearchPoint = instance;
         BSFF = GetFitness();
-        EdgePheromones = new double[Problem.Dimension, Problem.Dimension];
+        _edgePheromones = new double[Problem.Dimension, Problem.Dimension];
     }
-    private double[,] EdgePheromones;
-    private (List<int>, int) IterationBest;
+    private double[,] _edgePheromones;
+    private (List<int>, int) _iterationBest;
     public override void UpdatePheromones()
     {
+        // update TauMax and TauMin with new BSFF
+        TauMax = 1.0/(Rho * BSFF);
+        TauMin = TauMax * (1 - Math.Pow(0.05, 1.0/NumAnts)) / ((NumAnts/2.0 - 1.0) * Math.Pow(0.05, 1.0/NumAnts));
         // Evaporate all (only upper triangle since TSP is symmetric)
         for (int i = 0; i < Problem.Dimension; i++)
             for (int j = i + 1; j < Problem.Dimension; j++)
-                EdgePheromones[i, j] = Math.Max(TauMin, EdgePheromones[i, j] * (1 - Rho));
+                _edgePheromones[i, j] = Math.Max(TauMin, _edgePheromones[i, j] * (1 - Rho));
 
         // Deposit on best tour edges
-        var tour = IterationBest.Item1;
-        double deposit = 1.0 / IterationBest.Item2;
+        var tour = _iterationBest.Item1;
+        double deposit = 1.0 / _iterationBest.Item2;
     
         for (int i = 0; i < tour.Count - 1; i++)
         {
             int row = Math.Min(tour[i], tour[i + 1]);
             int col = Math.Max(tour[i], tour[i + 1]);
-            EdgePheromones[row, col] = Math.Min(TauMax, EdgePheromones[row, col] + deposit);
+            _edgePheromones[row, col] = Math.Min(TauMax, _edgePheromones[row, col] + deposit);
         }
         // closing edge
         int r = Math.Min(tour[^1], tour[0]);
         int c = Math.Max(tour[^1], tour[0]);
-        EdgePheromones[r, c] = Math.Min(TauMax, EdgePheromones[r, c] + deposit);
+        _edgePheromones[r, c] = Math.Min(TauMax, _edgePheromones[r, c] + deposit);
     }
 
     public override void InitializePheromones()
     {
         for (int i = 0; i < Problem.Dimension; i++)
             for (int j = i + 1; j < Problem.Dimension; j++)
-                EdgePheromones[i, j] = InitialPheromone;
+                _edgePheromones[i, j] = InitialPheromone;
         
     }
 
     public override void ConstructAntSolutions() //ordered construction
     {
-        int iterationBestFitness = 999999999;
+        int iterationBestFitness = int.MaxValue;
         for (int i = 0; i < NumAnts; i++)
         {
             // initialize ant
@@ -77,14 +81,14 @@ public class MinMaxAntSystemPermutation: MinMaxAntSystem<TSPInstance>
             int tourLength = ((TSPProblem) Problem).Fitness(new TSPInstance(antPermutation, SearchPoint.Graph));
             if (tourLength < iterationBestFitness)
             {
-                IterationBest = (antPermutation, tourLength);
+                _iterationBest = (antPermutation, tourLength);
                 iterationBestFitness = tourLength;
             }
         }
 
         if (iterationBestFitness < BSFF)
         {
-            SearchPoint = new TSPInstance(IterationBest.Item1, SearchPoint.Graph);
+            SearchPoint = new TSPInstance(_iterationBest.Item1, SearchPoint.Graph);
             BSFF = iterationBestFitness;
         }
     }
@@ -92,10 +96,10 @@ public class MinMaxAntSystemPermutation: MinMaxAntSystem<TSPInstance>
     private int ChooseComponent(int currentVertex, HashSet<int> antNeighbourhood)
     {
         double roll = _random.NextDouble(); // random between 0.0 and 1.0
-        double R = 0; // sum of pheromone * heuristic for all edges in neighbourhood
+        double r = 0; // sum of pheromone * heuristic for all edges in neighbourhood
         foreach (var potentialEdgeVertex in antNeighbourhood)
         {
-            R += Math.Pow(GetEdgePheromones(currentVertex, potentialEdgeVertex),Alpha) 
+            r += Math.Pow(GetEdgePheromones(currentVertex, potentialEdgeVertex),Alpha) 
                  * Math.Pow(Heuristic(currentVertex, potentialEdgeVertex), Beta);
         }
         double cum = 0;
@@ -104,7 +108,7 @@ public class MinMaxAntSystemPermutation: MinMaxAntSystem<TSPInstance>
         {
             double probability = Math.Pow(GetEdgePheromones(currentVertex, potentialEdgeVertex), Alpha)
                                  * Math.Pow(Heuristic(currentVertex, potentialEdgeVertex), Beta)
-                                 / R;
+                                 / r;
             cum += probability;
 
             if (!(roll <= cum)) continue;
@@ -118,7 +122,7 @@ public class MinMaxAntSystemPermutation: MinMaxAntSystem<TSPInstance>
     {
         int row = Math.Min(currentVertex, potentialEdgeVertex);
         int col = Math.Max(currentVertex, potentialEdgeVertex);
-        return EdgePheromones[row, col];
+        return _edgePheromones[row, col];
     }
 
     private HashSet<int> InitializeNeighbourhood()
@@ -128,7 +132,7 @@ public class MinMaxAntSystemPermutation: MinMaxAntSystem<TSPInstance>
 
     private double Heuristic(int currentVertex, int potentialEdgeVertex)
     {
-        return 1.0/((TSPProblem) Problem).GetDistance(currentVertex, potentialEdgeVertex, SearchPoint);
+        return 1.0/((TSPProblem) Problem).GetEuclidianDistance(currentVertex, potentialEdgeVertex, SearchPoint);
     }
 
     public override void InitializeCore()
