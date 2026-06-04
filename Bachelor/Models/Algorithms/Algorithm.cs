@@ -18,8 +18,6 @@ public interface IAlgorithm
     void Initialize();
     void Run();
     void Configure(Dictionary<string, object> config);
-    
-    
 }
 public abstract class Algorithm<T> : IAlgorithm
 {

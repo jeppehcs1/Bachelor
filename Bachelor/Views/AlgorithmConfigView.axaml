@@ -57,14 +57,7 @@
                                                         <TextBlock Text="Number of ants (m)" FontWeight="Bold"/>
                                                         <TextBox Text="{Binding Ants}"/>
                                                 </StackPanel>
-                                                <StackPanel>
-                                                        <TextBlock Text="TauMax" FontWeight="Bold"/>
-                                                        <TextBox Text="{Binding TauMax}"/>
-                                                </StackPanel>
-                                                <StackPanel>
-                                                        <TextBlock Text="TauMin" FontWeight="Bold"/>
-                                                        <TextBox Text="{Binding TauMin}"/>
-                                                </StackPanel>
+                                                
                                         </StackPanel>
                                 </DataTemplate>
                         </ContentControl.DataTemplates>

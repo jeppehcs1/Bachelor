@@ -11,7 +11,7 @@ public struct TSPInstance
     // Constructor
     public TSPInstance(List<int> permutation, List<(int x, int y)> graph)
     {
-        // Create new lists to avoid sharing references → deep copy
+        // CreateAndConfigure new lists to avoid sharing references → deep copy
         Permutation = new List<int>(permutation);
         Graph = new List<(int x, int y)>(graph);
     }

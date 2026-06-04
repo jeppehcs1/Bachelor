@@ -87,6 +87,8 @@ public partial class CreateScheduleViewModel : ViewModelBase
             schedule = new Schedule(SelectedSearchSpace, SelectedAlgorithm, SelectedProblem, 
                 SelectedFinishCondition, SelectedVisualization, GetDimensionAsInt());
         }
+
+        schedule.AlgorithmConfig = _algorithmConfig;
         _addBatchesViewModel.Schedule = schedule;
         _mainViewModel.CurrentView = _addBatchesViewModel;
     }

@@ -58,7 +58,7 @@ public partial class AddBatchesViewModel : ViewModelBase
 
     private void AddItem(string name,  int runs)
     {
-        IAlgorithm algorithm = AlgorithmFactory.Create(Schedule);
+        IAlgorithm algorithm = AlgorithmFactory.CreateAndConfigure(Schedule);
         algorithm.StoppingCondition = Schedule.BuildStoppingCondition(algorithm);
         Batch batch = new Batch(algorithm , runs, name);
         Items.Add(new BatchItem(name, runs, batch));

@@ -16,7 +16,7 @@ public class Schedule
     public int Optimum;
     public TSPInstance TSPInstance;
     public int Dimension;
-    public Dictionary<string, object> AlgorithmConfig;
+    public Dictionary<string, object> AlgorithmConfig = new Dictionary<string, object>();
     public Schedule(string searchSpace, string algorithm, string problem, string finishCondition, string visualization, int dimension){
         SearchSpace = searchSpace;
         AlgorithmName = algorithm;
@@ -48,5 +48,4 @@ public class Schedule
             _ => throw new ArgumentException($"Unknown finish condition: {FinishCondition}")
         };
     }
-    
 }

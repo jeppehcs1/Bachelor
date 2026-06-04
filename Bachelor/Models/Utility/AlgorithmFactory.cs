@@ -10,7 +10,7 @@ namespace Bachelor.Models.Utility;
 
 public static class AlgorithmFactory
 {
-    public static IAlgorithm Create(Schedule schedule)
+    public static IAlgorithm CreateAndConfigure(Schedule schedule)
     {
         var assembly = Assembly.GetExecutingAssembly();
         var suffix = schedule.SearchSpace switch
@@ -32,11 +32,13 @@ public static class AlgorithmFactory
 
         var problem = Activator.CreateInstance(problemType, schedule.Dimension);
     
-        return schedule.SearchSpace switch
+        IAlgorithm algorithm = schedule.SearchSpace switch
         {
             "Bit Strings" => (IAlgorithm) Activator.CreateInstance(algorithmType, problem),
             "Permutations" => (IAlgorithm) Activator.CreateInstance(algorithmType, problem, schedule.TSPInstance),
             _ => throw new ArgumentException()
         };
+        algorithm.Configure(schedule.AlgorithmConfig);
+        return algorithm;
     }
 }

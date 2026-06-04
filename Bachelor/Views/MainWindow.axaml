@@ -18,11 +18,7 @@
         <Menu DockPanel.Dock="Top">
                     <MenuItem Header="Menu" Background="DarkGray">
                         <MenuItem Header="Home" Command="{Binding ShowHomeCommand}"/>
-                        <MenuItem Header="Plot" Command="{Binding ShowPlotCommand}"/>
-                        <MenuItem Header="Cube" Command="{Binding ShowCubeCommand}"/>
-                        <MenuItem Header="TSP" Command="{Binding ShowTSPCommand}"/>
                         <MenuItem Header="Create Schedule" Command="{Binding ShowCreateScheduleCommand}" />
-                        <MenuItem Header="Go" Command="{Binding ShowVisualizationCommand}" />
                     </MenuItem>
                 </Menu>
         <!-- Content Area -->
