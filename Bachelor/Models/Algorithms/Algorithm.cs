@@ -13,10 +13,10 @@ public interface IAlgorithm
     int FuncEvals { get; }
     Func<bool> StoppingCondition { get; set; }
     int GetFitness();
+    int? Optimum { get; }
     bool Iterate();
     int Iterations { get; }
     void Initialize();
-    void Run();
     void Configure(Dictionary<string, object> config);
 }
 public abstract class Algorithm<T> : IAlgorithm
@@ -35,6 +35,7 @@ public abstract class Algorithm<T> : IAlgorithm
         return Problem.Fitness(SearchPoint);
     }
 
+    public int? Optimum => Problem.OptimalFitness;
     public bool Iterate() // return true if the mutation is better than before
     {
         Iterations++;

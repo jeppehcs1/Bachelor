@@ -21,7 +21,6 @@ public partial class MainWindowViewModel : ViewModelBase
 {
     [ObservableProperty]
     private object currentView;
-
     private readonly PlotViewModel _plotViewModel;
     private readonly HypercubeViewModel _hypercubeViewModel;
     private readonly TSPViewModel _tspViewModel;
@@ -32,9 +31,9 @@ public partial class MainWindowViewModel : ViewModelBase
     public MainWindowViewModel(Window parentWindow)
     {
         // Create ViewModels once
-        _plotViewModel = new PlotViewModel("");
-        _hypercubeViewModel = new HypercubeViewModel("");
-        _tspViewModel = new TSPViewModel("bo");
+        _plotViewModel = new PlotViewModel();
+        _hypercubeViewModel = new HypercubeViewModel();
+        _tspViewModel = new TSPViewModel();
         _visualizationHostViewModel = new VisualizationHostViewModel();
         _addBatchesViewModel = new AddBatchesViewModel(_visualizationHostViewModel, this);
         _createScheduleViewModel = new CreateScheduleViewModel(this, _addBatchesViewModel, parentWindow);
@@ -43,13 +42,7 @@ public partial class MainWindowViewModel : ViewModelBase
         CurrentView = new HomeView();
     }
     [RelayCommand]
-    private void ShowPlot() => CurrentView = _plotViewModel;
-    [RelayCommand]
     private void ShowHome() => CurrentView = new HomeView(); // or create HomeViewModel
-    [RelayCommand]
-    private void ShowCube() => CurrentView = _hypercubeViewModel;
-    [RelayCommand]
-    private void ShowTSP() => CurrentView = _tspViewModel;
     [RelayCommand]
     private void ShowCreateSchedule() => CurrentView = _createScheduleViewModel;
     [RelayCommand]

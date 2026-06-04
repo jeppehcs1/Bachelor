@@ -19,6 +19,7 @@
                     <MenuItem Header="Menu" Background="DarkGray">
                         <MenuItem Header="Home" Command="{Binding ShowHomeCommand}"/>
                         <MenuItem Header="Create Schedule" Command="{Binding ShowCreateScheduleCommand}" />
+                        <MenuItem Header="Visualization" Command="{Binding ShowVisualizationCommand}"/>
                     </MenuItem>
                 </Menu>
         <!-- Content Area -->

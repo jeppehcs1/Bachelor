@@ -15,15 +15,16 @@ public class AlgorithmRunner
     private SemaphoreSlim _pauseSemaphore = new(1, 1);
     private bool _isPaused = false;
     private int _iterationCount = 0;
-    private const int UpdateInterval = 1000;
+    public int UpdateInterval = 1000;
     public event Action<IAlgorithm>? OnIteration;
     public event Action? OnInitialization;
 
-    public async Task Run(IAlgorithm algorithm)
+    public async Task Run(IAlgorithm algorithm, CancellationToken ct = default)
     {
         algorithm.Initialize();
         OnInitialization?.Invoke();
-        var token = _cts.Token;
+        var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(_cts.Token, ct);
+        var token = linkedCts.Token;
 
         await Task.Run(() =>
         {
@@ -66,8 +67,20 @@ public class AlgorithmRunner
         return new AlgorithmSnapshot { BSFF = algorithm.BSFF, FuncEvals = algorithm.FuncEvals,  Iterations = algorithm.Iterations };
     }
 
-
-public void Pause()
+    public void Restart()
+    {
+        _cts.Cancel();
+        _cts.Dispose();
+        _cts = new CancellationTokenSource();
+        _iterationCount = 0;
+    
+        if (_isPaused)
+        {
+            _pauseSemaphore.Release();
+            _isPaused = false;
+        }
+    }
+    public void Pause()
     {
         if (!_isPaused)
         {

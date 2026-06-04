@@ -138,6 +138,7 @@ public class MinMaxAntSystemPermutation: MinMaxAntSystem<TSPInstance>
     public override void InitializeCore()
     {
         SearchPoint.Shuffle();
+        BSFF = GetFitness();
         base.InitializeCore();
     }
 }

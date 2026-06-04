@@ -18,7 +18,7 @@ public partial class TSPViewModel : VisualizationViewModel
     }
 
     
-    public TSPViewModel(string name) : base(name)
+    public TSPViewModel()
     {
         
     }

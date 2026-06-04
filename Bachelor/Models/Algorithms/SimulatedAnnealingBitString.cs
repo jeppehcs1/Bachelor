@@ -53,6 +53,7 @@ public class SimulatedAnnealingBitString(ProblemType<BitArray> problem) : Simula
             bits[i] = false;
         }
         SearchPoint = new BitArray(bits);
+        BSFF = 0;
     }
     
 }

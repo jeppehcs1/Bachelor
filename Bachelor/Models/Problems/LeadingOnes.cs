@@ -3,7 +3,7 @@ using System.Collections;
 
 public class LeadingOnes(int dimension) : BitStringProblem(dimension)
 {
-    
+    public override int? OptimalFitness => Dimension;
 
     protected override int FitnessCore(BitArray c)
     {

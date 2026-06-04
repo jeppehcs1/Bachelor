@@ -10,20 +10,18 @@ namespace Bachelor.ViewModels.Visualization;
 
 public partial class VisualizationHostViewModel : ViewModelBase
 {
-    [ObservableProperty]
-    private VisualizationViewModel? currentVisualization;
+    [ObservableProperty] private VisualizationViewModel? currentVisualization;
     private IAlgorithm? _algorithm;
     private AlgorithmRunner? _runner;
+    [ObservableProperty] private int _updateInterval;
     [ObservableProperty] private int _iterationCounter;
     [ObservableProperty] private int _bSFFCounter;
     [ObservableProperty] private int _funcEvalCounter;
     public VisualizationHostViewModel()
     {
-        
+        _updateInterval = 1000;
     }
-
     
-
 
     public void Attach(IAlgorithm algorithm, AlgorithmRunner runner)
     {
@@ -32,9 +30,8 @@ public partial class VisualizationHostViewModel : ViewModelBase
             _runner.OnIteration -= OnAlgorithmIteration;
             _runner.OnInitialization -= OnAlgorithmInitialization;
         }
-            
-            
         _runner = runner;
+        _runner.UpdateInterval = UpdateInterval;
         _runner.OnIteration += OnAlgorithmIteration;
         _runner.OnInitialization += OnAlgorithmInitialization;
         _algorithm = algorithm;
@@ -49,6 +46,11 @@ public partial class VisualizationHostViewModel : ViewModelBase
             FuncEvalCounter = snapshot.FuncEvals;
             CurrentVisualization?.Update(snapshot);
         });
+    }
+    partial void OnUpdateIntervalChanged(int value)
+    {
+        if (_runner != null)
+            _runner.UpdateInterval = value;
     }
     private void OnAlgorithmInitialization()
     {

@@ -69,5 +69,6 @@ public class MuPlusLambdaBitString(ProblemType<BitArray> problem) : MuPlusLambda
         }
 
         SearchPoint = Population.OrderByDescending(ba => Problem.Fitness(ba)).First();
+        BSFF = Problem.Fitness(SearchPoint);
     }
 }

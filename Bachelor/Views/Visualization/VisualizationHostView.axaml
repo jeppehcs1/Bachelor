@@ -30,6 +30,16 @@
             <TextBlock Text="{Binding BSFFCounter}"/>
             <TextBlock Text="FuncEvals:"/>
             <TextBlock Text="{Binding FuncEvalCounter}"/>
+            <Slider Orientation="Vertical"
+                    Minimum="100"
+                    Maximum="10000"
+                    Value="{Binding UpdateInterval}"
+                    TickFrequency="50"
+                    IsSnapToTickEnabled="True"
+                    Height="150"
+                    Margin="0,10,0,0"/>
+            <TextBlock Text="Update interval:"/>
+            <TextBlock Text="{Binding UpdateInterval}"/>
         </StackPanel>
         <ContentControl Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"
                         Content="{Binding CurrentVisualization}" />

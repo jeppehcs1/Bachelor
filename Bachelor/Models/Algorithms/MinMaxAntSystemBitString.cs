@@ -58,7 +58,13 @@ public class MinMaxAntSystemBitString : MinMaxAntSystem<BitArray>
         for (int i = 0; i < Problem.Dimension; i++)
             EdgePheromones[i] = InitialPheromone;
     }
-    
+
+    public override void InitializeCore()
+    {
+        base.InitializeCore();
+        BSFF = 0;
+        SearchPoint = new BitArray(Problem.Dimension);
+    }
 
     public override double GetEdgePheromones(int currentVertex, int potentialVertex) //special case with implicit construction graph
     {

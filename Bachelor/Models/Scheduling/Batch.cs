@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Bachelor.Models.Algorithms;
 using Bachelor.Models.Utility;
@@ -44,23 +45,24 @@ public class Batch
         return dir?.FullName ?? AppContext.BaseDirectory;
     }
     
-    public async Task RunAll()
+    public async Task RunAll(CancellationToken ct = default)
     {
         Status = Status.Running;
         var logger = new CsvLogger(OutputFilePath);
 
         for (int i = 0; i < NumberRuns; i++)
         {
-            await Run();
+            if (ct.IsCancellationRequested) break;
+            Runner.Restart();
+            await Run(ct);
             var snapshot = Runner.TakeSnapshot(Algorithm);
             logger.LogRun(snapshot);
         }
         logger.WriteSummary();
-
         Console.WriteLine($"Results saved to: {OutputFilePath}");
         Status = Status.Completed;
     }
-    public async Task Run() => await Runner.Run(Algorithm);
+    public async Task Run(CancellationToken ct) => await Runner.Run(Algorithm, ct);
     public void Pause() => Runner.Pause();
     public void Play() => Runner.Play();
     

@@ -7,6 +7,7 @@ public abstract class ProblemType<T>
 {
     public int Dimension { get; set; }
     public int FuncEvals { get; set; }
+    public virtual int? OptimalFitness => null; // unknown by default
     protected ProblemType(int dimension)
     {
         Dimension = dimension;

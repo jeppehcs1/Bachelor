@@ -16,6 +16,7 @@ public class SimulatedAnnealingPermutation : SimulatedAnnealing<TSPInstance>
     public override void InitializeCore()
     {
         SearchPoint.Shuffle();
+        BSFF = Problem.Fitness(SearchPoint);
     }
 
     public override TSPInstance CloneSearchPoint()

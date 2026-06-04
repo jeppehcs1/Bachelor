@@ -6,14 +6,11 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Bachelor.Views.CreateScheduleView"
              x:DataType="vm:CreateScheduleViewModel">
-    <StackPanel>
-        <StackPanel>
-            <TextBlock Margin="24"
-                       HorizontalAlignment="Center"
-                       Text="Schedule sovs">
-            </TextBlock>
-        
-            <Grid ColumnDefinitions="Auto,*,Auto,*,Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto" 
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Margin="15" HorizontalAlignment="Center" Text="Schedule builder"/>
+        <Button DockPanel.Dock="Bottom" Command="{Binding NextOnClickCommand}" IsEnabled="{Binding CanProceed}">Next</Button>
+        <ScrollViewer>
+            <Grid ColumnDefinitions="Auto,*,Auto,*,Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" 
                   Margin="24" ColumnSpacing="20" RowSpacing="8">
                 <TextBlock Grid.Column="0" Grid.Row="0" Text="Search space" FontWeight="Bold" />
                 <ListBox Grid.Column="0" Grid.Row="1"
@@ -53,11 +50,19 @@
                 </StackPanel>
                 
                 <TextBlock Grid.Column="0" Grid.Row="3" Text="Finish Condition" FontWeight="Bold"/>
-                <ListBox Grid.Column="0" Grid.Row="4"
-                          ItemsSource="{Binding FinishConditions}"
-                          SelectedItem="{Binding SelectedFinishCondition}"
-                          Width="200"/>
-                
+                <StackPanel Grid.Column="0" Grid.Row="4" Orientation="Vertical" Spacing="4">
+                    <ListBox ItemsSource="{Binding FinishConditions}"
+                             SelectedItem="{Binding SelectedFinishCondition}"
+                             Width="200"/>
+                    <StackPanel IsVisible="{Binding IsFuncEvals}" Orientation="Vertical" Spacing="4">
+                        <TextBlock Text="Max function evaluations" FontWeight="Bold"/>
+                        <TextBox Text="{Binding MaxFuncEvals}" Width="150"/>
+                    </StackPanel>
+                    <StackPanel IsVisible="{Binding IsExactFitness}" Orientation="Vertical" Spacing="4">
+                        <TextBlock Text="Exact fitness" FontWeight="Bold"/>
+                        <TextBox Text="{Binding ExactFitness}" Width="150"/>
+                    </StackPanel>
+                </StackPanel>
                 <TextBlock Grid.Column="2" Grid.Row="3" Text="Visualization" FontWeight="Bold"/>
                 <ListBox Grid.Column="2" Grid.Row="4"
                           ItemsSource="{Binding Visualizations}"
@@ -67,9 +72,7 @@
                 <TextBox Grid.Column="4" Grid.Row="4" Text="{Binding Dimension}"
                             Height="40" IsVisible="{Binding !IsTSP}"/>
             </Grid>
-            <Button Command="{Binding NextOnClickCommand}" IsEnabled="{Binding CanProceed}">Next</Button>
-            
-        </StackPanel>
-        
-    </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+    
 </UserControl>

@@ -20,7 +20,7 @@ public class PlotViewModel : VisualizationViewModel
     public ObservableCollection<DataPoint> Points = new ObservableCollection<DataPoint>();
 
     
-    public PlotViewModel(string name) : base(name)
+    public PlotViewModel()
     {
         
     }

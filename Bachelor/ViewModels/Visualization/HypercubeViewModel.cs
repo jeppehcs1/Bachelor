@@ -33,7 +33,7 @@ public class HypercubeViewModel : VisualizationViewModel
         return onemax / (double)bits.Length;
     }
     
-    public HypercubeViewModel(string name) : base(name)
+    public HypercubeViewModel()
     {
         
                                   

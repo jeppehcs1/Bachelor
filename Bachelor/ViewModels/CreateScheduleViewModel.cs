@@ -36,6 +36,8 @@ public partial class CreateScheduleViewModel : ViewModelBase
     private ObservableCollection<string> _problems;
     private ObservableCollection<string> _finishConditions;
     private ObservableCollection<string> _visualizations;
+    public bool IsFuncEvals => SelectedFinishCondition == "Function evaluations";
+    public bool IsExactFitness => SelectedFinishCondition == "Exact fitness";
     public ObservableCollection<string> SearchSpaces { get; }
     private Dictionary<string, object> _algorithmConfig = new();
     
@@ -53,6 +55,14 @@ public partial class CreateScheduleViewModel : ViewModelBase
     }
     [ObservableProperty]
     private string _filePathError = "";
+    [ObservableProperty]
+    private string _maxFuncEvals = "1000000";
+    [ObservableProperty]
+    private string _exactFitness = "";
+    public int GetMaxFuncEvalsAsInt() => int.TryParse(MaxFuncEvals, out var result) ? result : 1000000;
+    public int GetExactFitnessAsInt() => int.TryParse(ExactFitness, out var result) ? result : 10;
+    partial void OnMaxFuncEvalsChanged(string value) => OnPropertyChanged(nameof(CanProceed));
+    partial void OnExactFitnessChanged(string value) => OnPropertyChanged(nameof(CanProceed));
     [RelayCommand]
     private void NextOnClick()
     {
@@ -64,7 +74,7 @@ public partial class CreateScheduleViewModel : ViewModelBase
                 ITSPFileReader reader = new Euclid2DTSPFileReader();
                 TSPInstance instance = reader.Read(FilePath);
                 schedule = new Schedule(SelectedSearchSpace, SelectedAlgorithm, SelectedProblem, 
-                    SelectedFinishCondition, SelectedVisualization, instance);
+                    SelectedFinishCondition, SelectedVisualization, instance, GetMaxFuncEvalsAsInt(), GetExactFitnessAsInt());
             }
             catch (FileNotFoundException e)
             {
@@ -85,9 +95,9 @@ public partial class CreateScheduleViewModel : ViewModelBase
         else
         {
             schedule = new Schedule(SelectedSearchSpace, SelectedAlgorithm, SelectedProblem, 
-                SelectedFinishCondition, SelectedVisualization, GetDimensionAsInt());
+                SelectedFinishCondition, SelectedVisualization, GetDimensionAsInt(), GetMaxFuncEvalsAsInt(), GetExactFitnessAsInt());
         }
-
+        
         schedule.AlgorithmConfig = _algorithmConfig;
         _addBatchesViewModel.Schedule = schedule;
         _mainViewModel.CurrentView = _addBatchesViewModel;
@@ -163,6 +173,8 @@ public partial class CreateScheduleViewModel : ViewModelBase
         set
         {
             SetProperty(ref _selectedFinishCondition, value); 
+            OnPropertyChanged(nameof(IsFuncEvals));
+            OnPropertyChanged(nameof(IsExactFitness));
             OnPropertyChanged(nameof(CanProceed));
         }
         
@@ -242,9 +254,9 @@ public partial class CreateScheduleViewModel : ViewModelBase
     {
         var finishList = SelectedProblem switch
         {
-            "TSPProblem" => new ObservableCollection<string> { "Function evaluations", "Optimum Reached"},
-            "LeadingOnes" => new ObservableCollection<string> { "Function evaluations", "Optimum Reached"},
-            "OneMax" => new ObservableCollection<string> { "Function evaluations", "Optimum Reached"},
+            "TSPProblem" => new ObservableCollection<string> { "Function evaluations", "Optimum reached", "Exact fitness"},
+            "LeadingOnes" => new ObservableCollection<string> { "Function evaluations", "Optimum reached", "Exact fitness"},
+            "OneMax" => new ObservableCollection<string> { "Function evaluations", "Optimum reached", "Exact fitness"},
             _ => new ObservableCollection<string>()
         };
         FinishConditions = finishList;
@@ -253,8 +265,8 @@ public partial class CreateScheduleViewModel : ViewModelBase
     {
         var visualizationList = SelectedProblem switch
         {
-            "TSPProblem" => new ObservableCollection<string> { "TSPPlot", "FitnessPlot"},
-            _ => new ObservableCollection<string> { "HyperCube", "FitnessPlot"}
+            "TSPProblem" => new ObservableCollection<string> { "TSPPlot", "FitnessPlot", "None"},
+            _ => new ObservableCollection<string> { "HyperCube", "FitnessPlot", "None"}
         };
         Visualizations = visualizationList;
     }
@@ -264,6 +276,8 @@ public partial class CreateScheduleViewModel : ViewModelBase
         !string.IsNullOrEmpty(SelectedProblem) &&
         !string.IsNullOrEmpty(SelectedFinishCondition) &&
         !string.IsNullOrEmpty(SelectedVisualization) &&
+        (!IsFuncEvals || GetMaxFuncEvalsAsInt() > 0) &&
+        (!IsExactFitness || GetExactFitnessAsInt() > 0) &&
         (IsTSP ? !string.IsNullOrEmpty(FilePath) : GetDimensionAsInt() > 0);
 
     

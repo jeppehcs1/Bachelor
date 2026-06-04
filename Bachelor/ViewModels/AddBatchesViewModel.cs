@@ -24,6 +24,7 @@ public partial class AddBatchesViewModel : ViewModelBase
     private readonly MainWindowViewModel _mainViewModel;
     private readonly VisualizationHostViewModel _visualizationHostViewModel;
     private int _visualizationAttached = 0;
+    private CancellationTokenSource _batchCts = new();
     public AddBatchesViewModel(VisualizationHostViewModel visualizationHostViewModel, MainWindowViewModel mainViewModel)
     {
         _mainViewModel = mainViewModel;
@@ -109,36 +110,54 @@ public partial class AddBatchesViewModel : ViewModelBase
     [RelayCommand]
     private async Task FinishSetupOnClick()
     {
+        _batchCts = new CancellationTokenSource();
         IsRunning = true;
         _visualizationAttached = 0; 
         VisualizationViewModel viewModel = Schedule.Visualization switch
         {
-            "TSPPlot" => new TSPViewModel(""),
-            "HyperCube" => new HypercubeViewModel(""),
-            "FitnessPlot" => new PlotViewModel(""),
+            "TSPPlot" => new TSPViewModel(),
+            "HyperCube" => new HypercubeViewModel(),
+            "FitnessPlot" => new PlotViewModel(),
             _ => null
         };
         _visualizationHostViewModel.CurrentVisualization = viewModel;
         _mainViewModel.CurrentView = _visualizationHostViewModel;
-        await RunBatches();
+        try
+        {
+            await RunBatches(_batchCts.Token);
+        }
+        catch (OperationCanceledException) { }
         IsRunning =  false;
     }
 
-    private Task RunBatches()
+    private Task RunBatches(CancellationToken ct)
     {
         var options = new ParallelOptions 
         { 
-            MaxDegreeOfParallelism = Environment.ProcessorCount 
+            MaxDegreeOfParallelism = Environment.ProcessorCount, 
+            CancellationToken = ct
         };
         
-        return Parallel.ForEachAsync(_items, options, async (batchItem, ct) =>
+        return Parallel.ForEachAsync(_items, options, async (batchItem, innerCt) =>
         {
             Avalonia.Threading.Dispatcher.UIThread.Post(() => batchItem.Status = Status.Running);
-            if (Interlocked.CompareExchange(ref _visualizationAttached, 1, 0) == 0)
+            if (Schedule.Visualization != "None" && Interlocked.CompareExchange(ref _visualizationAttached, 1, 0) == 0)
                 _visualizationHostViewModel.Attach(batchItem.Batch.Algorithm, batchItem.Batch.Runner);
-            await batchItem.Batch.RunAll();
+            await batchItem.Batch.RunAll(innerCt);
             Avalonia.Threading.Dispatcher.UIThread.Post(() => batchItem.Status = Status.Completed);
         });
+    }
+    
+    [RelayCommand]
+    private void Reset()
+    {
+        _batchCts.Cancel();
+        foreach (var item in _items)
+            item.Batch.Runner.Restart();
+        Items.Clear();
+        _visualizationAttached = 0;
+        IsRunning = false;
+        FinishSetupOnClickCommand.NotifyCanExecuteChanged();
     }
 }
 
