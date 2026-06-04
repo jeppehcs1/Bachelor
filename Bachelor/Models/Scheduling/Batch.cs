@@ -28,10 +28,10 @@ public class Batch
         {
             var _random = new Random();
             string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+            string algorithmName = algorithm.GetType().Name;
             string logDir = Path.Combine(GetProjectRoot(), "Assets", "LogFiles");
             Directory.CreateDirectory(logDir); // creates it if it doesn't exist
-            OutputFilePath = Path.Combine(logDir, $"batch_{Name}_{_random.NextInt64(1000)}_{timestamp}.csv");
-            
+            OutputFilePath = Path.Combine(logDir, $"batch_{Name}_{algorithmName}_{_random.NextInt64(1000)}_{timestamp}.csv");
         }
         else
         {
