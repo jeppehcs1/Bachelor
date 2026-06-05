@@ -30,16 +30,14 @@ public class OnePlusOnePermutation : OnePlusOne<TSPInstance>
 
     public override bool UpdateSearchPoint(TSPInstance old)
     {
-        int oldFitness = Problem.Fitness(old);
-        if (BSFF >= oldFitness)
+        int newFitness = GetFitness();
+        if (BSFF > newFitness)
         {
-            //Console.WriteLine(Problem.Fitness(SearchPoint) + " :wen old: " + Problem.Fitness(old));
-            BSFF = oldFitness;
-            SearchPoint = old;
-            return false;
+            BSFF = newFitness;
+            return true;
         }
-        //Console.WriteLine(Problem.Fitness(SearchPoint) + " :wen BETTER old: " + Problem.Fitness(old));
-        return true;
+        SearchPoint = old;
+        return false;
     }
 
     public override void MutateSearchPoint()

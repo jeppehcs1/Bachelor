@@ -121,7 +121,8 @@ public partial class AddBatchesViewModel : ViewModelBase
             _ => null
         };
         _visualizationHostViewModel.CurrentVisualization = viewModel;
-        _mainViewModel.CurrentView = _visualizationHostViewModel;
+        
+        _mainViewModel.CurrentView = (Schedule.Visualization == "None") ? _mainViewModel.LogViewModel : _visualizationHostViewModel;
         
         try
         {
