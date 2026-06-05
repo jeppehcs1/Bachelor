@@ -27,28 +27,22 @@ public class SimulatedAnnealingPermutation : SimulatedAnnealing<TSPInstance>
     public override bool UpdateSearchPoint(TSPInstance old)
     {
         _temperature *= _alpha;
-        
-        Console.WriteLine("Old: " + Problem.Fitness(old) +  "\nNew: " + Problem.Fitness(SearchPoint) + 
-        "\ntemperature: " + _temperature);
-        if (Problem.Fitness(SearchPoint) <= Problem.Fitness(old))
+        int newFitness = GetFitness();
+        int oldFitness = Problem.Fitness(old);
+        if (newFitness < oldFitness)
         {
+            BSFF = newFitness;
             return true;
         }
-        
-        var delta = Problem.Fitness(old) - Problem.Fitness(SearchPoint);
+        var delta = oldFitness - newFitness;
         var prob = Math.Exp(delta/_temperature);
-        Console.WriteLine("delta: " + delta + "   prob: " + prob);
         
         if (_random.NextDouble() < prob)
         {
-            Console.WriteLine("Random: " + _random.NextDouble() + "  prob:   " + prob);
             return true;
         }
-        
         SearchPoint = old;
-        BSFF = Problem.Fitness(SearchPoint);
         return false;
-        
     }
 
     public override void MutateSearchPoint()

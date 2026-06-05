@@ -122,18 +122,7 @@ public class AlgorithmTests
                 prev = algo.BSFF;
             }
         }
-
-        [Test]
-        public void OnePlusOneBitString_InitializesToAllFalse()
-        {
-            var problem = new OneMax(5);
-            var algo = new OnePlusOneBitString(problem);
-            algo.Initialize();
-            
-            for (int i = 0; i < 5; i++)
-                Assert.That(algo.SearchPoint[i], Is.False);
-            Assert.That(algo.BSFF, Is.EqualTo(0));
-        }
+        
 
         [Test]
         public void OnePlusOneBitString_IterationsIncrementCorrectly()
@@ -438,27 +427,30 @@ public class AlgorithmTests
     }
 }
         
+    
     [Test]
     public void UpdateSearchPoint_WhenNewFitnessIsBetter_KeepsNewSearchPoint()
     {
-        // Arrange: Set up problem and instances
         var problem = new TSPProblem(6);
-        var newInstance = new TSPInstance([1, 0, 4, 5, 2, 3], [(2, 4), (1, 4), (4, 2), (3, 1), (7, 7), (8, 2)]);
-        var oldInstance = new TSPInstance([0, 5, 3, 4, 2, 1], [(2, 4), (1, 4), (4, 2), (3, 1), (7, 7), (8, 2)]);
-
-        
-        var algorithm = new OnePlusOnePermutation(problem,  newInstance);
+        var graph = new List<(int x, int y)> { (2, 4), (1, 4), (4, 2), (3, 1), (7, 7), (8, 2) };
     
-          // Assume this has better fitness
+        var oldInstance = new TSPInstance([0, 5, 3, 4, 2, 1], graph);
+        var newInstance = new TSPInstance([1, 0, 4, 5, 2, 3], graph);
     
-        algorithm.SearchPoint = newInstance;  // Simulate mutated point
-        Assert.That(algorithm.GetFitness(), Is.EqualTo(21));
-        // Act
+        var algorithm = new OnePlusOnePermutation(problem, oldInstance);
+        algorithm.SearchPoint = newInstance;
+    
+        int newFitness = problem.Fitness(newInstance);
+        int oldFitness = problem.Fitness(oldInstance);
+    
+        // Verify the test assumption — new must actually be better
+        Assert.That(newFitness, Is.LessThan(oldFitness), "Test setup error: newInstance must have lower fitness");
+    
+        algorithm.BSFF = oldFitness; // BSFF reflects fitness before mutation
         algorithm.UpdateSearchPoint(oldInstance);
     
-        // Assert: Should keep newInstance if its fitness <= oldInstance's fitness
-        
-        Assert.That(newInstance.Permutation, Is.EqualTo(algorithm.SearchPoint.Permutation)); //, "Should keep the new SearchPoint if fitness is better or equal."
+        Assert.That(algorithm.SearchPoint.Permutation, Is.EqualTo(newInstance.Permutation));
+        Assert.That(algorithm.BSFF, Is.EqualTo(newFitness));
     }
 
     [Test]

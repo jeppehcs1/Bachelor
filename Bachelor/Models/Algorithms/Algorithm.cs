@@ -49,28 +49,6 @@ public abstract class Algorithm<T> : IAlgorithm
     }
 
     public Func<bool> StoppingCondition  { get; set; }
-    public void Run()
-    {
-        
-        BSFF = GetFitness();
-        long startTime = Stopwatch.GetTimestamp();
-        while (!StoppingCondition())
-        {
-            int newFitness = GetFitness();
-            if (Iterate())
-                BSFF = newFitness;
-        }
-        Runtime = Stopwatch.GetElapsedTime(startTime).TotalSeconds;
-        Console.WriteLine($"Runtime set inside Run(): {Runtime}, FuncEvals: {FuncEvals}");
-    }
     public abstract void Configure(Dictionary<string, object> config);
-    public static string BitArrayToString(BitArray bitArray)
-    {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < bitArray.Length; i++)
-        {
-            sb.Append(bitArray[i] ? "1" : "0");
-        }
-        return(sb.ToString());
-    }
+    
 }
