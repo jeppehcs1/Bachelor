@@ -16,23 +16,27 @@ public class SimulatedAnnealingBitString(ProblemType<BitArray> problem) : Simula
     public override bool UpdateSearchPoint(BitArray old)
     {
         _temperature = _temperature * _alpha;
-        
-        if (Problem.Fitness(SearchPoint) > Problem.Fitness(old))
+        int oldFitness = CurrentFitness;
+        int newFitness = GetFitness();
+        if (newFitness > oldFitness)
         {
-            return false;
+            BSFF = Math.Max(BSFF, newFitness);
+            CurrentFitness = newFitness;
+            return true;
         }
         
-        var delta = Problem.Fitness(SearchPoint) - Problem.Fitness(old);
+        var delta = newFitness - oldFitness;
         var prob = Math.Exp(delta/_temperature);
         
         if (_random.NextDouble() < prob)
         {
-            return false;
+            CurrentFitness = newFitness;
+            return true;
         }
         
         SearchPoint = old;
-        BSFF = Problem.Fitness(SearchPoint);
-        return true;
+        CurrentFitness = oldFitness;
+        return false;
     }
 
     public override void MutateSearchPoint()
@@ -52,7 +56,8 @@ public class SimulatedAnnealingBitString(ProblemType<BitArray> problem) : Simula
             bits[i] = _random.Next(2) == 1;  // Random true or false
         }
         SearchPoint = new BitArray(bits);
-        BSFF = 0;
+        BSFF = GetFitness();
+        CurrentFitness = BSFF;
     }
     
 }

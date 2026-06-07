@@ -17,6 +17,7 @@ public class SimulatedAnnealingPermutation : SimulatedAnnealing<TSPInstance>
     {
         SearchPoint.Shuffle();
         BSFF = Problem.Fitness(SearchPoint);
+        CurrentFitness = BSFF;
     }
 
     public override TSPInstance CloneSearchPoint()
@@ -28,7 +29,7 @@ public class SimulatedAnnealingPermutation : SimulatedAnnealing<TSPInstance>
     {
         _temperature *= _alpha;
         int newFitness = GetFitness();
-        int oldFitness = Problem.Fitness(old);
+        int oldFitness = CurrentFitness;
         if (newFitness < oldFitness)
         {
             BSFF = Math.Min(BSFF, newFitness);

@@ -9,6 +9,7 @@ public abstract class SimulatedAnnealing<T> : Algorithm<T>
     
     public double _temperature;
     protected double _alpha;
+    protected int CurrentFitness;
     protected SimulatedAnnealing(ProblemType<T> problem) : base(problem)
     {
         _alpha = 1 - 1/((double) (problem.Dimension) * 10);
