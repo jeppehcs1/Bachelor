@@ -121,9 +121,15 @@ public partial class AddBatchesViewModel : ViewModelBase
             _ => null
         };
         _visualizationHostViewModel.CurrentVisualization = viewModel;
-        
         _mainViewModel.CurrentView = (Schedule.Visualization == "None") ? _mainViewModel.LogViewModel : _visualizationHostViewModel;
-        
+        if (Schedule.Visualization != "None")
+        {
+            _mainViewModel.CurrentView = _mainViewModel.LogViewModel;
+            foreach (var item in Items)
+            {
+                item.Batch.Runner.UpdateInterval = 0;
+            }
+        }
         try
         {
             await RunBatches(_batchCts.Token);
