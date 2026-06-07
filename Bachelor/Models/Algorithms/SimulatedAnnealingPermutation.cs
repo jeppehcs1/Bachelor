@@ -31,7 +31,7 @@ public class SimulatedAnnealingPermutation : SimulatedAnnealing<TSPInstance>
         int oldFitness = Problem.Fitness(old);
         if (newFitness < oldFitness)
         {
-            BSFF = newFitness;
+            BSFF = Math.Min(BSFF, newFitness);
             return true;
         }
         var delta = oldFitness - newFitness;

@@ -7,7 +7,7 @@
         x:Class="Bachelor.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="Bachelor">
+        Title="Metaheuristic Visualizer">
 
     
 
