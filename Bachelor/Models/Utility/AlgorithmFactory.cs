@@ -39,6 +39,7 @@ public static class AlgorithmFactory
             _ => throw new ArgumentException()
         };
         algorithm.Configure(schedule.AlgorithmConfig);
+        algorithm.StoppingCondition = schedule.BuildStoppingCondition(algorithm);
         return algorithm;
     }
 }

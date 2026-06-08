@@ -18,41 +18,26 @@ public partial class AddBatchesViewModel : ViewModelBase
     public Schedule? Schedule { get; set; }
     private int Dimension;
     private ObservableCollection<BatchItem> _items = [];
-    private BatchItem? _selectedItem;
-    private string _newBatchName = "";
-    private string _newBatchRuns = "";
+    [ObservableProperty] public BatchItem? _selectedItem;
+    [ObservableProperty] private string _newBatchName = "";
+    [ObservableProperty] private string _newBatchRuns = "";
     private readonly MainWindowViewModel _mainViewModel;
     private readonly VisualizationHostViewModel _visualizationHostViewModel;
     private int _visualizationAttached = 0;
     private CancellationTokenSource _batchCts = new();
+    [ObservableProperty] private bool _isRunning;
+    public ObservableCollection<BatchItem> Items
+    {
+        get => _items;
+        set => SetProperty(ref _items, value);
+    }
     public AddBatchesViewModel(VisualizationHostViewModel visualizationHostViewModel, MainWindowViewModel mainViewModel)
     {
         _mainViewModel = mainViewModel;
         _visualizationHostViewModel = visualizationHostViewModel;
         
     }
-    public ObservableCollection<BatchItem> Items
-    {
-        get => _items;
-        set => SetProperty(ref _items, value);
-    }
-
     
-    public BatchItem? SelectedItem
-    {
-        get => _selectedItem;
-        set => SetProperty(ref _selectedItem, value);
-    }
-    public string NewBatchName
-    {
-        get => _newBatchName;
-        set => this.SetProperty(ref _newBatchName, value);
-    }
-    public string NewBatchRuns
-    {
-        get => _newBatchRuns;
-        set => this.SetProperty(ref _newBatchRuns, value);
-    }
 
     private int GetNewBatchRunsAsInt() => int.TryParse(_newBatchRuns, out var result) ? result : 1;
 
@@ -60,7 +45,6 @@ public partial class AddBatchesViewModel : ViewModelBase
     private void AddItem(string name,  int runs)
     {
         IAlgorithm algorithm = AlgorithmFactory.CreateAndConfigure(Schedule);
-        algorithm.StoppingCondition = Schedule.BuildStoppingCondition(algorithm);
         Batch batch = new Batch(algorithm , runs, name);
         Items.Add(new BatchItem(name, runs, batch));
     }
@@ -106,7 +90,7 @@ public partial class AddBatchesViewModel : ViewModelBase
         }
     }
 
-    [ObservableProperty] private bool _isRunning;
+    
     [RelayCommand]
     private async Task FinishSetupOnClick()
     {
@@ -121,13 +105,13 @@ public partial class AddBatchesViewModel : ViewModelBase
             _ => null
         };
         _visualizationHostViewModel.CurrentVisualization = viewModel;
-        _mainViewModel.CurrentView = (Schedule.Visualization == "None") ? _mainViewModel.LogViewModel : _visualizationHostViewModel;
-        if (Schedule.Visualization != "None")
+        _mainViewModel.CurrentView = _visualizationHostViewModel;
+        if (Schedule.Visualization == "None")
         {
             _mainViewModel.CurrentView = _mainViewModel.LogViewModel;
             foreach (var item in Items)
             {
-                item.Batch.Runner.UpdateInterval = 0;
+                item.Batch.Runner.UpdateInterval = int.MaxValue;
             }
         }
         try
