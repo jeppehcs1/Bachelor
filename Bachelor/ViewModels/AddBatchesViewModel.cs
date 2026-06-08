@@ -60,7 +60,6 @@ public partial class AddBatchesViewModel : ViewModelBase
     private void AddItem(string name,  int runs)
     {
         IAlgorithm algorithm = AlgorithmFactory.CreateAndConfigure(Schedule);
-        algorithm.StoppingCondition = Schedule.BuildStoppingCondition(algorithm);
         Batch batch = new Batch(algorithm , runs, name);
         Items.Add(new BatchItem(name, runs, batch));
     }
@@ -121,8 +120,8 @@ public partial class AddBatchesViewModel : ViewModelBase
             _ => null
         };
         _visualizationHostViewModel.CurrentVisualization = viewModel;
-        _mainViewModel.CurrentView = (Schedule.Visualization == "None") ? _mainViewModel.LogViewModel : _visualizationHostViewModel;
-        if (Schedule.Visualization != "None")
+        _mainViewModel.CurrentView = _visualizationHostViewModel;
+        if (Schedule.Visualization == "None")
         {
             _mainViewModel.CurrentView = _mainViewModel.LogViewModel;
             foreach (var item in Items)
