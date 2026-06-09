@@ -26,7 +26,7 @@ public class SimulatedAnnealingPermutation : SimulatedAnnealing<TSPInstance>
         return SearchPoint.DeepCopy();
     }
 
-    public override bool UpdateSearchPoint(TSPInstance old)
+    public override void UpdateSearchPoint(TSPInstance old)
     {
         _temperature *= _alpha;
         int newFitness = GetFitness();
@@ -34,17 +34,16 @@ public class SimulatedAnnealingPermutation : SimulatedAnnealing<TSPInstance>
         if (newFitness < oldFitness)
         {
             BSFF = Math.Min(BSFF, newFitness);
-            return true;
+            return;
         }
         var delta = oldFitness - newFitness;
         var prob = Math.Exp(delta/_temperature);
         
         if (_random.NextDouble() < prob)
         {
-            return true;
+            return;
         }
         SearchPoint = old;
-        return false;
     }
 
     public override void MutateSearchPoint()

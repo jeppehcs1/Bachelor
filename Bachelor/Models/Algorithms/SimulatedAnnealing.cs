@@ -17,12 +17,12 @@ public abstract class SimulatedAnnealing<T> : Algorithm<T>
         _temperature = _initialTemperature;
     }
 
-    public override bool IterateCore()
+    public override void IterateCore()
     {
         var dim = Problem.Dimension;
         var old = CloneSearchPoint();
         MutateSearchPoint();
-        return UpdateSearchPoint(old);
+        UpdateSearchPoint(old);
     }
     public override void Configure(Dictionary<string, object> config)
     {
@@ -30,7 +30,7 @@ public abstract class SimulatedAnnealing<T> : Algorithm<T>
         if (config.TryGetValue("Temperature", out var temperature)) _initialTemperature = (double)temperature;
     }
     public abstract T CloneSearchPoint();
-    public abstract bool UpdateSearchPoint(T old);
+    public abstract void UpdateSearchPoint(T old);
     public abstract void MutateSearchPoint();
     
 }

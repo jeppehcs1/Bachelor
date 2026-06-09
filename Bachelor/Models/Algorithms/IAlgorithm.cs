@@ -11,7 +11,7 @@ public interface IAlgorithm
     Func<bool> StoppingCondition { get; set; }
     int GetFitness();
     int? Optimum { get; }
-    bool Iterate();
+    void Iterate();
     int Iterations { get; }
     void Initialize();
     void Configure(Dictionary<string, object> config);

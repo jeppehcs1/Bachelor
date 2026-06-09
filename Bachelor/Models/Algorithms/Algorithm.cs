@@ -25,14 +25,14 @@ public abstract class Algorithm<T> : IAlgorithm
     }
 
     public int? Optimum => Problem.OptimalFitness;
-    public bool Iterate() // return true if the mutation is better than before
+    public void Iterate() // return true if the mutation is better than before
     {
         Iterations++;
-        return IterateCore();
+        IterateCore();
     }
 
     
-    public abstract bool IterateCore();
+    public abstract void IterateCore();
 
     public void Initialize()
     {

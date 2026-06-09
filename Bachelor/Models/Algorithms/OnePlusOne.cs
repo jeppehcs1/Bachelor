@@ -17,16 +17,16 @@ public abstract class OnePlusOne<T> : Algorithm<T>
 
     }
 
-    public override bool IterateCore()
+    public override void IterateCore()
     {
         var dim = Problem.Dimension;
         var old = CloneSearchPoint();
         MutateSearchPoint();
-        return UpdateSearchPoint(old);
+        UpdateSearchPoint(old);
     }
 
     public abstract T CloneSearchPoint();
-    public abstract bool UpdateSearchPoint(T old);
+    public abstract void UpdateSearchPoint(T old);
     public abstract void MutateSearchPoint();
 
 

@@ -40,7 +40,7 @@ public class MuPlusLambdaBitString(ProblemType<BitArray> problem) : MuPlusLambda
             .ToList();
     }
 
-    public override bool UpdateSearchPoint(List<(BitArray Individual, double Fitness)> old)
+    public override void UpdateSearchPoint(List<(BitArray Individual, double Fitness)> old)
     {
         // Sort by cached fitness — no Problem.Fitness calls here
         var best = Population
@@ -48,12 +48,11 @@ public class MuPlusLambdaBitString(ProblemType<BitArray> problem) : MuPlusLambda
             .Take(Mu)
             .ToList();
 
-        bool improved = best[0].Fitness > BSFF;
+        
 
         Population = best;
         SearchPoint = best[0].Individual;
         BSFF = (int)best[0].Fitness;
-        return improved;
     }
 
     public override void InitializeCore()

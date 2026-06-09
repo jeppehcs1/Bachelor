@@ -21,14 +21,14 @@ public abstract class MuPlusLambda<T> : Algorithm<T>
         if (config.TryGetValue("Lambda", out var lambda)) Lambda = (int)lambda;
     }
 
-    public override bool IterateCore()
+    public override void IterateCore()
     {
         var old = ClonePopulation();
         MutateSearchPoint();
-        return UpdateSearchPoint(old);
+        UpdateSearchPoint(old);
     }
 
     public abstract List<(T Individual, double Fitness)> ClonePopulation();
-    public abstract bool UpdateSearchPoint(List<(T Individual, double Fitness)> old);
+    public abstract void UpdateSearchPoint(List<(T Individual, double Fitness)> old);
     public abstract void MutateSearchPoint();
 }

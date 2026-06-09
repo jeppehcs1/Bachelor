@@ -28,16 +28,16 @@ public class OnePlusOnePermutation : OnePlusOne<TSPInstance>
         return SearchPoint.DeepCopy();
     }
 
-    public override bool UpdateSearchPoint(TSPInstance old)
+    public override void UpdateSearchPoint(TSPInstance old)
     {
         int newFitness = GetFitness();
         if (BSFF > newFitness)
         {
             BSFF = newFitness;
-            return true;
+            return;
         }
         SearchPoint = old;
-        return false;
+        
     }
 
     public override void MutateSearchPoint()

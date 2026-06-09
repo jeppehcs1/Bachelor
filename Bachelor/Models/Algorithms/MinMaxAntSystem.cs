@@ -19,13 +19,13 @@ public abstract class MinMaxAntSystem<T> : Algorithm<T>
     public double Beta; // determines impact of heuristic
     public double Rho; // determines evaporation of pheromone
     
-    public override bool IterateCore()
+    public override void IterateCore()
     {
         T prev = SearchPoint;
         ConstructAntSolutions();
         // ApplyLocalSearch();
         UpdatePheromones();
-        return !ReferenceEquals(SearchPoint, prev);
+        
     }
     
     public override void Configure(Dictionary<string, object> config)
