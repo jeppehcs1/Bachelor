@@ -13,7 +13,7 @@ public abstract class SimulatedAnnealing<T> : Algorithm<T>
     protected SimulatedAnnealing(ProblemType<T> problem) : base(problem)
     {
         _alpha = 1 - 1/((double) (problem.Dimension) * 10);
-        _initialTemperature = problem.Dimension * problem.Dimension * problem.Dimension;
+        _initialTemperature = (double) problem.Dimension * problem.Dimension * problem.Dimension;
         _temperature = _initialTemperature;
     }
 
