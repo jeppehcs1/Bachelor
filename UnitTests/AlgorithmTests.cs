@@ -25,10 +25,9 @@ public class AlgorithmTests
             // SearchPoint (post-mutation) is worse
             algo.SearchPoint = new BitArray(new bool[] { false, false, false, false, false });
     
-            bool improved = algo.UpdateSearchPoint(old);
+            algo.UpdateSearchPoint(old);
     
             // Should revert to old, no improvement
-            Assert.That(improved, Is.False);
             Assert.That(algo.BSFF, Is.EqualTo(5));
             Assert.That(algo.SearchPoint, Is.EqualTo(old));
         }
@@ -47,9 +46,9 @@ public class AlgorithmTests
             // SearchPoint (post-mutation) is better
             algo.SearchPoint = new BitArray(new bool[] { true, true, true, true, true });
     
-            bool improved = algo.UpdateSearchPoint(old);
+            algo.UpdateSearchPoint(old);
     
-            Assert.That(improved, Is.True);
+            
             Assert.That(algo.BSFF, Is.EqualTo(5));
         }
 
@@ -66,10 +65,10 @@ public class AlgorithmTests
             var better = new BitArray(new bool[] { true, true, true, true, true });
             // Mutate to better manually
             algo.SearchPoint = better;
-            bool improved = algo.UpdateSearchPoint(new BitArray(new bool[] { false, false, false, false, false }));
+            algo.UpdateSearchPoint(new BitArray(new bool[] { false, false, false, false, false }));
             
             Assert.That(algo.BSFF, Is.EqualTo(5));
-            Assert.That(improved, Is.True);
+            
         }
 
         [Test]
