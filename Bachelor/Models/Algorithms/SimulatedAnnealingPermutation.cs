@@ -15,6 +15,7 @@ public class SimulatedAnnealingPermutation : SimulatedAnnealing<TSPInstance>
     
     public override void InitializeCore()
     {
+        _temperature = _initialTemperature;
         SearchPoint.Shuffle();
         BSFF = Problem.Fitness(SearchPoint);
         CurrentFitness = BSFF;

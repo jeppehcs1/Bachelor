@@ -48,6 +48,7 @@ public class SimulatedAnnealingBitString(ProblemType<BitArray> problem) : Simula
     
     public override void InitializeCore() 
     {
+        _temperature = _initialTemperature;
         var dim = Problem.Dimension;
         var bits = new bool[dim];
         

@@ -8,7 +8,6 @@ namespace Bachelor.ViewModels.Visualization;
 
 public partial class TSPViewModel : VisualizationViewModel
 {
-    //public Algorithm<TSPInstance> Algorithm;
     private ObservableCollection<DataPoint> _points = new();
 
     public ObservableCollection<DataPoint> Points

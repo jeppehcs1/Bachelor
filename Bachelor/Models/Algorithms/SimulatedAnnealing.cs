@@ -6,14 +6,15 @@ namespace Bachelor.Models.Algorithms;
 
 public abstract class SimulatedAnnealing<T> : Algorithm<T>
 {
-    
+    public double _initialTemperature;
     public double _temperature;
     protected double _alpha;
     protected int CurrentFitness;
     protected SimulatedAnnealing(ProblemType<T> problem) : base(problem)
     {
         _alpha = 1 - 1/((double) (problem.Dimension) * 10);
-        _temperature = problem.Dimension * problem.Dimension * problem.Dimension;
+        _initialTemperature = problem.Dimension * problem.Dimension * problem.Dimension;
+        _temperature = _initialTemperature;
     }
 
     public override bool IterateCore()
@@ -26,7 +27,7 @@ public abstract class SimulatedAnnealing<T> : Algorithm<T>
     public override void Configure(Dictionary<string, object> config)
     {
         if (config.TryGetValue("Alpha", out var alpha)) _alpha = (double)alpha;
-        if (config.TryGetValue("Temperature", out var temperature)) _temperature = (double)temperature;
+        if (config.TryGetValue("Temperature", out var temperature)) _initialTemperature = (double)temperature;
     }
     public abstract T CloneSearchPoint();
     public abstract bool UpdateSearchPoint(T old);
