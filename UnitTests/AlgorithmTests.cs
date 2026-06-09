@@ -159,7 +159,7 @@ public class AlgorithmTests
             var algorithm = new MuPlusLambdaBitString(problem);
             algorithm.Initialize();
 
-            var bestFitness = algorithm.Population.Max(ba => problem.Fitness(ba));
+            var bestFitness = algorithm.Population.Max(x => x.Fitness);
             Assert.That(problem.Fitness(algorithm.SearchPoint), Is.EqualTo(bestFitness));
         }
 
@@ -170,7 +170,7 @@ public class AlgorithmTests
             var algorithm = new MuPlusLambdaBitString(problem);
             algorithm.Initialize();
 
-            var old = algorithm.CloneSearchPoint();
+            var old = algorithm.ClonePopulation();
             algorithm.MutateSearchPoint();
             algorithm.UpdateSearchPoint(old);
 
@@ -184,12 +184,40 @@ public class AlgorithmTests
             var algorithm = new MuPlusLambdaBitString(problem);
             algorithm.Initialize();
 
-            var old = algorithm.CloneSearchPoint();
+            var old = algorithm.ClonePopulation();
             algorithm.MutateSearchPoint();
             algorithm.UpdateSearchPoint(old);
 
-            var bestFitness = algorithm.Population.Max(ba => problem.Fitness(ba));
+            var bestFitness = algorithm.Population.Max(x => x.Fitness);
             Assert.That(problem.Fitness(algorithm.SearchPoint), Is.EqualTo(bestFitness));
+        }
+        [Test]
+        public void MutateSearchPoint_BitString_EvaluatesExactlyLambdaTimes()
+        {
+            var problem = new OneMax(10);
+            var algorithm = new MuPlusLambdaBitString(problem);
+            algorithm.Initialize();
+
+            problem.FuncEvals = 0; // Reset after initialization
+
+            algorithm.MutateSearchPoint();
+
+            Assert.That(problem.FuncEvals, Is.EqualTo(algorithm.Lambda));
+        }
+        [Test]
+        public void UpdateSearchPoint_BitString_EvaluatesZeroTimes()
+        {
+            var problem = new OneMax(10);
+            var algorithm = new MuPlusLambdaBitString(problem);
+            algorithm.Initialize();
+
+            var old = algorithm.ClonePopulation();
+            algorithm.MutateSearchPoint();
+            problem.FuncEvals = 0; // Reset after mutation, before update
+
+            algorithm.UpdateSearchPoint(old);
+
+            Assert.That(problem.FuncEvals, Is.EqualTo(0));
         }
 
         [Test]
@@ -233,7 +261,6 @@ public class AlgorithmTests
 
             Assert.That(algorithm.Population.Count, Is.EqualTo(algorithm.Mu));
         }
-
         [Test]
         public void Initialize_TSP_SearchPointIsBestInPopulation()
         {
@@ -242,10 +269,9 @@ public class AlgorithmTests
             var algorithm = new MuPlusLambdaPermutation(problem, instance);
             algorithm.Initialize();
 
-            var bestFitness = algorithm.Population.Min(i => problem.Fitness(i));
+            var bestFitness = algorithm.Population.Min(x => x.Fitness);
             Assert.That(problem.Fitness(algorithm.SearchPoint), Is.EqualTo(bestFitness));
         }
-
         [Test]
         public void UpdateSearchPoint_TSP_KeepsMuBestIndividuals()
         {
@@ -254,7 +280,7 @@ public class AlgorithmTests
             var algorithm = new MuPlusLambdaPermutation(problem, instance);
             algorithm.Initialize();
 
-            var old = algorithm.CloneSearchPoint();
+            var old = algorithm.ClonePopulation();
             algorithm.MutateSearchPoint();
             algorithm.UpdateSearchPoint(old);
 

@@ -10,62 +10,68 @@ public class MuPlusLambdaPermutation : MuPlusLambda<TSPInstance>
         Problem = problem;
         SearchPoint = instance;
     }
-    
 
     public override void InitializeCore()
     {
-        Population = new List<TSPInstance>();
-        
+        Population = new List<(TSPInstance, double)>();
+
         for (int i = 0; i < Mu; i++)
         {
             var copy = SearchPoint.DeepCopy();
             copy.Shuffle();
-            Population.Add(copy);
+            Population.Add((copy, Problem.Fitness(copy)));  // Evaluate once on creation
         }
-    
-        SearchPoint = Population.OrderBy(i => Problem.Fitness(i)).First();
-        BSFF = Problem.Fitness(SearchPoint);
+
+        var best = Population.OrderBy(x => x.Fitness).First();
+        SearchPoint = best.Individual;
+        BSFF = (int)best.Fitness;
     }
 
-    public override List<TSPInstance> CloneSearchPoint()
+    public override List<(TSPInstance Individual, double Fitness)> ClonePopulation()
     {
-        return Population.Select(instance => instance.DeepCopy()).ToList();
+        return Population
+            .Select(x => (x.Individual.DeepCopy(), x.Fitness))
+            .ToList();
     }
-    
+
     public override void MutateSearchPoint()
     {
-        var children = new List<TSPInstance>();
+        var children = new List<(TSPInstance Individual, double Fitness)>();
 
         for (int i = 0; i < Lambda; i++)
         {
-            var parent = Population[_random.Next(Population.Count)];
+            var parent = Population[_random.Next(Population.Count)].Individual;
             var child = parent.DeepCopy();
-        
+
             if (_random.Next(2) == 0)
                 child = ((TSPProblem)Problem).MutateTSP_2opt(child, _random);
             else
                 child = ((TSPProblem)Problem).MutateTSP_3opt(child, _random);
-        
-            children.Add(child);
+
+            // Evaluate each child exactly once
+            children.Add((child, Problem.Fitness(child)));
         }
 
-        Population = Population.Select(i => i.DeepCopy()).Concat(children).ToList();
+        // Keep existing parents (fitness cached) and append evaluated children
+        Population = Population
+            .Select(x => (x.Individual.DeepCopy(), x.Fitness))
+            .Concat(children)
+            .ToList();
     }
 
-    public override bool UpdateSearchPoint(List<TSPInstance> old)
+    public override bool UpdateSearchPoint(List<(TSPInstance Individual, double Fitness)> old)
     {
+        // Sort by cached fitness — no Problem.Fitness calls here
         var best = Population
-            .OrderBy(instance => Problem.Fitness(instance))  // TSP minimizes, so ascending
+            .OrderBy(x => x.Fitness)  // TSP minimizes, ascending
             .Take(Mu)
             .ToList();
 
-        bool improved = Problem.Fitness(best.First()) < Problem.Fitness(old.OrderBy(i => Problem.Fitness(i)).First());
+        bool improved = best[0].Fitness < BSFF;
 
         Population = best;
-        SearchPoint = best.First();
-        BSFF = Problem.Fitness(SearchPoint);
+        SearchPoint = best[0].Individual;
+        BSFF = (int)best[0].Fitness;
         return improved;
     }
-    
-    
 }

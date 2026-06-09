@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Bachelor.Models.Problems;
 namespace Bachelor.Models.Algorithms;
 using System;
@@ -8,67 +7,72 @@ using System.Collections;
 
 public class MuPlusLambdaBitString(ProblemType<BitArray> problem) : MuPlusLambda<BitArray>(problem)
 {
-    public override List<BitArray> CloneSearchPoint()
+    public override List<(BitArray Individual, double Fitness)> ClonePopulation()
     {
-        return Population.Select(ba => (BitArray)ba.Clone()).ToList();
+        return Population
+            .Select(x => ((BitArray)x.Individual.Clone(), x.Fitness))
+            .ToList();
     }
 
     public override void MutateSearchPoint()
     {
-        var children = new List<BitArray>();
+        var children = new List<(BitArray Individual, double Fitness)>();
 
         for (int i = 0; i < Lambda; i++)
         {
-            // Pick a random parent from the population
-            var parent = Population[_random.Next(Population.Count)];
-        
-            // Clone and mutate the parent
+            var parent = Population[_random.Next(Population.Count)].Individual;
             var child = (BitArray)parent.Clone();
+
             for (int j = 0; j < child.Count; j++)
             {
                 if (_random.NextDouble() < 1.0 / child.Count)
                     child[j] = !child[j];
             }
-            children.Add(child);
+
+            // Evaluate each child exactly once
+            children.Add((child, Problem.Fitness(child)));
         }
 
-        // Mu + Lambda: parents and children combined
-        Population = Population.Select(ba => (BitArray)ba.Clone()).Concat(children).ToList();
+        // Mu + Lambda: keep existing parents (fitness cached) and append evaluated children
+        Population = Population
+            .Select(x => ((BitArray)x.Individual.Clone(), x.Fitness))
+            .Concat(children)
+            .ToList();
     }
 
-    public override bool UpdateSearchPoint(List<BitArray> old)
+    public override bool UpdateSearchPoint(List<(BitArray Individual, double Fitness)> old)
     {
+        // Sort by cached fitness — no Problem.Fitness calls here
         var best = Population
-            .OrderByDescending(ba => Problem.Fitness( ba ))
+            .OrderByDescending(x => x.Fitness)
             .Take(Mu)
             .ToList();
 
-        bool improved = best.Any(ba => !old.Contains(ba));
+        bool improved = best[0].Fitness > BSFF;
 
         Population = best;
-        SearchPoint = best.OrderByDescending(ba => Problem.Fitness(ba)).First();
-        BSFF = Problem.Fitness(SearchPoint);
+        SearchPoint = best[0].Individual;
+        BSFF = (int)best[0].Fitness;
         return improved;
     }
-    
 
     public override void InitializeCore()
     {
-        var dim = Problem.Dimension; // Dimension of each bit string
-        
-        Population = new List<BitArray>();
-        
+        var dim = Problem.Dimension;
+        Population = new List<(BitArray, double)>();
+
         for (int i = 0; i < Mu; i++)
         {
             var bits = new bool[dim];
             for (int j = 0; j < dim; j++)
-            {
                 bits[j] = _random.Next(2) == 1;
-            }
-            Population.Add(new BitArray(bits));
+
+            var ba = new BitArray(bits);
+            Population.Add((ba, Problem.Fitness(ba)));  // Evaluate once on creation
         }
 
-        SearchPoint = Population.OrderByDescending(ba => Problem.Fitness(ba)).First();
-        BSFF = Problem.Fitness(SearchPoint);
+        var best = Population.OrderByDescending(x => x.Fitness).First();
+        SearchPoint = best.Individual;
+        BSFF = (int)best.Fitness;
     }
 }
