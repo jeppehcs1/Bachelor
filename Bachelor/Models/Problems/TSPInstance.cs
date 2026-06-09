@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Bachelor.Models.Problems;
 
-public struct TSPInstance
+public class TSPInstance
 {
     public List<int> Permutation;
     public List<(int x, int y)> Graph;
