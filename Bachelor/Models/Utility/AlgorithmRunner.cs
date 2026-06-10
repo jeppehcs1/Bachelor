@@ -28,19 +28,20 @@ public class AlgorithmRunner
 
         await Task.Run(() =>
         {
-            
+            double totalTime = 0;
             while (!algorithm.StoppingCondition() && !token.IsCancellationRequested)
             {
                 _pauseSemaphore.Wait(token);
                 _pauseSemaphore.Release();
                 long startTime = Stopwatch.GetTimestamp();
                 algorithm.Iterate();
-                algorithm.Runtime = Stopwatch.GetElapsedTime(startTime).TotalSeconds;
+                totalTime += Stopwatch.GetElapsedTime(startTime).TotalSeconds;
                 _iterationCount++;
                 if (_iterationCount % UpdateInterval == 0)
                     OnIteration?.Invoke(algorithm);
             }
-            
+
+            algorithm.Runtime = totalTime;
         }, token);
     }
 
