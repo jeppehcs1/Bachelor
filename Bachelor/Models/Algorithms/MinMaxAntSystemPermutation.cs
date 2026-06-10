@@ -4,7 +4,7 @@ using Bachelor.Models.Problems;
 using Bachelor.Models.Utility;
 
 namespace Bachelor.Models.Algorithms;
-
+// author Jeppe
 public class MinMaxAntSystemPermutation: MinMaxAntSystem<TSPInstance>
 {
     public MinMaxAntSystemPermutation(TSPProblem problem, TSPInstance instance) : base(problem)

@@ -15,7 +15,7 @@ namespace Bachelor.ViewModels;
 using ScottPlot;
 using ScottPlot.Avalonia;
 
-
+// author Jeppe and Clement
 
 public partial class MainWindowViewModel : ViewModelBase
 {

@@ -2,7 +2,7 @@
 using Bachelor.Models.Problems;
 
 namespace Bachelor.Models.Utility;
-
+// author Jeppe and Clement
 public class AlgorithmSnapshot
 {
     public int BSFF { get; init; }

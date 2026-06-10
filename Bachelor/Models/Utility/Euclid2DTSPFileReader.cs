@@ -5,7 +5,7 @@ using System.IO;
 using Bachelor.Models.Problems;
 
 namespace Bachelor.Models.Utility;
-
+// author Jeppe and Claude.ai
 public class Euclid2DTSPFileReader : ITSPFileReader
 {
     public TSPInstance Read(string filepath)

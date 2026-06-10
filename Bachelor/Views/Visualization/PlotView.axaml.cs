@@ -6,7 +6,7 @@ using Bachelor.Models.Problems;
 using Bachelor.ViewModels.Visualization;
 
 namespace Bachelor.Views.Visualization;
-
+// author Jeppe and Clement
 public partial class PlotView : UserControl
 {
     

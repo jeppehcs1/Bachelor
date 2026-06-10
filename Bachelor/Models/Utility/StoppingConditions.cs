@@ -2,7 +2,7 @@
 using Bachelor.Models.Algorithms;
 
 namespace Bachelor.Models.Utility;
-
+// author Jeppe
 public static class StoppingConditions
 {
     public static Func<bool> FuncEvals(IAlgorithm algo, int max) 

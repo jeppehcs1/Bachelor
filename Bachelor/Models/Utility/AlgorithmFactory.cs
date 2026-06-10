@@ -7,7 +7,7 @@ using Bachelor.Models.Problems;
 using Bachelor.Models.Scheduling;
 
 namespace Bachelor.Models.Utility;
-
+// author Jeppe and Claude.ai
 public static class AlgorithmFactory
 {
     public static IAlgorithm CreateAndConfigure(Schedule schedule)

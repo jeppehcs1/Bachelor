@@ -2,7 +2,7 @@
 using Bachelor.Models.Problems;
 
 namespace Bachelor.Models.Algorithms;
-
+// author Jeppe
 public abstract class MinMaxAntSystem<T> : Algorithm<T>
 {
    

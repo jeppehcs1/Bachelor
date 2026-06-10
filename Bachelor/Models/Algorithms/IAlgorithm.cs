@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 namespace Bachelor.Models.Algorithms;
-
+// author Jeppe and Clement
 public interface IAlgorithm
 {
     int BSFF { get; set; }

@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;  
 using Bachelor.Models.Problems;
 
-
+// author Jeppe and Clement
 public class OnePlusOnePermutation : OnePlusOne<TSPInstance>
 {
     public OnePlusOnePermutation(PermutationProblem problem, TSPInstance instance) : base(problem)

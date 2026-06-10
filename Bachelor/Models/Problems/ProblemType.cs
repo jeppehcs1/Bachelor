@@ -2,7 +2,7 @@ namespace Bachelor.Models.Problems;
 
 
 
-
+// author Jeppe and Clement
 public abstract class ProblemType<T>
 {
     public int Dimension { get; set; }

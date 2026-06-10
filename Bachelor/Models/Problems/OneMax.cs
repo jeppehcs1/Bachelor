@@ -1,6 +1,6 @@
 namespace Bachelor.Models.Problems;
 using System.Collections;
-
+// author Jeppe and Clement
 public class OneMax(int dimension) : BitStringProblem(dimension)
 {
     public override int? OptimalFitness => Dimension;

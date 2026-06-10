@@ -15,7 +15,7 @@ using CommunityToolkit.Mvvm.Input;
 
 
 namespace Bachelor.ViewModels;
-
+// author Jeppe and Claude.ai
 public partial class CreateScheduleViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainViewModel;

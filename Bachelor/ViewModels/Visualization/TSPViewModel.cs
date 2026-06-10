@@ -5,7 +5,7 @@ using Bachelor.Models.Utility;
 using CommunityToolkit.Mvvm.Input;
 
 namespace Bachelor.ViewModels.Visualization;
-
+// author Jeppe and Clement
 public partial class TSPViewModel : VisualizationViewModel
 {
     private ObservableCollection<DataPoint> _points = new();

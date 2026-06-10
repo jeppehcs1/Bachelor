@@ -5,7 +5,7 @@ using Bachelor.Models.Problems;
 using System;
 using System.Collections;
 using System.Collections.Generic;  
-
+// author Clement
 public class SimulatedAnnealingBitString(ProblemType<BitArray> problem) : SimulatedAnnealing<BitArray>(problem)
 {
     public override BitArray CloneSearchPoint()

@@ -7,7 +7,7 @@ using Bachelor.Models.Utility;
 using CommunityToolkit.Mvvm.Messaging;
 
 namespace Bachelor.Models.Scheduling;
-
+// author Jeppe
 public class Batch
 {
     int NumberRuns { get; set; }

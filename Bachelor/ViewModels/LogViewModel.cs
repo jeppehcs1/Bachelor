@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.Messaging;
 
 namespace Bachelor.ViewModels;
-
+// author Jeppe
 public partial class LogViewModel : ViewModelBase
 {
     public ObservableCollection<string> LogMessages { get; } = new();

@@ -2,7 +2,7 @@
 using Bachelor.Models.Utility;
 
 namespace Bachelor.ViewModels.Visualization;
-
+// author Jeppe
 public abstract class VisualizationViewModel : ViewModelBase
 {
     

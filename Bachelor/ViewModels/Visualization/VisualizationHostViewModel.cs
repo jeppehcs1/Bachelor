@@ -7,7 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 namespace Bachelor.ViewModels.Visualization;
-
+// author Jeppe
 public partial class VisualizationHostViewModel : ViewModelBase
 {
     [ObservableProperty] private VisualizationViewModel? currentVisualization;

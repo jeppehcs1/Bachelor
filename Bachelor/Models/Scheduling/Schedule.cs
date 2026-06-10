@@ -5,7 +5,7 @@ using Bachelor.Models.Problems;
 using Bachelor.Models.Utility;
 
 namespace Bachelor.Models.Scheduling;
-
+// author Jeppe
 public class Schedule
 {
     public string SearchSpace;

@@ -2,7 +2,7 @@
 using Bachelor.Models.Problems;
 
 namespace Bachelor.Models.Utility;
-
+// author Jeppe
 public static class NearestNeighbour
 {
     public static TSPInstance Solve(TSPInstance instance, TSPProblem problem)

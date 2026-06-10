@@ -12,7 +12,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 namespace Bachelor.ViewModels;
-
+// author Jeppe 
 public partial class AddBatchesViewModel : ViewModelBase
 {
     public Schedule? Schedule { get; set; }

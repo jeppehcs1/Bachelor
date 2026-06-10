@@ -3,7 +3,7 @@ using Avalonia.Controls;
 using Bachelor.ViewModels;
 
 namespace Bachelor.Views;
-
+// author Jeppe and Clement
 public partial class MainWindow : Window
 {
     public MainWindow()

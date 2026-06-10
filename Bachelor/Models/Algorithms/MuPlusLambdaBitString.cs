@@ -4,7 +4,7 @@ using Bachelor.Models.Problems;
 namespace Bachelor.Models.Algorithms;
 using System;
 using System.Collections;
-
+// author Clement
 public class MuPlusLambdaBitString(ProblemType<BitArray> problem) : MuPlusLambda<BitArray>(problem)
 {
     public override List<(BitArray Individual, double Fitness)> ClonePopulation()

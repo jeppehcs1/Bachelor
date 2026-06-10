@@ -5,7 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;  
 
-
+// author Jeppe and Clement
 public class OnePlusOneBitString(ProblemType<BitArray> problem) : OnePlusOne<BitArray>(problem)
 {
 

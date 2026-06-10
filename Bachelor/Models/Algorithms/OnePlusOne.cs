@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Bachelor.Models.Problems;
 namespace Bachelor.Models.Algorithms;
-
+// author Jeppe and Clement
 public abstract class OnePlusOne<T> : Algorithm<T>
 {
     

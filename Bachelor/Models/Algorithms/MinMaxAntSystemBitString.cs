@@ -3,7 +3,7 @@ using System.Collections;
 using Bachelor.Models.Problems;
 
 namespace Bachelor.Models.Algorithms;
-
+// author Jeppe
 public class MinMaxAntSystemBitString : MinMaxAntSystem<BitArray>
 {
     public MinMaxAntSystemBitString(ProblemType<BitArray> problem) : base(problem)

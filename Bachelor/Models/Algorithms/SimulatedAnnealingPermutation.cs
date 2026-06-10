@@ -2,7 +2,7 @@ using System;
 using Bachelor.Models.Problems;
 
 namespace Bachelor.Models.Algorithms;
-
+// author Clement
 public class SimulatedAnnealingPermutation : SimulatedAnnealing<TSPInstance>
 {
     

@@ -5,7 +5,7 @@ using Bachelor.Models.Algorithms;
 using Bachelor.Models.Utility;
 
 namespace Bachelor.ViewModels.Visualization;
-
+// author Clement
 public class HypercubeViewModel : VisualizationViewModel
 {
     public ObservableCollection<DataPoint> Points = new ObservableCollection<DataPoint>();

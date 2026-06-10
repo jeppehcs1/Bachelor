@@ -4,7 +4,7 @@ using System.Linq;
 namespace Bachelor.Models.Problems;
 
 using System.Collections.Generic;
-
+// author Jeppe and Clement
 public class TSPProblem : PermutationProblem
 {
     public TSPProblem(int dimension) : base(dimension)

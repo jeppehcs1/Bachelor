@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 namespace Bachelor.Models.Problems;
-
+// author Jeppe and Clement
 public class TSPInstance
 {
     public List<int> Permutation;

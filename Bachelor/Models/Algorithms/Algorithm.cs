@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Text;
 using Bachelor.Models.Problems;
 namespace Bachelor.Models.Algorithms;
-
+// author Jeppe and Clement
 public abstract class Algorithm<T> : IAlgorithm
 {
     protected Random _random = new Random();

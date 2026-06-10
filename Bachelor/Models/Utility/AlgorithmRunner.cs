@@ -8,7 +8,7 @@ using Bachelor.Models.Algorithms;
 using Bachelor.Models.Problems;
 
 namespace Bachelor.Models.Utility;
-
+// author Jeppe and Claude.ai
 public class AlgorithmRunner
 {
     private CancellationTokenSource _cts = new();

@@ -3,7 +3,7 @@ using System.Globalization;
 using System.IO;
 
 namespace Bachelor.Models.Utility;
-
+// author Clement
 public class CsvLogger
 {
     private readonly string _filePath;

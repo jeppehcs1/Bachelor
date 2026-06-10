@@ -6,7 +6,7 @@ using Avalonia.Platform.Storage;
 using Bachelor.ViewModels;
 
 namespace Bachelor.Views;
-
+// author Jeppe
 public partial class CreateScheduleView : UserControl
 {
     public CreateScheduleView()

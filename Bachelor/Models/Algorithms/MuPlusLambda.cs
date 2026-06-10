@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Bachelor.Models.Algorithms;
 using Bachelor.Models.Problems;
-
+// author Clement
 public abstract class MuPlusLambda<T> : Algorithm<T>
 {
     public int Mu;

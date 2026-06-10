@@ -5,7 +5,7 @@ using Bachelor.Models.Algorithms;
 using Bachelor.Models.Utility;
 
 namespace Bachelor.ViewModels.Visualization;
-
+// author Jeppe and Clement
 public class DataPoint : IEnumerable
 {
         public double x { get; set; }
