@@ -21,7 +21,6 @@ public abstract class MinMaxAntSystem<T> : Algorithm<T>
     
     public override void IterateCore()
     {
-        T prev = SearchPoint;
         ConstructAntSolutions();
         // ApplyLocalSearch();
         UpdatePheromones();

@@ -15,7 +15,7 @@ public class CsvLogger
     {
         _filePath = filePath;
         using var writer = new StreamWriter(filePath, false);
-        writer.WriteLine("Run,Fitness,Runtime,FuncEvals");
+        writer.WriteLine("Run,Fitness,Runtime,FuncEvals,Iterations");
     }
 
     public void LogRun(AlgorithmSnapshot snapshot)
@@ -23,7 +23,7 @@ public class CsvLogger
         _runCount++;
         _totalTime += snapshot.Runtime;
         using var writer = new StreamWriter(_filePath, append: true);
-        writer.WriteLine($"{_runCount},{snapshot.BSFF},{snapshot.Runtime.ToString("F3", _culture)},{snapshot.FuncEvals}");
+        writer.WriteLine($"{_runCount},{snapshot.BSFF},{snapshot.Runtime.ToString("F3", _culture)},{snapshot.FuncEvals},{snapshot.Iterations}");
     }
 
     public void WriteSummary()

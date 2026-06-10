@@ -121,7 +121,7 @@ public partial class AddBatchesViewModel : ViewModelBase
         catch (OperationCanceledException) { }
         IsRunning =  false;
     }
-
+    
     private Task RunBatches(CancellationToken ct)
     {
         var options = new ParallelOptions 
