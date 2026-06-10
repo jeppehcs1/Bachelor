@@ -18,7 +18,7 @@ public class AlgorithmRunner
     public int UpdateInterval = 1000;
     public event Action<IAlgorithm>? OnIteration;
     public event Action? OnInitialization;
-
+    // Co-authored by Claude.ai
     public async Task Run(IAlgorithm algorithm, CancellationToken ct = default)
     {
         algorithm.Initialize();
@@ -28,18 +28,19 @@ public class AlgorithmRunner
 
         await Task.Run(() =>
         {
-            long startTime = Stopwatch.GetTimestamp();
+            
             while (!algorithm.StoppingCondition() && !token.IsCancellationRequested)
             {
                 _pauseSemaphore.Wait(token);
                 _pauseSemaphore.Release();
-
+                long startTime = Stopwatch.GetTimestamp();
                 algorithm.Iterate();
+                algorithm.Runtime = Stopwatch.GetElapsedTime(startTime).TotalSeconds;
                 _iterationCount++;
                 if (_iterationCount % UpdateInterval == 0)
                     OnIteration?.Invoke(algorithm);
             }
-            algorithm.Runtime = Stopwatch.GetElapsedTime(startTime).TotalSeconds;
+            
         }, token);
     }
 
@@ -66,7 +67,7 @@ public class AlgorithmRunner
             };
         return new AlgorithmSnapshot { BSFF = algorithm.BSFF, FuncEvals = algorithm.FuncEvals,  Iterations = algorithm.Iterations };
     }
-
+    // Co-authored by Claude.ai
     public void Restart()
     {
         _cts.Cancel();
