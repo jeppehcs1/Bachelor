@@ -5,7 +5,7 @@ namespace Bachelor.Models.Algorithms;
 
 public class MuPlusLambdaPermutation : MuPlusLambda<TSPInstance>
 {
-    public MuPlusLambdaPermutation(PermutationProblem problem, TSPInstance instance) : base(problem)
+    public MuPlusLambdaPermutation(TSPProblem problem, TSPInstance instance) : base(problem)
     {
         Problem = problem;
         SearchPoint = instance;
