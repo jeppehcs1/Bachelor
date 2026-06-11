@@ -1,4 +1,6 @@
+using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core;
@@ -18,10 +20,19 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
+        AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
+        {
+            System.IO.File.WriteAllText("crash.log", e.ExceptionObject.ToString());
+        };
+
+        TaskScheduler.UnobservedTaskException += (sender, e) =>
+        {
+            System.IO.File.WriteAllText("crash_task.log", e.Exception.ToString());
+            e.SetObserved();
+        };
+
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
-            // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
             DisableAvaloniaDataAnnotationValidation();
             var mainWindow = new MainWindow();
             mainWindow.DataContext = new MainWindowViewModel(mainWindow);
@@ -30,14 +41,12 @@ public partial class App : Application
 
         base.OnFrameworkInitializationCompleted();
     }
-
+    
     private void DisableAvaloniaDataAnnotationValidation()
     {
-        // Get an array of plugins to remove
         var dataValidationPluginsToRemove =
             BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
 
-        // remove each entry found
         foreach (var plugin in dataValidationPluginsToRemove)
         {
             BindingPlugins.DataValidators.Remove(plugin);

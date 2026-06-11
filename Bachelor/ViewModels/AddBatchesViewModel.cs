@@ -94,32 +94,42 @@ public partial class AddBatchesViewModel : ViewModelBase
     [RelayCommand]
     private async Task FinishSetupOnClick()
     {
-        _batchCts = new CancellationTokenSource();
-        IsRunning = true;
-        _visualizationAttached = 0; 
-        VisualizationViewModel viewModel = Schedule.Visualization switch
-        {
-            "TSPPlot" => new TSPViewModel(),
-            "HyperCube" => new HypercubeViewModel(),
-            "FitnessPlot" => new PlotViewModel(),
-            _ => null
-        };
-        _visualizationHostViewModel.CurrentVisualization = viewModel;
-        _mainViewModel.CurrentView = _visualizationHostViewModel;
-        if (Schedule.Visualization == "None")
-        {
-            _mainViewModel.CurrentView = _mainViewModel.LogViewModel;
-            foreach (var item in Items)
-            {
-                item.Batch.Runner.UpdateInterval = int.MaxValue;
-            }
-        }
         try
         {
-            await RunBatches(_batchCts.Token);
+            _batchCts = new CancellationTokenSource();
+            IsRunning = true;
+            _visualizationAttached = 0; 
+            VisualizationViewModel viewModel = Schedule.Visualization switch
+            {
+                "TSPPlot" => new TSPViewModel(),
+                "HyperCube" => new HypercubeViewModel(),
+                "FitnessPlot" => new PlotViewModel(),
+                _ => null
+            };
+            _visualizationHostViewModel.CurrentVisualization = viewModel;
+            _mainViewModel.CurrentView = _visualizationHostViewModel;
+            if (Schedule.Visualization == "None")
+            {
+                _mainViewModel.CurrentView = _mainViewModel.LogViewModel;
+                foreach (var item in Items)
+                {
+                    item.Batch.Runner.UpdateInterval = int.MaxValue;
+                }
+            }
+            try
+            {
+                await RunBatches(_batchCts.Token);
+            }
+            catch (OperationCanceledException) { }
         }
-        catch (OperationCanceledException) { }
-        IsRunning =  false;
+        catch (Exception e)
+        {
+            System.IO.File.WriteAllText("crash.log", e.ToString());
+        }
+        finally
+        {
+            IsRunning = false;
+        }
     }
     
     private Task RunBatches(CancellationToken ct)
