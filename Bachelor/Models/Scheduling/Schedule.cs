@@ -13,7 +13,12 @@ public class Schedule
     public string ProblemName;
     public string FinishCondition;
     public string Visualization;
-    public TSPInstance TSPInstance;
+    private TSPInstance _tspInstance;
+    public TSPInstance TSPInstance 
+    { 
+        get => _tspInstance.DeepCopy(); 
+        set => _tspInstance = value; 
+    }
     public int Dimension;
     public int MaxEvals;
     public int ExactFitness;
